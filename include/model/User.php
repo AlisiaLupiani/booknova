@@ -6,7 +6,7 @@ class User{
     private ?string $surname;
     private ?string $email;
     private ?string $password;
-    private ?string $role;
+    private ?Ruolo $role;
 
 
 
@@ -25,7 +25,7 @@ class User{
     public function getSurname(): ?string {return $this->surname;}
     public function getEmail(): ?string {return $this->email;}
     public function getPassword(): ?string {return $this->password;}
-    public function getRole(): ?string {return $this->role;}
+    public function getRole(): ?Ruolo {return $this->role;}
 
 
     // Setter
@@ -34,7 +34,7 @@ class User{
     public function setSurname(?string $surname) { $this->surname = $surname; }
     public function setEmail(?string $email) { $this->email = $email; }
     public function setPassword(?string $password) { $this->password = $password; }
-    public function setRole(?string $role) { $this->role = $role; }
+    public function setRole(?Ruolo $role) { $this->role = $role; }
 
     // Other function
     public function toString(): ?string {return $this->name ." ".$this->surname;}
