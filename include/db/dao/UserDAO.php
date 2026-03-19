@@ -7,16 +7,16 @@ require_once("include/db/DAO.php");
 class UserDAO extends DAO{
 
 
-    private PDOStatement $stmtGetUserById;
-    private PDOStatement $stmtGetAllUsers;
+    private PDOStatement $stmtGetUserById;  //
+    private PDOStatement $stmtGetAllUsers;  //
     private PDOStatement $stmtGetAllUsersExceptId;
     private PDOStatement $stmtGetUserByEmail;
     private PDOStatement $stmtGetAllUsersByRole;
     private PDOStatement $stmtGetAllUsersCount;
     private PDOStatement $stmtGetAllUsersByGenericString;
-    private PDOStatement $stmtInsertUser;
-    private PDOStatement $stmtUpdateUser;
-    private PDOStatement $stmtDeleteUser;
+    private PDOStatement $stmtInsertUser;   // 
+    private PDOStatement $stmtUpdateUser;   //
+    private PDOStatement $stmtDeleteUser;   //
 
 
     // Costruttore
