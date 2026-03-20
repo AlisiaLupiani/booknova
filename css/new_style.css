@@ -8,6 +8,7 @@
     --marrone-scuro: #2d241e;
 }
 
+
 /* Reset e Sfondo */
 body.custom-book-page {
     background-color: var(--panna) !important;

@@ -1,0 +1,36 @@
+<body>
+    <div class="container">
+        <h1>Carrello d'Acquisto</h1>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Prodotto</th>
+                    <th>Prezzo</th>
+                    <th>Quantità</th>
+                    <th>Totale</th>
+                    <th>Azione</th>
+                </tr>
+            </thead>
+            <tbody id="cart-items">
+                <tr>
+                    <td>Libro Esempio</td>
+                    <td>€19.99</td>
+                    <td><input type="number" value="1" min="1"></td>
+                    <td>€19.99</td>
+                    <td><button>Rimuovi</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="cart-summary">
+            <p>Subtotale: <strong>€19.99</strong></p>
+            <p>Spedizione: <strong>€5.00</strong></p>
+            <p>Totale: <strong>€24.99</strong></p>
+        </div>
+        <div class="cart-actions">
+            <a href="catalougues.php" class="btn-continue">Continua Acquisti</a>
+        </div>
+        <div>
+            <a href="pay.php" class="btn-checkout">Procedi al Pagamento</a></div>
+        </div>
+    </div>
+</body>
