@@ -1,6 +1,6 @@
 <?php
 
-class Formato{
+class Format{
     private ?int $id;
     private ?string $format;
 
@@ -14,6 +14,6 @@ class Formato{
     public function getFormat(): ?string {return $this->getFormat;}
 
     // Setter
-    public function setId(?int $id) { $this->id = $id; }
-    public function setFormat(?string $format) { $this->name = $format; }
+    public function setId(?int $id): void { $this->id = $id; }
+    public function setFormat(?string $format): void { $this->name = $format; }
 }
