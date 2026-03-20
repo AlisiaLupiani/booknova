@@ -15,7 +15,7 @@ require "php/book_details/book_details.php";
 
 
 
-$book_details = new Template("html/index.html");
+$book_details = new Template("html/book_details/book_details.html");
 
 $book_details->setContent("header",$header_page->get());
 $book_details->setContent("footer", $footer_page->get());
