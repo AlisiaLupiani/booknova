@@ -1,6 +1,6 @@
 <?php
 
-class Offerta {
+class Offer {
     private ?int $id;
     private ?float $value;
     private ?string $startDate;
@@ -20,10 +20,10 @@ class Offerta {
     public function getEndDate(): ?string { return $this->endDate; }
 
     // Setter
-    public function setId(?int $id) { $this->id = $id; }
-    public function setValue(?float $value) { $this->value = $value; }
-    public function setStartDate(?string $startDate) { $this->startDate = $startDate; }
-    public function setEndDate(?string $endDate) { $this->endDate = $endDate; }
+    public function setId(?int $id): void { $this->id = $id; }
+    public function setValue(?float $value): void { $this->value = $value; }
+    public function setStartDate(?string $startDate):void { $this->startDate = $startDate; }
+    public function setEndDate(?string $endDate):void { $this->endDate = $endDate; }
 
     // Other function
     public function toString(): ?string {

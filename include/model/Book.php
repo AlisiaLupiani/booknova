@@ -42,15 +42,15 @@ class Libro {
     public function getCondition(): ?Condizione { return $this->condition; }
 
     // Setter
-    public function setId(?int $id) { $this->id = $id; }
-    public function setTitle(?string $title) { $this->title = $title; }
-    public function setPrice(?float $price) { $this->price = $price; }
-    public function setDescription(?string $description) { $this->description = $description; }
-    public function setAuthor(?Autore $author) { $this->author = $author; }
-    public function setPublisher(?Editore $publisher) { $this->publisher = $publisher; }
-    public function setCategory(?Categoria $category) { $this->category = $category; }
-    public function setFormat(?Formato $format) { $this->format = $format; }
-    public function setCondition(?Condizione $condition) { $this->condition = $condition; }
+    public function setId(?int $id): void { $this->id = $id; }
+    public function setTitle(?string $title): void { $this->title = $title; }
+    public function setPrice(?float $price): void { $this->price = $price; }
+    public function setDescription(?string $description): void { $this->description = $description; }
+    public function setAuthor(?Autore $author): void { $this->author = $author; }
+    public function setPublisher(?Editore $publisher): void { $this->publisher = $publisher; }
+    public function setCategory(?Categoria $category): void { $this->category = $category; }
+    public function setFormat(?Formato $format): void { $this->format = $format; }
+    public function setCondition(?Condizione $condition): void { $this->condition = $condition; }
 
     // Other function
     public function toString(): ?string {

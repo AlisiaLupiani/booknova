@@ -1,6 +1,6 @@
 <?php
 
-class Autore {
+class Author {
     private ?int $id;
     private ?string $name;
     private ?string $biography;
@@ -17,7 +17,7 @@ class Autore {
     public function getBiography(): ?string {return $this->biography;}
 
     // Setter
-    public function setId(?int $id) { $this->id = $id; }
-    public function setName(?string $name) { $this->name = $name; }
-    public function setBiography(?string $biography) { $this->biography = $biography; }
+    public function setId(?int $id): void { $this->id = $id; }
+    public function setName(?string $name): void { $this->name = $name; }
+    public function setBiography(?string $biography): void { $this->biography = $biography; }
 }

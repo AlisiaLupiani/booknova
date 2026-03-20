@@ -1,6 +1,6 @@
 <?php
 
-class Condizione{
+class Condition{
     private ?int $id;
     private ?String $condition;
 
@@ -14,6 +14,6 @@ class Condizione{
     public function getCondition(): ?string {return $this->getCondition;}
 
     // Setter
-    public function setId(?int $id) { $this->id = $id; }
-    public function setCondition(?string $condition) { $this->name = $condition; }
+    public function setId(?int $id): void { $this->id = $id; }
+    public function setCondition(?string $condition): void { $this->name = $condition; }
 }
