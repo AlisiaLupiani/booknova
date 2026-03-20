@@ -1,0 +1,142 @@
+/* Palette Colori */
+:root {
+    --panna: #fdfaf5;
+    --beige-chiaro: #f5f1e9;
+    --beige-scuro: #e3dbc9;
+    --marrone-accento: #8c6d46;
+    --marrone-testo: #4a3f35;
+    --marrone-scuro: #2d241e;
+}
+
+/* Reset e Sfondo */
+body.custom-book-page {
+    background-color: var(--panna) !important;
+    font-family: 'Georgia', serif !important;
+    color: var(--marrone-testo) !important;
+}
+
+/* Layout Principale */
+.book-details-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    background: var(--beige-chiaro);
+    padding: 40px;
+    border-radius: 8px;
+    border: 1px solid var(--beige-scuro);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    margin: 0 auto;
+    max-width: 1100px;
+}
+
+/* Sezione Immagine */
+.book-cover-section {
+    flex: 1 1 350px;
+    text-align: center;
+}
+
+.main-book-img {
+    max-width: 100%;
+    height: auto;
+    border: 10px solid #fff;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border-radius: 4px;
+}
+
+/* Sezione Testi */
+.book-info-section {
+    flex: 2 1 450px;
+}
+
+.book-title {
+    font-family: 'Georgia', serif !important;
+    color: var(--marrone-scuro) !important;
+    font-weight: bold !important;
+    margin-bottom: 0.2rem !important;
+}
+
+.book-author {
+    font-size: 1.4rem;
+    color: var(--marrone-accento);
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.book-rating {
+    margin-bottom: 15px;
+}
+
+.stars {
+    color: #c5a059;
+    font-size: 1.4rem;
+}
+
+.book-price {
+    font-size: 2.5rem;
+    font-weight: 300;
+    margin: 20px 0;
+    color: var(--marrone-scuro);
+}
+
+.section-label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--marrone-accento);
+    border-bottom: 1px solid var(--beige-scuro);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.book-description-box p {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+/* Griglia Dettagli Tecnici */
+.book-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: rgba(255,255,255,0.4);
+    padding: 20px;
+    border-radius: 5px;
+    margin: 30px 0;
+}
+
+.spec-item {
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 5px;
+}
+
+/* Pulsante */
+.btn-buy-now {
+    background-color: var(--marrone-scuro) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 15px 40px !important;
+    width: 100%;
+    font-size: 1.1rem !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease !important;
+    cursor: pointer;
+}
+
+.btn-buy-now:hover {
+    background-color: var(--marrone-accento) !important;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .book-details-wrapper {
+        padding: 20px;
+    }
+    .book-specs {
+        grid-template-columns: 1fr;
+    }
+}
