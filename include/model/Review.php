@@ -1,8 +1,7 @@
 <?php
 
-require_once('./User.ph');
-require_once('./Book.ph');
-
+require_once('./User.php');
+require_once('./Book.php');
 
 class Review {
     private ?int $id;
@@ -30,4 +29,10 @@ class Review {
     public function setBook(?Book $book): void { $this->book = $book; }
     public function setContent(?string $content): void { $this->content = $content; }
     public function setDate(?string $date): void { $this->date = $date; }
+
+    // Riepilogo della recensione
+    public function toString(): string {
+        $userName = $this->user ? $this->user->getFirstName() : "Utente eliminato";
+        return "Recensione #{$this->id} | Da: {$userName} | Data: {$this->date}";
+    }
 }

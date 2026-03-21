@@ -4,7 +4,6 @@ require_once('./User.php');
 require_once('./PaymentMethod.php');
 require_once('./ShippingMethod.php');
 
-
 class Order {
     private ?int $id;
     private ?User $user;
@@ -36,7 +35,9 @@ class Order {
     public function setOrderDate(?string $orderDate): void { $this->orderDate = $orderDate; }
     public function setTotal(?float $total): void { $this->total = $total; }
 
-
-
+    // Metodo toString per riepilogo ordine
+    public function toString(): string {
+        $userMail = $this->user ? $this->user->getEmail() : "Ospite";
+        return "Ordine #{$this->id} | Utente: {$userMail} | Totale: {$this->total}€ | Data: {$this->orderDate}";
     }
-
+}

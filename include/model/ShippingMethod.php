@@ -18,4 +18,9 @@ class ShippingMethod {
     public function setId(?int $id): void { $this->id = $id; }
     public function setName(?string $name): void { $this->name = $name; }
     public function setCost(?float $cost): void { $this->cost = $cost; }
+
+    // Metodo per visualizzare il metodo di spedizione (es. Standard - 5.00€)
+    public function toString(): string {
+        return ($this->name ?? 'N/A') . " - " . number_format($this->cost, 2) . "€";
+    }
 }
