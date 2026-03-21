@@ -14,4 +14,9 @@ class PaymentMethod {
 
     public function setId(?int $id): void { $this->id = $id; }
     public function setName(?string $name): void { $this->name = $name; }
+
+    // Metodo per ottenere la stringa descrittiva
+    public function toString(): string {
+        return $this->name ?? '';
+    }
 }
