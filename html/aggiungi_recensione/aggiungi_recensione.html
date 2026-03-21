@@ -1,0 +1,27 @@
+<body>
+    <div class="review-container">
+        <h1>Aggiungi Recensione</h1>
+        <form class="review-form">
+            <div class="form-group">
+                <label for="book-title">Titolo Libro:</label>
+                <input type="text" id="book-title" name="book-title" required>
+            </div>
+            <div class="form-group">
+                <label for="rating">Valutazione:</label>
+                <select id="rating" name="rating" required>
+                    <option value="">Seleziona...</option>
+                    <option value="1">1 Stella</option>
+                    <option value="2">2 Stelle</option>
+                    <option value="3">3 Stelle</option>
+                    <option value="4">4 Stelle</option>
+                    <option value="5">5 Stelle</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="review-text">Testo Recensione:</label>
+                <textarea id="review-text" name="review-text" rows="6" required></textarea>
+            </div>
+            <button type="submit" class="btn-submit">Invia Recensione</button>
+        </form>
+    </div>
+</body>

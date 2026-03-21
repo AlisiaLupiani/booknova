@@ -1,0 +1,69 @@
+<body>
+
+<div class="container my-5">
+    
+    <div class="row mb-4 align-items-end">
+        <div class="col-md-8">
+            <h2 class="fw-bold mb-0">Dettaglio Ordine #[id_ordine]</h2>
+            <p class="text-muted mb-0">Effettuato il: <strong>[data_ordine]</strong></p>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <span class="badge rounded-pill bg-primary px-3 py-2 fs-6">
+                Stato: [stato_ordine]
+            </span>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-0">
+            <div class="row g-0 bg-light p-3 fw-bold border-bottom d-none d-md-flex text-secondary" style="font-size: 0.9rem; text-transform: uppercase;">
+                <div class="col-md-6">Libro Acquistato</div>
+                <div class="col-md-2 text-center">Prezzo</div>
+                <div class="col-md-2 text-center">Quantità</div>
+                <div class="col-md-2 text-end">Totale</div>
+            </div>
+
+            <div class="order-items-container">
+                [lista_prodotti]
+            </div>
+            
+            </div>
+    </div>
+
+    <div class="row justify-content-between">
+        <div class="col-md-5">
+            <div class="p-3 bg-light rounded">
+                <h6 class="fw-bold">Indirizzo di Spedizione</h6>
+                <p class="small text-muted mb-0">
+                    [nome_utente]<br>
+                    [indirizzo_via]<br>
+                    [citta_cap]
+                </p>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mt-4 mt-md-0">
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                    <span class="text-muted">Subtotale</span>
+                    <span>€ [subtotale_ordine]</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between bg-transparent px-0">
+                    <span class="text-muted">Spedizione</span>
+                    <span class="text-success fw-bold">Gratis</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between bg-transparent px-0 border-0">
+                    <span class="h5 fw-bold">Totale Ordine</span>
+                    <span class="h5 fw-bold text-primary">€ [totale_ordine]</span>
+                </li>
+            </ul>
+            
+            <div class="d-grid gap-2">
+                <button onclick="window.print()" class="btn btn-dark btn-sm">Stampa Ricevuta</button>
+                <a href="index.php" class="btn btn-outline-secondary btn-sm">Torna alla Home</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
