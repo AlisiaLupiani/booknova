@@ -1,41 +1,55 @@
 <?php
-// Assicurati che session_start() sia attivo nel file principale (index.php)
 
-$messaggio_errore = "";
+// Import
+require_once("include/db/DB_Connection.php");
+require_once("include/db/DataLayer.php");
 
-// Controlliamo se l'utente ha inviato il form
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['password'])) {
-    
-    $email = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $password = $_POST['password'];
 
-    // ESEMPIO DI LOGICA (Dovrai usare il tuo DataLayer qui)
-    // $utente = $dataLayer->validazioneUtente($email, $password);
-    
-    // Simulazione controllo database
-    if ($email === "test@esempio.it" && hash_equals("12345", $password)) {
-        // LOGIN OK
-        $_SESSION['utente_loggato'] = true;
-        $_SESSION['user_email'] = $email;
-        
-        // Reindirizziamo alla dashboard o area privata
-        header("Location: area_privata.php"); 
-        exit;
-    } else {
-        // LOGIN FALLITO
-        // Passiamo il parametro error nell'URL come avevi chiesto
-        header("Location: index.php?error=1");
+// DAO
+$factory = new DataLayer(new DB_Connection());
+$userDAO = $factory->getUserDAO();
+
+
+// Controlla se si è provato a fare il login
+if (isset($_POST["email"]) && isset($_POST["password"])) {
+
+    $user = $userDAO->getUserByEmail($_POST["email"]);
+
+    // Autentico l'utente
+    // if ($user != null && (AuthManager::verifyPasswordSHA($_POST["password"], $user->getPassword()))) {
+    if($user != null && $_POST["password"] == $user->getPassword()){    
+        $_SESSION["auth"] = true;
+        $_SESSION["id"] = $user->getId();
+        $_SESSION["name"] = $user->getName();
+        $_SESSION["surname"] = $user->getSurname();
+        $_SESSION["email"] = $user->getEmail();        
+        $_SESSION["role"] = $user->getRole();   
+            
+        // Se l'utente è un amministratore
+        if(strtoupper($user->getRole()) == "ADMIN")  {
+            header("Location: dashboard_admin.php");
+            exit;
+        } 
+
+        // Se l'utente è un utente
+        header("Location: ". $_REQUEST["reference"]);
         exit;
     }
+    
+    // Se l'email o la password sono errate e quindi il login è fallito
+    header("Location: login.php?error=on");
+    exit;
 }
 
-// Prepariamo la pagina HTML del login
-$body_page = new Template("html/login/login.html");
+// Carica la pagina di login
+$login_page = new Template("skin/login/login.html");
 
-// Se nell'URL c'è ?error=1, mostriamo il messaggio nel template
-if (isset($_GET['error']) && $_GET['error'] == '1') {
-    $body_page->setContent("messaggio_errore", "Email o password errati!");
-} else {
-    $body_page->setContent("messaggio_errore", "");
+// Se non è stata passata nessuna pagina di riferimento, allora riporta alla homepage
+$reference = isset($_POST["reference"]) ? base64_decode($__POST["reference"]) : "index.php";
+$login_page->setContent("reference_page", $reference);
+
+// Se error è settato, mostra il messaggio di errore
+if(isset($_GET["error"])){
+    $login_page->setContent("error","Invalid username or password.");
 }
 ?>
