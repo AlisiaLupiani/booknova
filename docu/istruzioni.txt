@@ -1,0 +1,40 @@
+/************/
+  ISTRUZIONI
+/************/
+
+Per far funzionare correttamente il codice della login bisogna:
+
+1 - Creare il DAO 'getUserByEmail'
+2 - Inserire nell'html del login <div><[error]></div>. Questo rappresenta il frammento di codice che rappresenta l'errore
+    nel caso siano state inseriti dei dati non corretti. Quindi posizionarlo dove si vuole far apparire la scritta di errore di login.
+3 - Fare il CSS che appena ho aperto la pagina nel browser mi sono spaventato. 
+
+
+
+/**************************/
+  COME GESTIRE LE SESSIONI
+/**************************/
+
+In tutti i file presenti ho attivato io le sessioni in modo da far funzionare correttamente il meccanismo di login.
+Da oggi in poi, qualsiasi file .php che viene creato nella root del progetto, come prima istruzione dovrà chiamare
+la funzione session_start(). Questo permette a PHP di attivare la sessione e far funzionare il login dell'utente.
+
+
+
+
+/************/
+  ATTENZIONE
+/************/
+
+Nel file php/login/login.php per adesso non viene fatto il controllo della password attraverso la crittografia: trovete un'istruzione if
+commentata (riga 19 se non vi si sfanculano le cose). Quello è un if che gestisce le password con la crittografia.
+
+
+Vi ho inserito nel progetto,
+al path 'include/utility/' 3 classi PHP da me create per aiutarvi: 
+
+1 - AuthManager: serve per gestire la crittografia e fare controlli tra le password;
+2 - QueryStringBuilder: serve per creare delle query string complesse. Si avvale di una soluzione basata sul pattern builder;
+3 - HTTPResponse: serve per fornire le risposte alle chiamate Ajax (dovrebbe funzionare anche con Axios, ma non l'ho testato).
+                  Ho creato già delle funzioni che restituiscono le risposta HTTP più comuni ma sono comunque personalizzabili al massimo
+                  sempre grazie alla soluzione basata sul pattern builder. 
