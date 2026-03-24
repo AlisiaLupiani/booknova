@@ -22,8 +22,12 @@ class Rating {
     public function getDate(): ?string { return $this->date; }
 
     public function setId(?int $id): void { $this->id = $id; }
-    public function setUser(?int $User): void { $this->user = $user; }
-    public function setBook(?int $Book): void { $this->book = $book; }
+    public function setUser(?User $user): void { $this->user = $user; }
+    public function setBook(?Book $book): void { $this->book = $book; }
     public function setValue(?int $value): void { $this->value = $value; }
     public function setDate(?string $date): void { $this->date = $date; }
+
+    public function toString(): string {
+        return "Rating: " . $this->value . "/5 (ID: " . $this->id . ")";
+    }
 }
