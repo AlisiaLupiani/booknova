@@ -1,8 +1,8 @@
 <?php
 
-require_once('include/model/Review.php');
+include_once('include/model/OrderItem.php');
 
-class ReviewProxy extends Review{
+class OrderItemProxy extends OrderItem{
 
     private ?DataLayer $dataLayer;
 
@@ -38,6 +38,7 @@ class ReviewProxy extends Review{
         return parent::getBook();
     }
     
+
 
 
 }

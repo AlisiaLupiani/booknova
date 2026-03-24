@@ -1,7 +1,7 @@
 <?php
 
-require_once('include/model/User.php');
-require_once('include/model/Book.php');
+require_once('include/model/BookOffer.php');
+
 
 class BookOfferProxy extends BookOffer{
 
@@ -21,4 +21,19 @@ class BookOfferProxy extends BookOffer{
     public function getBookId(): ?int {return $this->bookId;}
     public function setBookId(?int $bookId): void {$this->bookId = $bookId;}
 
+    
+    
+    public function getUser(): ?User{
+        if(parent::getUser() == null && $this->userId > 0 ){
+            parent::setUser((($this -> dataLayer)->getUserDao())->getUserById($this->userId));
+        }
+        return parent::getUser();
+    }
+
+    public function getBook(): ?Book{
+        if(parent::getBook() == null && $this->bookId > 0 ){
+            parent::setBook((($this -> dataLayer)->getBookDao())->getBookById($this->bookId));
+        }
+        return parent::getBook();
+    }
 }

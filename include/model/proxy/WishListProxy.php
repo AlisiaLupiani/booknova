@@ -1,17 +1,17 @@
 <?php
 
-require_once('include/model/Review.php');
+include_once('include/model/WishListProxy.php');
 
-class ReviewProxy extends Review{
+class WishListProxy extends Wishlist{
 
     private ?DataLayer $dataLayer;
-
+    
     private ?int $userId;
-    private ?int $bookId;
+     private ?int $bokkId;
+
 
     public function _construct(?DataLayer $dataLayer){
-
-        parent::_construct();
+         parent::__construct();
         $this->dataLayer = $dataLayer;
 
     }
@@ -24,12 +24,12 @@ class ReviewProxy extends Review{
 
     
     
-    public function getUser(): ?User{
-        if(parent:: getUser() == null && $this->userId > 0 ){
-            parent:: setUser((($this -> dataLayer)->getUserDao())->getUserById($this->userId));
-        }
-        return parent::getUser();
-    }
+     public function getUser(): ?User{
+         if(parent:: getUser() == null && $this->userId > 0 ){
+             parent:: setUser((($this -> dataLayer)->getUserDao())->getUserById($this->userId));
+         }
+         return parent::getUser();
+     }
 
     public function getBook(): ?Book{
         if(parent:: getBook() == null && $this->bookId > 0 ){
@@ -37,7 +37,6 @@ class ReviewProxy extends Review{
         }
         return parent::getBook();
     }
-    
 
 
 }
