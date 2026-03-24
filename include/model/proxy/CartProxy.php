@@ -1,29 +1,26 @@
 <?php
 
-require_once('include/model/Review.php');
+require_once("include/model/Cart.php")
 
-class ReviewProxy extends Review{
+class CartProxy extends Cart{
 
     private ?DataLayer $dataLayer;
 
-    private ?int $userId;
+    private ?int $userdId;
     private ?int $bookId;
 
-    public function _construct(?DataLayer $dataLayer){
-
-        parent::_construct();
+    public function __construct(?DataLayer $dataLayer){
+        parent::__construct();
         $this->dataLayer = $dataLayer;
-
     }
-    
-    private function getUserId(): ?int {return $this->userId};
-    private function setUserId(?int $userId): ?int {return $this->userId = $userId};
 
-    private function getBookId(): ?int{return $this->bookId};
-    private function setBookId(?int $bookId): ?int{return $this->bookId = $bookId};
+    public function getUserId(): ?int { return $this->userId; }
+    public function setUserId(?int $userId): void {$this->userId = $userId;}
 
-    
-    
+    public function getBookId(): ?int {return $this->bookId;}
+    public function setBookId(?int $bookId): void {$this->bookId = $bookId;}
+
+
     public function getUser(): ?User{
         if(parent:: getUser() == null && $this->userId > 0 ){
             parent:: setUser((($this -> dataLayer)->getUserDao())->getUserById($this->userId));
@@ -37,7 +34,4 @@ class ReviewProxy extends Review{
         }
         return parent::getBook();
     }
-    
-
-
 }
