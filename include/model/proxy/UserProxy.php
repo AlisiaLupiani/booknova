@@ -8,16 +8,16 @@ class UserProxy extends User{
     private ?DataLayer $dataLayer;
 
 
-    private int $roleId
+    private int $roleId;
 
     public function __construct(?DataLayer $dataLayer){
         parent::__construct();
         $this->dataLayer = $dataLayer;
     }
 
-    public function getRoleId(): int {return $this->roleId}
+    public function getRoleId(): int {return $this->roleId ;}
 
-    public function setRoleId(int $roleId): void {$this->roleId = $roleId}
+    public function setRoleId(int $roleId): void {$this->roleId = $roleId ;}
 
 
 

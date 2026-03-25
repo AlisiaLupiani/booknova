@@ -16,7 +16,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     $user = $userDAO->getUserByEmail($_POST["email"]);
 
     // Autentico l'utente
-    // if ($user != null && (AuthManager::verifyPasswordSHA($_POST["password"], $user->getPassword()))) {
+    if ($user != null && (AuthManager::verifyPasswordSHA($_POST["password"], $user->getPassword()))) {
     if($user != null && $_POST["password"] == $user->getPassword()){    
         $_SESSION["auth"] = true;
         $_SESSION["id"] = $user->getId();
@@ -52,4 +52,5 @@ $login_page->setContent("reference_page", $reference);
 if(isset($_GET["error"])){
     $login_page->setContent("error","Invalid username or password.");
 }
-?>
+
+}
