@@ -3,6 +3,7 @@ session_start();
 
 // Templating
 require_once("include/template2.inc.php");
+require_once("include/utility/AuthManager.php");
 
 // Database
 require_once("include/db/DB_Connection.php");
