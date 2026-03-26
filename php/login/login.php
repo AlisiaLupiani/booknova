@@ -3,7 +3,7 @@
 // Import
 require_once("include/db/DB_Connection.php");
 require_once("include/db/DataLayer.php");
-
+require_once("include/utility/AuthManager.php");
 
 // DAO
 $factory = new DataLayer(new DB_Connection());
@@ -26,14 +26,15 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $_SESSION["role"] = $user->getRole();
 
         // Se l'utente è un amministratore
-        if (strtoupper($user->getRole().toString()) == "ADMIN") {
+        if (strtoupper($user->getRole() -> toString()) == "ADMIN") {
             header("Location: dashboard_admin.php");
             exit;
         }
 
         // Se l'utente è un utente
-        if (strtoupper($user->getRole().toString()) == "ADMIN") {
-            header("Location: " . $_REQUEST["reference"]);
+        if (strtoupper($user->getRole() -> toString()) == "USER") {
+            $redirect = isset($_REQUEST["reference"]) ? $_REQUEST["reference"] : 'index.php';
+            header("Location: " . $redirect);
             exit;
         }
     }
