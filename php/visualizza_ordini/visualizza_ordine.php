@@ -2,7 +2,7 @@
 
 
 if(!isset($_SESSION['auth'])) {
-    header("Location: login.php?reference=visualizza_ordine.php");
+    header("Location: login.php?reference=\"visualizza_ordine\".php");
     exit;
 }
 
