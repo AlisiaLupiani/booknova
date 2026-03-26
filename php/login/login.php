@@ -42,7 +42,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 }
 
 // Carica la pagina di login
-$body_page = new Template("skin/login/login.html");
+$body_page = new Template("html/login/login.html");
 
 // Se non è stata passata nessuna pagina di riferimento, allora riporta alla homepage
 $reference = isset($_POST["reference"]) ? base64_decode($__POST["reference"]) : "index.php";
