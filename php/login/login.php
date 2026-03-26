@@ -42,15 +42,15 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 }
 
 // Carica la pagina di login
-$login_page = new Template("skin/login/login.html");
+$body_page = new Template("skin/login/login.html");
 
 // Se non è stata passata nessuna pagina di riferimento, allora riporta alla homepage
 $reference = isset($_POST["reference"]) ? base64_decode($__POST["reference"]) : "index.php";
-$login_page->setContent("reference_page", $reference);
+$body_page->setContent("reference_page", $reference);
 
 // Se error è settato, mostra il messaggio di errore
 if(isset($_GET["error"])){
-    $login_page->setContent("error","Invalid username or password.");
+    $body_page->setContent("error","Invalid username or password.");
 }
 
 }
