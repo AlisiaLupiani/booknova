@@ -11,7 +11,7 @@ require_once("include/template2.inc.php");
 // Page
 require "php/home/header.php";
 require "php/home/footer.php";
-require "php/visualizza_ordini/visualizza_ordini.php";
+require "php/visualizza_ordini/visualizza_ordine.php";
 
 
 
