@@ -32,7 +32,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         }
 
         // Se l'utente è un utente
-        if (strtoupper($user->getRole() -> toString()) == "USER") {
+        if (strtoupper($user->getRole() -> toString()) == "CLIENTE") {
             $redirect = isset($_REQUEST["reference"]) ? $_REQUEST["reference"] : 'index.php';
             header("Location: " . $redirect);
             exit;
