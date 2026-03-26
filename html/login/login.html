@@ -1,10 +1,10 @@
 <body>
     <div class="login-container">
-        <form class="login-form" method="post">
+        <form class="login-form" action="login.php" method="post">
             <h1>Login</h1>
-            <input type="email" placeholder="Email" required>
+            <input type="email" placeholder="Email" name="email" required>
             <div>
-            <input type="password" placeholder="Password" required>
+            <input type="password" placeholder="Password" name="password" required>
             </div>
             <button type="submit">Login</button>
             <p><a href="password.php">Forgot password?</a></p>
