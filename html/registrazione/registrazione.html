@@ -1,48 +1,52 @@
 <body>
-    <div class="auth-container">
-        
-        <div class="auth-header">
-            <h2>Crea un Account</h2>
-            <p>Unisciti alla nostra libreria per acquistare i tuoi libri preferiti e tenere traccia dei tuoi ordini.</p>
-        </div>
-
-        <form action="processa_registrazione.php" method="POST" class="auth-form">
-            
-            <div class="form-row">
-                <div class="form-group half-width">
-                    <label for="nome">Nome</label>
-                    <input type="text" id="nome" name="nome" placeholder="Mario" required>
-                </div>
-                
-                <div class="form-group half-width">
-                    <label for="cognome">Cognome</label>
-                    <input type="text" id="cognome" name="cognome" placeholder="Rossi" required>
-                </div>
-            </div>
-
+    <div class="registrazione-container">
+        <h1>Registrati per la prima volta!</h1>
+        <form action="login.php" method="POST" class="auth-form">
             <div class="form-group">
                 <label for="email">Indirizzo Email</label>
-                <input type="email" id="email" name="email" placeholder="mario.rossi@email.com" required>
+                <input type="email" id="email" name="email" required>
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Minimo 8 caratteri" minlength="8" required>
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" required>
             </div>
-
-            <div class="form-group">
-                <label for="conferma_password">Conferma Password</label>
-                <input type="password" id="conferma_password" name="conferma_password" placeholder="Ripeti la tua password" required>
-            </div>
-
-            <button type="submit" class="btn-submit">Registrati</button>
             
+            <div class="form-group">
+                <label for="surname"> Cognome</label>
+                <input type="text" id="surname" name="surname" required>
+            </div>
+
+            <div class="form-group">
+                <label for="birth_date">Data di Nascita</label>
+                <input type="date" id="birth_date" name="birth_date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="shipping_address">Indirizzo di spedizione</label>
+                <input type="text" id="shipping_address" name="shipping_address" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Nuova Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+
+            
+            
+            
+            <button type="submit" class="btn-pay">Registrati</button>
+            <a href="login.php">Torna al Login</a>
         </form>
-
-        <div class="auth-footer">
-            <p>Hai già un account? <a href="login.php">Accedi qui</a></p>
-        </div>
-
     </div>
 
-</body> 
+    <style>
+        .registrazione-container { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-row { display: flex; gap: 10px; }
+        .form-row .form-group { flex: 1; }
+        .btn-pay { width: 100%; padding: 10px; background-color: #aa5656; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
+</body>
