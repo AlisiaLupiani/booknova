@@ -1,0 +1,69 @@
+<body>
+    
+        <section id="hero-azioni">
+            <h1>Crea, gestisci e pubblica</h1>
+            <p>Inizia un nuovo progetto o riprendi da dove avevi interrotto.</p>
+            
+            <div class="crea-nuovo">
+                <h3>Crea un nuovo titolo</h3>
+                <button type="button" onclick="location.href='/nuovo-libro'">+ eBook Kindle</button>
+                <button type="button" onclick="location.href='/nuova-copertina-flessibile'">+ Copertina flessibile</button>
+                <button type="button" onclick="location.href='/nuova-serie'">+ Crea serie di libri</button>
+            </div>
+        </section>
+
+        <br><hr><br>
+
+        <section id="libreria">
+            <h2>La tua libreria</h2>
+            
+            <div class="search-bar">
+                <input type="text" placeholder="Cerca un libro nel tuo catalogo...">
+                <button>Cerca</button>
+            </div>
+
+            <br>
+
+            <div class="elenco-libri">
+                <p>Non hai ancora creato nessun titolo. Clicca su "Crea un nuovo titolo" per iniziare.</p>
+                
+                <div class="libro-item">
+                    <div class="cover-placeholder" style="width: 50px; height: 70px; border: 1px dashed #ccc; display: inline-block;"></div>
+                    
+                    <div class="info-libro" style="display: inline-block; vertical-align: top; margin-left: 10px;">
+                        <strong>Titolo del libro (Bozza)</strong>
+                        <p>Ultima modifica: 27 Marzo 2026</p>
+                        <button>Continua configurazione</button>
+                        <button>Elimina bozza</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+ 
+<style>
+    body {
+        display: flex;
+        flex-direction: column; /* Impila gli elementi dall'alto in basso */
+        align-items: center;    /* Centra orizzontalmente */
+        margin: 0;
+        padding: 20px;
+        font-family: sans-serif;
+    }
+
+    main {
+        width: 100%;
+        max-width: 800px; /* Impedisce al contenuto di allargarsi troppo su schermi grandi */
+    }
+
+   
+
+    .crea-nuovo {
+        text-align: center; /* Centra il testo e i bottoni dentro il loro box */
+        border: 1px solid #ddd;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+</style>
+</body>
+</body>

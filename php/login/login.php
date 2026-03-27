@@ -27,7 +27,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 
         // Se l'utente è un amministratore
         if (strtoupper($user->getRole() -> toString()) == "ADMIN") {
-            header("Location: dashboard_admin.php");
+            header("Location: index_admin.php");
             exit;
         }
 

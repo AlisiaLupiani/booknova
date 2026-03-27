@@ -1,4 +1,36 @@
 /* Palette Colori */
+
+
+    body {
+        display: flex;
+        flex-direction: column; /* Impila gli elementi dall'alto in basso */
+        align-items: center;    /* Centra orizzontalmente */
+        margin: 0;
+        padding: 20px;
+        font-family: sans-serif;
+    }
+
+    main {
+        width: 100%;
+        max-width: 800px; /* Impedisce al contenuto di allargarsi troppo su schermi grandi */
+    }
+
+    header {
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        justify-content: space-between; /* Logo a sinistra, Account a destra */
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .crea-nuovo {
+        text-align: center; /* Centra il testo e i bottoni dentro il loro box */
+        border: 1px solid #ddd;
+        padding: 40px;
+        margin-bottom: 30px;
+    }
+
 :root {
     --panna: #fdfaf5;
     --beige-chiaro: #f5f1e9;
