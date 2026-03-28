@@ -1,0 +1,124 @@
+<style>
+    .table-container {
+        max-width: 1000px; /* Larghezza maggiore per contenere tutte le colonne */
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        font-family: sans-serif;
+    }
+
+    h2 { text-align: center; color: #333; }
+
+    .book-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .book-table th, .book-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .book-table th {
+        background-color: #f8f9fa;
+        color: #333;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+
+    .book-table tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Badge per la condizione/formato */
+    .badge {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .badge-ebook { background-color: #e3f2fd; color: #1976d2; }
+    .badge-fisico { background-color: #f1f8e9; color: #388e3c; }
+
+    /* Bottoni Azione */
+    .btn-action {
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+    }
+    .btn-edit {
+        background-color: #ffc107;
+        color: #000;
+        border: 1px solid #e0a800;
+    }
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+    }
+    .btn-edit:hover { background-color: #e0a800; }
+    .btn-delete:hover { background-color: #c82333; }
+</style>
+
+<body>
+
+    <div class="table-container">
+        <h2>Catalogo Libri Disponibili</h2>
+
+        <table class="book-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titolo</th>
+                    <th>Autore</th>
+                    <th>Editore</th>
+                    <th>Categoria</th>
+                    <th>Prezzo</th>
+                    <th>Condizione</th>
+                    <th>Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><strong>Il Nome della Rosa</strong></td>
+                    <td>Umberto Eco</td>
+                    <td>Bompiani</td>
+                    <td>Giallo</td>
+                    <td>€ 15,00</td>
+                    <td><span class="badge badge-fisico">Rigida</span></td>
+                    <td>
+                        <a href="modifica_libro.php" class="btn-action btn-edit">Modifica</a>
+                        <a href="delete.php?id=1" class="btn-action btn-delete" onclick="return confirm('Sei sicuro?')">Elimina</a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td><strong>Clean Code</strong></td>
+                    <td>Robert C. Martin</td>
+                    <td>Prentice Hall</td>
+                    <td>Informatica</td>
+                    <td>€ 32,50</td>
+                    <td><span class="badge badge-ebook">Ebook</span></td>
+                    <td>
+                        <a href="modifica_libro.php" class="btn-action btn-edit">Modifica</a>
+                        <a href="delete.php?id=2" class="btn-action btn-delete" onclick="return confirm('Sei sicuro?')">Elimina</a>
+                    </td>
+                </tr>
+                
+                </tbody>
+        </table>
+    </div>
+
+</body>
