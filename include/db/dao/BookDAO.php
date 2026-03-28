@@ -4,6 +4,7 @@ require_once("include/model/Libro.php");
 require_once("include/model/proxy/LibroProxy.php");
 require_once("include/db/DAO.php");
 
+
 class BookDAO extends DAO {
 
     private PDOStatement $stmtGetBookById;
@@ -11,6 +12,7 @@ class BookDAO extends DAO {
     private PDOStatement $stmtInsertBook;
     private PDOStatement $stmtUpdateBook;
     private PDOStatement $stmtDeleteBook;
+    private PDOStatement $stmtGetBooksByCategory;
 
     public function __construct(?DataLayer $dataLayer) {
         parent::__construct($dataLayer);
@@ -30,6 +32,9 @@ class BookDAO extends DAO {
         
         // Query di cancellazione
         $this->stmtDeleteBook = $this->conn->prepare("DELETE FROM LIBRO WHERE ID = ?;");
+        
+        // Query per ottenere i libri per categoria
+        $this->stmtGetBooksByCategory = $this->conn->prepare("SELECT * FROM LIBRO WHERE ID_CATEGORIA = ?;");
     }
 
     public function getBookById(int $id): ?Libro {
@@ -82,6 +87,16 @@ class BookDAO extends DAO {
         return null;
     }
 
+    public function getBooksByCategory(int $categoryId): array {
+        $this->stmtGetBooksByCategory->bindValue(1, $categoryId, PDO::PARAM_INT);
+        $this->stmtGetBooksByCategory->execute();
+        $result = [];
+        while ($rs = $this->stmtGetBooksByCategory->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $this->createLibro($rs);
+        }
+        return $result;
+    }
+
     private function createLibro(array $rs): Libro {
         $libro = new LibroProxy($this->dataLayer);
         $libro->setId($rs['ID']);
@@ -98,4 +113,5 @@ class BookDAO extends DAO {
         
         return $libro;
     }
+
 }

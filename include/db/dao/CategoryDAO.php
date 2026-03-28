@@ -19,7 +19,7 @@ class CategoryDAO extends DAO {
     public function init(): void {
         // Query basate sulla tabella Categoria del tuo DB BOOKNOVA
         $this->stmtGetById = $this->conn->prepare("SELECT * FROM Categoria WHERE ID = ?;");
-        $this->stmtGetAll = $this->conn->prepare("SELECT * FROM Categoria ORDER BY NOME ASC;");
+        $this->stmtGetAll = $this->conn->prepare("SELECT * FROM Categoria ORDER BY ID ASC;");
         $this->stmtInsert = $this->conn->prepare("INSERT INTO Categoria (NOME) VALUES (?);");
         $this->stmtUpdate = $this->conn->prepare("UPDATE Categoria SET NOME = ? WHERE ID = ?;");
         $this->stmtDelete = $this->conn->prepare("DELETE FROM Categoria WHERE ID = ?;");
