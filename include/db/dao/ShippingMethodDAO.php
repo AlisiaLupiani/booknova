@@ -17,11 +17,11 @@ class ShippingMethodDAO extends DAO {
     }
 
     public function init(): void {
-        // Tabella: METODO_SPEDIZIONE | Colonne: ID, NOME, COSTO
+        // CORREZIONE: Uso dei nomi colonne minuscoli (nome, costo) come da SQL
         $this->stmtGetById = $this->conn->prepare("SELECT * FROM METODO_SPEDIZIONE WHERE ID = ?;");
-        $this->stmtGetAll = $this->conn->prepare("SELECT * FROM METODO_SPEDIZIONE ORDER BY COSTO ASC;");
-        $this->stmtInsert = $this->conn->prepare("INSERT INTO METODO_SPEDIZIONE (NOME, COSTO) VALUES (?, ?);");
-        $this->stmtUpdate = $this->conn->prepare("UPDATE METODO_SPEDIZIONE SET NOME = ?, COSTO = ? WHERE ID = ?;");
+        $this->stmtGetAll = $this->conn->prepare("SELECT * FROM METODO_SPEDIZIONE ORDER BY costo ASC;");
+        $this->stmtInsert = $this->conn->prepare("INSERT INTO METODO_SPEDIZIONE (nome, costo) VALUES (?, ?);");
+        $this->stmtUpdate = $this->conn->prepare("UPDATE METODO_SPEDIZIONE SET nome = ?, costo = ? WHERE ID = ?;");
         $this->stmtDelete = $this->conn->prepare("DELETE FROM METODO_SPEDIZIONE WHERE ID = ?;");
     }
 
@@ -44,13 +44,11 @@ class ShippingMethodDAO extends DAO {
 
     public function storeShippingMethod(ShippingMethod $sm): ?ShippingMethod {
         if ($sm->getId() !== null) {
-            // Caso UPDATE
             $this->stmtUpdate->bindValue(1, $sm->getName(), PDO::PARAM_STR);
-            $this->stmtUpdate->bindValue(2, $sm->getCost(), PDO::PARAM_STR); // I float si passano come string/param generico
+            $this->stmtUpdate->bindValue(2, $sm->getCost(), PDO::PARAM_STR);
             $this->stmtUpdate->bindValue(3, $sm->getId(), PDO::PARAM_INT);
             if ($this->stmtUpdate->execute()) return $sm;
         } else {
-            // Caso INSERT
             $this->stmtInsert->bindValue(1, $sm->getName(), PDO::PARAM_STR);
             $this->stmtInsert->bindValue(2, $sm->getCost(), PDO::PARAM_STR);
             if ($this->stmtInsert->execute()) {
@@ -69,8 +67,9 @@ class ShippingMethodDAO extends DAO {
     private function createShippingMethod(array $rs): ShippingMethod {
         $sm = new ShippingMethod();
         $sm->setId((int)$rs['ID']);
-        $sm->setName($rs['NOME']);
-        $sm->setCost((float)$rs['COSTO']);
+        // CORREZIONE: Accesso all'array con chiavi minuscole come da DB
+        $sm->setName($rs['nome']); 
+        $sm->setCost((float)$rs['costo']);
         return $sm;
     }
 }
