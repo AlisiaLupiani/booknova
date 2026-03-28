@@ -1,9 +1,9 @@
 <?php
 
-require_once('include/model/Libro.php');
+require_once('include/model/Book.php');
 
 
-class LibroProxy extends Libro {
+class BookProxy extends Book {
 
     private ?DataLayer $dataLayer;
 

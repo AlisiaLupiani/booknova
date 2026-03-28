@@ -47,27 +47,28 @@ class RatingDAO extends DAO {
 
     public function storeRating(Rating $rating): ?Rating {
         if ($rating->getId() !== null) {
-            // UPDATE
-            $this->stmtUpdate->bindValue(1, $rating->getValue(), PDO::PARAM_INT);
-            $this->stmtUpdate->bindValue(2, $rating->getDate(), PDO::PARAM_STR);
-            $this->stmtUpdate->bindValue(3, $rating->getId(), PDO::PARAM_INT);
-            if ($this->stmtUpdate->execute()) return $rating;
+            $this->stmtRatingUpdate->binValue(1, getUserId(), PDO::PARAM_INT);
+            $this->stmtRatingUpdate->bindValue(2, getBookId(), PDO::PARAM_INT);
+            $this->stmtRatingUpdate->bindValue(3, $rating->getValue(), PDO::PARAM_INT);
+            $this->stmtRatingUpdate->bindValue(4, $rating->getDate(), PDO::PARAM_STR);
+            $this->stmtRatingUpdate->bindValue(5, $rating->getId(), PDO::PARAM_INT);
+
+            if($this->stmtRatingUpdate->execute()){
+                return $rating;
+            }   
         } else {
-            // INSERT
-            $idUser = $rating->getUser() ? $rating->getUser()->getId() : null;
-            $idBook = $rating->getBook() ? $rating->getBook()->getId() : null;
-            
-            $this->stmtInsert->bindValue(1, $idUser, PDO::PARAM_INT);
-            $this->stmtInsert->bindValue(2, $idBook, PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(1, $rating->getUserId(), PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(2, $rating->getBookId(), PDO::PARAM_INT);  
             $this->stmtInsert->bindValue(3, $rating->getValue(), PDO::PARAM_INT);
             $this->stmtInsert->bindValue(4, $rating->getDate(), PDO::PARAM_STR);
 
-            if ($this->stmtInsert->execute()) {
+            if($this->stmtInsert->execute()){
                 $rating->setId((int)$this->conn->lastInsertId());
                 return $rating;
             }
         }
         return null;
+    
     }
 
     public function deleteRating(int $id): bool {

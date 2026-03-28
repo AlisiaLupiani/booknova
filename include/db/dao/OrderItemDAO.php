@@ -44,29 +44,40 @@ class OrderItemDAO extends DAO {
 
     public function storeOrderItem(OrderItem $orderItem): ?OrderItem {
         if ($orderItem->getId() !== null) {
-            $this->stmtUpdateOrderItem->bindValue(1, $orderItem->getQuantity(), PDO::PARAM_INT);
-            $this->stmtUpdateOrderItem->bindValue(2, $orderItem->getId(), PDO::PARAM_INT);
-            if ($this->stmtUpdateOrderItem->execute()) {
+            $this->stmtUdateOrderItem->bindValue(1, $orderItem->getOrderId(), PDO::PARAM_INT);
+            $this->stmtUpdateOrderItem->bindValue(2, $orderItem->getBookId(), PDO::PARAM_INt);
+            $this->stmtUpdateOrderItem->bindValue(3, $orderItem->getQuantity(), PDO::PARAM_INT);
+            $this->stmtUpdateOrderItem->bindVaulue(4, $orderItem->getUnitPrice(), PDO::PARAM_FLOAT);
+            $this->stmtUpdateOrderItem->bindValue(5, $orderItem->getId(), PDO::PARAM)
+            
+            if($this->stmtUpdateOrderItem->execute()){
                 return $orderItem;
             }
         } else {
-            $this->stmtInsertOrderItem->bindValue(1, $orderItem->getOrder() ? $orderItem->getOrder()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsertOrderItem->bindValue(2, $orderItem->getBook() ? $orderItem->getBook()->getId() : null, PDO::PARAM_INT);
+            $this->stmtInsertOrderItem->bindValue(1, $orderItem->getOrderId(), PDO::PARAM_INT);
+            $this->stmtInsertOrderItem->bindValue(2, $orderItem->getBookId(), PDO::PARAM_INT);
             $this->stmtInsertOrderItem->bindValue(3, $orderItem->getQuantity(), PDO::PARAM_INT);
-            if ($this->stmtInsertOrderItem->execute()) {
+            $this->stmtInsertOrderItem->bindValue(4, $orderItem->getUnitPrice(), PDO::PARAM_FLOAT);
+
+            if($this->stmtInsertOrderItem->execute()){
                 $orderItem->setId((int)$this->conn->lastInsertId());
                 return $orderItem;
             }
         }
         return null;
+
+            
     }
 
-    public function createOrderItem(array $rs): OrderItem {
+    private function createOrderItem(array $rs): OrderItem {
         $orderItem = new OrderItemProxy($this->dataLayer);
         $orderItem->setId((int)$rs['ID']);
-        $orderItem->setQuantity((int)$rs['QUANTITA']);
         $orderItem->setOrderId((int)$rs['ID_ORDINE']);
         $orderItem->setBookId((int)$rs['ID_LIBRO']);
+        $orderItem->setQuantity((int)$rs['QUANTITA']);
+        $orderItem->setUnitPrice((float)$rs['PREZZO_UNITARIO']);
+        
+        
         return $orderItem;
     }
 

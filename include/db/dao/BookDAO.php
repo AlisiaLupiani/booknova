@@ -1,7 +1,7 @@
 <?php
 
-require_once("include/model/Libro.php");
-require_once("include/model/proxy/LibroProxy.php");
+require_once("include/model/Book.php");
+require_once("include/model/proxy/BookProxy.php");
 require_once("include/db/DAO.php");
 
 
@@ -42,46 +42,46 @@ class BookDAO extends DAO {
         $this->stmtGetBookById->execute();
         $rs = $this->stmtGetBookById->fetch(PDO::FETCH_ASSOC);
 
-        return $rs ? $this->createLibro($rs) : null;
+        return $rs ? $this->creatBook($rs) : null;
     }
 
     public function getAllBooks(): array {
         $this->stmtGetAllBooks->execute();
         $result = [];
         while ($rs = $this->stmtGetAllBooks->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $this->createLibro($rs);
+            $result[] = $this->createBook($rs);
         }
         return $result;
     }
 
-    public function storeLibro(Libro $libro): ?Libro {
-        if ($libro->getId() !== null) {
+    public function storeBook(Book $book): ?Book {
+        if ($book->getId() !== null) {
             // Logica UPDATE
-            $this->stmtUpdateBook->bindValue(1, $libro->getTitle(), PDO::PARAM_STR);
-            $this->stmtUpdateBook->bindValue(2, $libro->getPrice(), PDO::PARAM_STR);
-            $this->stmtUpdateBook->bindValue(3, $libro->getDescription(), PDO::PARAM_STR);
-            $this->stmtUpdateBook->bindValue(4, $libro->getAuthor() ? $libro->getAuthor()->getId() : null, PDO::PARAM_INT);
-            $this->stmtUpdateBook->bindValue(5, $libro->getPublisher() ? $libro->getPublisher()->getId() : null, PDO::PARAM_INT);
-            $this->stmtUpdateBook->bindValue(6, $libro->getCategory() ? $libro->getCategory()->getId() : null, PDO::PARAM_INT);
-            $this->stmtUpdateBook->bindValue(7, $libro->getFormat() ? $libro->getFormat()->getId() : null, PDO::PARAM_INT);
-            $this->stmtUpdateBook->bindValue(8, $libro->getCondition() ? $libro->getCondition()->getId() : null, PDO::PARAM_INT);
-            $this->stmtUpdateBook->bindValue(9, $libro->getId(), PDO::PARAM_INT);
+            $this->stmtUpdateBook->bindValue(1, $book->getTitle(), PDO::PARAM_STR);
+            $this->stmtUpdateBook->bindValue(2, $book->getPrice(), PDO::PARAM_STR);
+            $this->stmtUpdateBook->bindValue(3, $book->getDescription(), PDO::PARAM_STR);
+            $this->stmtUpdateBook->bindValue(4, $book->getAuthor() ? $book->getAuthor()->getId() : null, PDO::PARAM_INT);
+            $this->stmtUpdateBook->bindValue(5, $book->getPublisher() ? $book->getPublisher()->getId() : null, PDO::PARAM_INT);
+            $this->stmtUpdateBook->bindValue(6, $book->getCategory() ? $book->getCategory()->getId() : null, PDO::PARAM_INT);
+            $this->stmtUpdateBook->bindValue(7, $book->getFormat() ? $book->getFormat()->getId() : null, PDO::PARAM_INT);
+            $this->stmtUpdateBook->bindValue(8, $book->getCondition() ? $book->getCondition()->getId() : null, PDO::PARAM_INT);
+            $this->stmtUpdateBook->bindValue(9, $book->getId(), PDO::PARAM_INT);
             
-            if($this->stmtUpdateBook->execute()) return $libro;
+            if($this->stmtUpdateBook->execute()) return $book;
         } else {
             // Logica INSERT
-            $this->stmtInsertBook->bindValue(1, $libro->getTitle(), PDO::PARAM_STR);
-            $this->stmtInsertBook->bindValue(2, $libro->getPrice(), PDO::PARAM_STR);
-            $this->stmtInsertBook->bindValue(3, $libro->getDescription(), PDO::PARAM_STR);
-            $this->stmtInsertBook->bindValue(4, $libro->getAuthor() ? $libro->getAuthor()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(5, $libro->getPublisher() ? $libro->getPublisher()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(6, $libro->getCategory() ? $libro->getCategory()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(7, $libro->getFormat() ? $libro->getFormat()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(8, $libro->getCondition() ? $libro->getCondition()->getId() : null, PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(1, $book->getTitle(), PDO::PARAM_STR);
+            $this->stmtInsertBook->bindValue(2, $book->getPrice(), PDO::PARAM_STR);
+            $this->stmtInsertBook->bindValue(3, $book->getDescription(), PDO::PARAM_STR);
+            $this->stmtInsertBook->bindValue(4, $book->getAuthor() ? $book->getAuthor()->getId() : null, PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(5, $book->getPublisher() ? $book->getPublisher()->getId() : null, PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(6, $book->getCategory() ? $book->getCategory()->getId() : null, PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(7, $book->getFormat() ? $book->getFormat()->getId() : null, PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(8, $book->getCondition() ? $book->getCondition()->getId() : null, PDO::PARAM_INT);
             
             if($this->stmtInsertBook->execute()){
-                $libro->setId($this->conn->lastInsertId());
-                return $libro;
+                $book->setId($this->conn->lastInsertId());
+                return $book;
             }
         }
         return null;
@@ -92,26 +92,26 @@ class BookDAO extends DAO {
         $this->stmtGetBooksByCategory->execute();
         $result = [];
         while ($rs = $this->stmtGetBooksByCategory->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $this->createLibro($rs);
+            $result[] = $this->createBook($rs);
         }
         return $result;
     }
 
-    private function createLibro(array $rs): Libro {
-        $libro = new LibroProxy($this->dataLayer);
-        $libro->setId($rs['ID']);
-        $libro->setTitle($rs['TITOLO']);
-        $libro->setPrice((float)$rs['PREZZO']);
-        $libro->setDescription($rs['DESCRIZIONE']);
+    private function createBook(array $rs): Book {
+        $book = new BookProxy($this->dataLayer);
+        $book->setId($rs['ID']);
+        $book->setTitle($rs['TITOLO']);
+        $book->setPrice((float)$rs['PREZZO']);
+        $book->setDescription($rs['DESCRIZIONE']);
         
         // Impostiamo gli ID nel Proxy (Lazy Loading)
-        $libro->setAuthorId($rs['ID_AUTORE']);
-        $libro->setPublisherId($rs['ID_EDITORE']);
-        $libro->setCategoryId($rs['ID_CATEGORIA']);
-        $libro->setFormatId($rs['ID_FORMATO']);
-        $libro->setConditionId($rs['ID_CONDIZIONE']);
+        $book->setAuthorId($rs['ID_AUTORE']);
+        $book->setPublisherId($rs['ID_EDITORE']);
+        $book->setCategoryId($rs['ID_CATEGORIA']);
+        $book->setFormatId($rs['ID_FORMATO']);
+        $book->setConditionId($rs['ID_CONDIZIONE']);
         
-        return $libro;
+        return $book;
     }
 
 }

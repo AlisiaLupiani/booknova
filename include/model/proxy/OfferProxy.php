@@ -2,11 +2,11 @@
 
 include_once('include/model/Offer.php');
 
-class CategoryProxy extends Offer{
+class OfferProxy extends Offer{
 
     private ?DataLayer $dataLayer;
 
-    public function _construct(?DataLayer $dataLayer){
+    public function __construct(?DataLayer $dataLayer){
         parent::__construct();
         $this->dataLayer = $dataLayer;
 

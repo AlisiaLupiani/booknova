@@ -1,6 +1,7 @@
 <?php
 
 require_once("include/model/Category.php");
+require_once("include/model/proxy/CategoryProxy.php");
 require_once("include/db/DAO.php");
 
 class CategoryDAO extends DAO {

@@ -1,6 +1,7 @@
 <?php
 
 require_once("include/model/Condition.php");
+require_once("include/model/proxy/ConditionProxy.php");
 require_once("include/db/DAO.php");
 
 class ConditionDAO extends DAO {

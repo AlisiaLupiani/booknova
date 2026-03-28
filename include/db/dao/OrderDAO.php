@@ -19,11 +19,10 @@ class OrderDAO extends DAO {
     public function init(): void {
         $this->stmtGetOrderById = $this->conn->prepare("SELECT * FROM ORDINE WHERE ID = ?;");
         $this->stmtGetAllOrders = $this->conn->prepare("SELECT * FROM ORDINE;");
-        
-        $this->stmtInsertOrder = $this->conn->prepare("SELECT * FROM ORDINE;");
-        
-        $this->stmtUpdateOrder = $this->conn->prepare("SELECT * FROM ORDINE;");
-        $this->stmtDeleteOrder = $this->conn->prepare("SELECT * FROM ORDINE;");
+
+        $this->stmtInsertOrder = $this->conn->prepare("INSERT INTO ORDINE (ID_UTENTE, ID_METODO_PAGAMENTO, ID_METODO_SPEDIZIONE, DATA_ORDINE, TOTALE) VALUES (?, ?, ?, ?, ?);");
+        $this->stmtUpdateOrder = $this->conn->prepare("UPDATE ORDINE SET ID_UTENTE = ?, ID_METODO_PAGAMENTO = ?, ID_METODO_SPEDIZIONE = ?, DATA_ORDINE = ?, TOTALE = ? WHERE ID = ?;");
+        $this->stmtDeleteOrder = $this->conn->prepare("DELETE FROM ORDINE WHERE ID = ?;");
         }
     
     public function getOrderById(int $id): ?Order {
@@ -45,28 +44,40 @@ class OrderDAO extends DAO {
 
     public function storeOrder(Order $order): ?Order {
         if ($order->getId() !== null) {
-            $this->stmtUpdateOrder->bindValue(1, $order->getDate(), PDO::PARAM_STR);
-            $this->stmtUpdateOrder->bindValue(2, $order->getUser() ? $order->getUser()->getId() : null, PDO::PARAM_INT);
-            $this->stmtUpdateOrder->bindValue(3, $order->getId(), PDO::PARAM_INT);
-            if ($this->stmtUpdateOrder->execute()) {
+            $this->stmtUpdateOrder->bindValue(1, $order->getUser(), PDO::PARAM_STR);
+            $this->stmtUpdateOrder->bindValue(2, $order->getPaymentMethod(), PDO::PARAM_STR);
+            $this->stmtUpdateOrder->bindValue(3, $order->getShippingMethod(), PDO::PARAM_STR);
+            $this->stmtUdateOrder->bindValue(4, $order->getOrderDate(), PDO::PARAM_STR);
+            $this->stmtUpdateOrder->bindValue(5, $order->getTotal(), PDO::PARAM_FLOAT);
+            $this->stmtUpdateOrder->bindValue(6, $order->getId(), PDO::PARAM_INT);
+
+            if($this->stmtUpdateOrder->execute()){
                 return $order;
             }
         } else {
-            $this->stmtInsertOrder->bindValue(1, $order->getDate(), PDO::PARAM_STR);
-            $this->stmtInsertOrder->bindValue(2, $order->getUser() ? $order->getUser()->getId() : null, PDO::PARAM_INT);
-            if ($this->stmtInsertOrder->execute()) {
+            $this->stmtInsertOrder->bindValue(1, $order->getUser(), PDO::PARAM_STR);
+            $this->stmtInsertOrder->bindValue(2, $order->getPaymentMethod(), PDO::PARAM_STR);
+            $this->stmtInsertOrder->bindValue(3, $order->getShippingMethod(), PDO::PARAM_STR);
+            $this->stmtInsertOrder->bindValue(4, $order->getOrderDate(), PDO::PARAM_STR);
+            $this->stmtInsertOrder->bindValue(5, $order->getTotal(), PDO::PARAM_FLOAT);
+
+            if($this->stmtInsertOrder->execute()){
                 $order->setId((int)$this->conn->lastInsertId());
                 return $order;
             }
         }
         return null;
+      
+        
     }
 
     public function createOrder(array $rs): Order {
         $order = new OrderProxy($this->dataLayer);
-        $order->setId((int)$rs['ID']);
-        $order->setDate($rs['DATA']);
-        $order->setUserId((int)$rs['ID_UTENTE']);
+        $order->setUser($rs['ID_UTENTE']);
+        $order->setPaymentMethod($rs['ID_METODO_PAGAMENTO']);
+        $order->setShippingMethod($rs['ID_METODO_SPEDIZIONE']);
+        $order->setOrderDate($rs['DATA_ORDINE']);
+        $order->setTotal($rs['TOTALE']);
         return $order;
     }
 

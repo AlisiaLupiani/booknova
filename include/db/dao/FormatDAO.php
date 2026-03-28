@@ -1,6 +1,7 @@
 <?php
 
 require_once("include/model/Format.php");
+require_once("include/model/proxy/FormatProxy.php");
 require_once("include/db/DAO.php");
 
 class FormatDAO extends DAO {
