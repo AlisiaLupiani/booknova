@@ -18,25 +18,14 @@ class RoleDAO extends DAO {
     }
 
     public function init(): void {
-        // Recupera tutti i ruoli
+        // Query basate sulla tabella RUOLO: ID, RUOLO
         $this->stmtGetAll = $this->conn->prepare("SELECT * FROM RUOLO;");
-
-        // Recupera un singolo ruolo dall'ID
         $this->stmtGetById = $this->conn->prepare("SELECT * FROM RUOLO WHERE ID = ?;");
-
-        // Inserisce un nuovo ruolo (uso il nome colonna RUOLO per coerenza con la classe)
         $this->stmtInsert = $this->conn->prepare("INSERT INTO RUOLO (RUOLO) VALUES (?);");
-
-        // Aggiorna un ruolo esistente
         $this->stmtUpdate = $this->conn->prepare("UPDATE RUOLO SET RUOLO = ? WHERE ID = ?;");
-
-        // Elimina un ruolo
         $this->stmtDelete = $this->conn->prepare("DELETE FROM RUOLO WHERE ID = ?;");
     }
 
-    /**
-     * Prende tutti i ruoli
-     */
     public function getAllRoles(): array {
         $this->stmtGetAll->execute();
         $result = [];
@@ -46,9 +35,6 @@ class RoleDAO extends DAO {
         return $result;
     }
 
-    /**
-     * Prende un ruolo dall'ID
-     */
     public function getRoleById(int $id): ?Role {
         $this->stmtGetById->bindValue(1, $id, PDO::PARAM_INT);
         $this->stmtGetById->execute();
@@ -57,17 +43,14 @@ class RoleDAO extends DAO {
         return $rs ? $this->createRole($rs) : null;
     }
 
-    /**
-     * Inserisce o aggiorna un ruolo
-     */
     public function storeRole(Role $role): ?Role {
         if ($role->getId() !== null) {
-            // Se l'ID esiste, aggiorniamo il record
+            // UPDATE
             $this->stmtUpdate->bindValue(1, $role->getRuolo(), PDO::PARAM_STR);
             $this->stmtUpdate->bindValue(2, $role->getId(), PDO::PARAM_INT);
             if ($this->stmtUpdate->execute()) return $role;
         } else {
-            // Se l'ID è nullo, inseriamo un nuovo record
+            // INSERT
             $this->stmtInsert->bindValue(1, $role->getRuolo(), PDO::PARAM_STR);
             if ($this->stmtInsert->execute()) {
                 $role->setId((int)$this->conn->lastInsertId());
@@ -77,16 +60,13 @@ class RoleDAO extends DAO {
         return null;
     }
 
-    /**
-     * Elimina un ruolo tramite ID
-     */
     public function deleteRole(int $id): bool {
         $this->stmtDelete->bindValue(1, $id, PDO::PARAM_INT);
         return $this->stmtDelete->execute();
     }
 
     private function createRole(array $rs): Role {
-        // Istanziamo il Proxy (Lazy Loading) come fatto nel CartDAO
+        // Usiamo il Proxy per coerenza con ReviewDAO
         $role = new RoleProxy($this->dataLayer);
         $role->setId((int)$rs['ID']);
         $role->setRuolo($rs['RUOLO']);

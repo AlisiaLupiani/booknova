@@ -18,7 +18,7 @@ class ReviewDAO extends DAO {
     }
 
     public function init(): void {
-        // Query basate sulla tabella RECENSIONE: ID, ID_UTENTE, ID_LIBRO, TESTO, DATA
+        // Query basate sulla tabella RECENSIONE del database BOOKNOVA
         $this->stmtGetById = $this->conn->prepare("SELECT * FROM RECENSIONE WHERE ID = ?;");
         $this->stmtGetByBook = $this->conn->prepare("SELECT * FROM RECENSIONE WHERE ID_LIBRO = ? ORDER BY DATA DESC;");
         $this->stmtInsert = $this->conn->prepare("INSERT INTO RECENSIONE (ID_UTENTE, ID_LIBRO, TESTO, DATA) VALUES (?, ?, ?, ?);");
@@ -34,7 +34,9 @@ class ReviewDAO extends DAO {
         return $rs ? $this->createReview($rs) : null;
     }
 
-    // Recupera tutte le recensioni di un libro (utile per la scheda prodotto)
+    /**
+     * Recupera tutte le recensioni associate a un libro specifico
+     */
     public function getReviewsByBook(int $bookId): array {
         $this->stmtGetByBook->bindValue(1, $bookId, PDO::PARAM_INT);
         $this->stmtGetByBook->execute();
@@ -47,13 +49,13 @@ class ReviewDAO extends DAO {
 
     public function storeReview(Review $review): ?Review {
         if ($review->getId() !== null) {
-            // UPDATE
+            // Aggiornamento (UPDATE)
             $this->stmtUpdate->bindValue(1, $review->getContent(), PDO::PARAM_STR);
             $this->stmtUpdate->bindValue(2, $review->getDate(), PDO::PARAM_STR);
             $this->stmtUpdate->bindValue(3, $review->getId(), PDO::PARAM_INT);
             if ($this->stmtUpdate->execute()) return $review;
         } else {
-            // INSERT
+            // Inserimento (INSERT)
             $idUser = $review->getUser() ? $review->getUser()->getId() : null;
             $idBook = $review->getBook() ? $review->getBook()->getId() : null;
 
@@ -76,13 +78,13 @@ class ReviewDAO extends DAO {
     }
 
     private function createReview(array $rs): Review {
-        // Usiamo il Proxy per il caricamento Lazy di User e Book
+        // Caricamento tramite Proxy per gestire le relazioni con User e Book
         $review = new ReviewProxy($this->dataLayer);
         $review->setId((int)$rs['ID']);
-        $review->setContent($rs['TESTO']); // Mappiamo TESTO su content
+        $review->setContent($rs['TESTO']); // Mapping colonna TESTO -> proprietà content
         $review->setDate($rs['DATA']);
         
-        // Passiamo gli ID al Proxy
+        // Passiamo gli ID al Proxy per il Lazy Loading
         $review->setUserId((int)$rs['ID_UTENTE']);
         $review->setBookId((int)$rs['ID_LIBRO']);
         
