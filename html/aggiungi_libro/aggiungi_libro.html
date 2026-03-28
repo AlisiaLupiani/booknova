@@ -1,0 +1,115 @@
+<style>
+    .book-container { 
+        max-width: 700px; /* Allargato leggermente per ospitare meglio le righe doppie */
+        margin: 40px auto; 
+        padding: 30px; 
+        border: 1px solid #ccc; 
+        border-radius: 12px; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f9f9f9;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    
+    .form-group { margin-bottom: 18px; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: #444; }
+    
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea { 
+        width: 100%; 
+        padding: 10px; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    /* Stile specifico per la descrizione */
+    .form-group textarea { resize: vertical; min-height: 80px; }
+    
+    .form-row { display: flex; gap: 20px; }
+    .form-row .form-group { flex: 1; }
+    
+    .btn-submit { 
+        width: 100%; 
+        padding: 14px; 
+        background-color: #007bff; 
+        color: white; 
+        border: none; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        font-size: 16px;
+        font-weight: bold;
+        transition: background 0.3s;
+        margin-top: 10px;
+    }
+    
+    .btn-submit:hover { background-color: #0056b3; }
+
+    h2 { text-align: center; color: #222; margin-bottom: 25px; }
+</style>
+
+<div class="book-container">
+    <h2>Gestione Catalogo Libri</h2>
+    
+    <form action="save_book.php" method="POST" enctype="multipart/form-data">
+        
+        <div class="form-group">
+            <label for="title">Titolo del Libro</label>
+            <input type="text" id="title" name="title" placeholder="Inserisci il titolo..." required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="price">Prezzo (€)</label>
+                <input type="number" id="price" name="price" step="0.01" placeholder="0.00" required>
+            </div>
+            <div class="form-group">
+                <label for="condition">Condizione (Tipo)</label>
+                <select id="condition" name="condition_id">
+                    <option value="ebook">Ebook</option>
+                    <option value="rigida">Copertina Rigida</option>
+                    <option value="flessibile">Copertina Flessibile</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descrizione / Trama</label>
+            <textarea id="description" name="description" placeholder="Breve riassunto del libro..."></textarea>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="author">Autore</label>
+                <select id="author" name="author_id">
+                    <option value="">Seleziona Autore...</option>
+                    </select>
+            </div>
+            <div class="form-group">
+                <label for="publisher">Editore</label>
+                <select id="publisher" name="publisher_id">
+                    <option value="">Seleziona Editore...</option>
+                    </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="category">Categoria</label>
+                <select id="category" name="category_id">
+                    <option value="">Seleziona Categoria...</option>
+                    </select>
+            </div>
+            <div class="form-group">
+                <label for="format">Formato (Dimensioni)</label>
+                <select id="format" name="format_id">
+                    <option value="">Seleziona Formato...</option>
+                    </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Salva Libro nel Database</button>
+        
+    </form>
+</div>

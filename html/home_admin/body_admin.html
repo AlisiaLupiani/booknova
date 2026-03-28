@@ -1,69 +1,119 @@
 <body>
-    
-        <section id="hero-azioni">
-            <h1>Crea, gestisci e pubblica</h1>
-            <p>Inizia un nuovo progetto o riprendi da dove avevi interrotto.</p>
-            
+    <h1>Crea, gestisci e pubblica</h1>
+    <p>Inizia un nuovo progetto o riprendi da dove avevi interrotto.</p>
+
+    <div class="gestione-container">
+
+        <div class="crea-nuovo">
+            <h3>Gestisci i libri</h3>
+            <button type="button" onclick="location.href='aggiungi_libro.php'">Aggiungi libro</button>
+            <button type="button" onclick="location.href='visualizza_libri.php'">Visualizza tutti i libri</button>
+
+        </div>
+
+
+        <div class="gestione-container">
+
             <div class="crea-nuovo">
-                <h3>Crea un nuovo titolo</h3>
-                <button type="button" onclick="location.href='/nuovo-libro'">+ eBook Kindle</button>
-                <button type="button" onclick="location.href='/nuova-copertina-flessibile'">+ Copertina flessibile</button>
-                <button type="button" onclick="location.href='/nuova-serie'">+ Crea serie di libri</button>
+                <h3>Gestisci gli utenti</h3>
+                <button type="button" onclick="location.href='aggiungi_admin.php'">Aggiungi admin</button>
+                <button type="button" onclick="location.href='visualizza_utenti.php'">Visualizza tutti gli utenti
+                    iscritti alla piattaforma</button>
             </div>
-        </section>
+        </div>
+        <div class="gestione-container">
 
-        <br><hr><br>
-
-        <section id="libreria">
-            <h2>La tua libreria</h2>
-            
-            <div class="search-bar">
-                <input type="text" placeholder="Cerca un libro nel tuo catalogo...">
-                <button>Cerca</button>
+            <div class="crea-nuovo">
+                <h3>Gestisci gli autori</h3>
+                <button type="button" onclick="location.href='aggiungi_autore.php'">Aggiungi autore</button>
+                <button type="button" onclick="location.href='visualizza_autori.php'">Visualizza tutti gli autori</button>
             </div>
+        </div>
+        <div class="gestione-container">
 
-            <br>
-
-            <div class="elenco-libri">
-                <p>Non hai ancora creato nessun titolo. Clicca su "Crea un nuovo titolo" per iniziare.</p>
-                
-                <div class="libro-item">
-                    <div class="cover-placeholder" style="width: 50px; height: 70px; border: 1px dashed #ccc; display: inline-block;"></div>
-                    
-                    <div class="info-libro" style="display: inline-block; vertical-align: top; margin-left: 10px;">
-                        <strong>Titolo del libro (Bozza)</strong>
-                        <p>Ultima modifica: 27 Marzo 2026</p>
-                        <button>Continua configurazione</button>
-                        <button>Elimina bozza</button>
-                    </div>
-                </div>
+            <div class="crea-nuovo">
+                <h3>Gestisci le categorie</h3>
+                <button type="button" onclick="location.href='aggiungi_categoria.php'"> Aggiungi
+                    categoria</button>
+                <button type="button" onclick="location.href='visualizza_categorie.php'"> Visualizza tutte le
+                    categorie</button>
             </div>
-        </section>
+        </div>
+        <div class="gestione-container">
 
- 
-<style>
-    body {
-        display: flex;
-        flex-direction: column; /* Impila gli elementi dall'alto in basso */
-        align-items: center;    /* Centra orizzontalmente */
-        margin: 0;
-        padding: 20px;
-        font-family: sans-serif;
-    }
+            <div class="crea-nuovo">
+                <h3>Gestisci gli ordini</h3>
+                <button type="button" onclick="location.href='visualizza_ordini.php'"> Visualizza tutti gli
+                    ordini</button>
+            </div>
+        </div>
+        <div class="gestione-container">
 
-    main {
-        width: 100%;
-        max-width: 800px; /* Impedisce al contenuto di allargarsi troppo su schermi grandi */
-    }
+            <div class="crea-nuovo">
+                <h3>Gestisci le offerte</h3>
+                <button type="button" onclick="location.href='aggiungi_offerta.php'"> Aggiungi
+                    offerta</button>
+                <button type="button" onclick="location.href='visualizza_offerte.php'"> Visualizza tutte le
+                    offerte</button>
+            </div>
+        </div>
+         <div class="gestione-container">
 
-   
+            <div class="crea-nuovo">
+                <h3>Gestisci le recensioni</h3>
+             
+                <button type="button" onclick="location.href='visualizza_recensioni.php'"> Visualizza tutte le
+                    recensioni</button>
+            </div>
+        </div>
+    </div>
 
-    .crea-nuovo {
-        text-align: center; /* Centra il testo e i bottoni dentro il loro box */
-        border: 1px solid #ddd;
-        padding: 40px;
-        margin-bottom: 30px;
-    }
-</style>
-</body>
+
+
+
+    <style>
+        .gestione-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </body>
