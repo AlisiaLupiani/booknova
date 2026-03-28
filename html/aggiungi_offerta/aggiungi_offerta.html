@@ -1,0 +1,112 @@
+<body>
+    <style>
+        .book-container {
+            max-width: 700px;
+            /* Allargato leggermente per ospitare meglio le righe doppie */
+            margin: 40px auto;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        /* Stile specifico per la descrizione */
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+
+        h2 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 25px;
+        }
+    </style>
+
+    <div class="book-container">
+        <h2>Aggiungi Offerta</h2>
+
+        <form action="save_autore.php" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+                <label for="Nome">Nome</label>
+                <input type="text" id="Nome" name="Nome" placeholder="Inserisci il nome..." required>
+            </div>
+            <div class="form-group">
+                <label for="DataInizio">Data Inizio</label>
+                <input type="date" id="DataInizio" name="DataInizio" required>
+            </div>
+            <div class="form-group">
+                <label for="DataFine">Data Fine</label>
+                <input type="date" id="DataFine" name="DataFine" required>
+            </div>
+            <div class="form-group">
+                <label for="Prezzo">Prezzo</label>
+                <input type="number" id="Prezzo" name="Prezzo" step="0.01" placeholder="Inserisci il prezzo..." required>
+            </div>
+
+
+
+
+
+        </form>
+        <button type="submit" class="btn-submit">Salva</button>
+    </div>
+
+
+
+
+    </form>
+    </div>
+</body>
