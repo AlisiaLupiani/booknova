@@ -1,5 +1,6 @@
 <?php
 
+require_once("include/model/User.php");
 require_once("include/model/proxy/UserProxy.php");
 require_once("include/db/DAO.php");
 

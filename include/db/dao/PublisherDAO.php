@@ -1,6 +1,7 @@
 <?php
 
 require_once("include/model/Publisher.php");
+require_once("include/model/proxy/PublisherProxy.php");
 require_once("include/db/DAO.php");
 
 class PublisherDAO extends DAO {

@@ -32,18 +32,31 @@ class BookOfferDAO extends DAO {
     }
 
     public function storeBookOffer(BookOffer $bo): ?BookOffer {
-        // Usiamo gli ID degli oggetti collegati
-        $idLibro = $bo->getBook() ? $bo->getBook()->getId() : null;
-        $idOfferta = $bo->getOffer() ? $bo->getOffer()->getId() : null;
+        if($bo->getId() !== null) {
+            $this->stmtBookOffer->binValue(1, $bo->getBookId(), PDO::PARAM_INT);
+            $this->stmtBookOffer->binValue(2, $bo->getOfferId(), PDO::PARAM_INT);
+            $this->stmtBookOffer->binValue(3, $bo->getId(), PDO::PARAM_INT);
 
-        $this->stmtInsert->bindValue(1, $idLibro, PDO::PARAM_INT);
-        $this->stmtInsert->bindValue(2, $idOfferta, PDO::PARAM_INT);
+            if($this->stmtBookOffer->execute()) {
+                return $bo;
+            }
+        } else {
+            $this->stmtInsert->bindValue(1, $bo->getBookId(), PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(2, $bo->getOfferId(), PDO::PARAM_INT);
 
-        if ($this->stmtInsert->execute()) {
-            $bo->setId((int)$this->conn->lastInsertId());
-            return $bo;
+            if($this->stmtInsert->execute()) {
+                $bo->setId((int)$this->conn->lastInsertId());
+                return $bo;
+            }
         }
         return null;
+    }
+
+    public function deleteBookOffer(int $id): bool {
+        $this->stmtDelete->bindValue(1, $id, PDO::PARAM_INT);
+        return $this->stmtDelete->execute();
+    
+            
     }
 
     private function createBookOffer(array $rs): BookOffer {

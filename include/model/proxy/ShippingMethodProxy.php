@@ -10,7 +10,7 @@ class ShippingMethodProxy extends ShippingMethod{
         private ?int $bokkId;
 
 
-        public function _construct(?DataLayer $dataLayer){
+        public function __construct(?DataLayer $dataLayer){
             parent::__construct();
             $this->dataLayer = $dataLayer;
 

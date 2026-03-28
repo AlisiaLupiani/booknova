@@ -10,7 +10,7 @@ class OrderProxy extends Order{
     private ?int $paymentMethodId;
     private ?int $shippingMethodId;
 
-    public function_construct(?DataLayer $dataLayer){
+    public function __construct(?DataLayer $dataLayer){
         parent::__construct();
         $this->dataLayer = $dataLayer;
     }

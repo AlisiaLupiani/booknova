@@ -1,6 +1,7 @@
 <?php
 
 require_once("include/model/PaymentMethod.php");
+require_once("include/model/proxy/PaymentMethodProxy.php");
 require_once("include/db/DAO.php");
 
 class PaymentMethodDAO extends DAO {

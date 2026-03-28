@@ -9,7 +9,7 @@ class ReviewProxy extends Review{
     private ?int $userId;
     private ?int $bookId;
 
-    public function _construct(?DataLayer $dataLayer){
+    public function __construct(?DataLayer $dataLayer){
 
         parent::_construct();
         $this->dataLayer = $dataLayer;

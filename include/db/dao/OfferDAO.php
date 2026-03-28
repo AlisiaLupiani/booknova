@@ -20,9 +20,8 @@ class OfferDAO extends DAO {
         $this->stmtGetOfferById = $this->conn->prepare("SELECT * FROM OFFERTA WHERE ID = ?;");
         $this->stmtGetAllOffers = $this->conn->prepare("SELECT * FROM OFFERTA;");
 
-        $this->stmtInsertOffer = $this->conn->prepare("INSERT INTO OFFERTA (PERCENTUALE) VALUES (?);");
-
-        $this->stmtUpdateOffer = $this->conn->prepare("UPDATE OFFERTA SET PERCENTUALE = ? WHERE ID = ?;");
+        $this->stmtInsertOffer = $this->conn->prepare("INSERT INTO OFFERTA (VALORE, DATA_INIZIO, DATA_FINE) VALUES (?, ?, ?);");
+        $this->stmtUptadeteOffer = $this->conn->prepare("UPDATE OFFERTA SET VALORE = ?, DATA_INIZIO = ?, DATA_FINE = ? WHERE ID = ?;");
         $this->stmtDeleteOffer = $this->conn->prepare("DELETE FROM OFFERTA WHERE ID = ?;");
     }
 
@@ -46,18 +45,37 @@ class OfferDAO extends DAO {
 
     public function storeOffer(Offer $offer): ?Offer {
         if ($offer->getId() !== null) {
-            $this->stmtUpdateOffer->bindValue(1, $offer->getPercentage(), PDO::PARAM_INT);
-            $this->stmtUpdateOffer->bindValue(2, $offer->getId(), PDO::PARAM_INT);
-            if ($this->stmtUpdateOffer->execute()) {
+            $this->stmtUptadeteOffer->bindValue(1, $offer->getValue(), PDO::PARAM_FLOAT);
+            $this->stmtUptadeteOffer->bindValue(2, $offer->getStartDate(), PDO::PARAM_STR);
+            $this->stmtUptadeteOffer->bindValue(3, $offer->getEndDate(), PDO::PARAM_STR);
+            $this->stmtUptadeteOffer->bindValue(4, $offer->getId(), PDO::PARAM_INT);
+
+            if($this->stmtUptadeteOffer->execute()){
                 return $offer;
-            }           
+            }
+        } else {
+            $this->stmtInsertOffer->bindValue(1, $offer->getValue(), PDO::PARAM_FLOAT);
+            $this->stmtInsertOffer->bindValue(2, $offer->getStartDate(), PDO::PARAM_STR);
+            $this->stmtInsertOffer->bindValue(3, $offer->getEndDate(), PDO::PARAM_STR);
+
+            if($this->stmtInsertOffer->execute()){
+                $offer->setId((int)$this->conn->lastInsertId());
+                return $offer;
+            }
+            
         }
+        return null;
+            
     }
+
 
     public function createOffer(array $rs): Offer {
         $offer = new OfferProxy($this->dataLayer);  
         $offer->setId((int)$rs['ID']);
-        $offer->setPercentage((int)$rs['PERCENTUALE']);
+        $oofer->setValue((float)$rs['VALORE']);
+        $offer->setStartDate((string)$rs['DATA_INIZIO']);
+        $offer->setEndDate((string)$rs['DATA_FINE']);
+
         return $offer;
         
     }

@@ -9,9 +9,9 @@ class OrderItemProxy extends OrderItem{
     private ?int $userId;
     private ?int $bookId;
 
-    public function _construct(?DataLayer $dataLayer){
+    public function __construct(?DataLayer $dataLayer){
 
-        parent::_construct();
+        parent:: __construct();
         $this->dataLayer = $dataLayer;
 
     }

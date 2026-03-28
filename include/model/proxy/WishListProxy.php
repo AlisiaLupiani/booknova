@@ -1,16 +1,16 @@
 <?php
 
-include_once('include/model/WishListProxy.php');
+include_once('include/model/Wishlist.php');
 
 class WishListProxy extends Wishlist{
 
     private ?DataLayer $dataLayer;
     
     private ?int $userId;
-     private ?int $bokkId;
+    private ?int $bookId;
 
 
-    public function _construct(?DataLayer $dataLayer){
+    public function __construct(?DataLayer $dataLayer){
          parent::__construct();
         $this->dataLayer = $dataLayer;
 
