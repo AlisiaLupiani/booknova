@@ -70,6 +70,21 @@ class DataLayer{
         $this->roleDAO = new RoleDAO($this);
         $this->categoryDAO = new CategoryDAO($this);
         $this->bookDAO = new BookDAO($this);
+        $this->authorDAO = new AuthorDAO($this);
+        $this->publisherDAO = new PublisherDAO($this);
+        $this->conditionDAO = new ConditionDAO($this);
+        $this->formatDAO = new FormatDAO($this);
+        $this->ratingDAO = new RatingDAO($this);
+        $this->orderDAO = new OrderDAO($this);
+        $this->reviewDAO = new ReviewDAO($this);
+        $this->bookOfferDAO = new BookOfferDAO($this);
+        $this->cartDAO = new CartDAO($this);
+        $this->wishListDAO = new WishListDAO($this);
+        $this->paymentMethodDAO = new PaymentMethodDAO($this);
+        $this->shippingMethodDAO = new ShippingMethodDAO($this);
+        $this->offerDAO = new OfferDAO($this);
+        $this->orderItemDAO = new OrderItemDAO($this);
+            
     }
 
     public function getCategoryDAO(): CategoryDAO{
