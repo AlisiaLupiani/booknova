@@ -1,5 +1,8 @@
 <?php
 
+require_once(__DIR__.'/Role.php');
+
+
 class User{
     private ?int $id;
     private ?string $name;

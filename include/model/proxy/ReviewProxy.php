@@ -1,6 +1,6 @@
 <?php
 
-require_once('include/model/Review.php');
+include_once('include/model/Review.php');
 
 class ReviewProxy extends Review{
 

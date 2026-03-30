@@ -47,8 +47,8 @@ class OrderDAO extends DAO {
             $this->stmtUpdateOrder->bindValue(1, $order->getUser(), PDO::PARAM_STR);
             $this->stmtUpdateOrder->bindValue(2, $order->getPaymentMethod(), PDO::PARAM_STR);
             $this->stmtUpdateOrder->bindValue(3, $order->getShippingMethod(), PDO::PARAM_STR);
-            $this->stmtUdateOrder->bindValue(4, $order->getOrderDate(), PDO::PARAM_STR);
-            $this->stmtUpdateOrder->bindValue(5, $order->getTotal(), PDO::PARAM_FLOAT);
+            $this->stmtUpdateOrder->bindValue(4, $order->getOrderDate(), PDO::PARAM_STR);
+            $this->stmtUpdateOrder->bindValue(5, $order->getTotal(), PDO::PARAM_STR);
             $this->stmtUpdateOrder->bindValue(6, $order->getId(), PDO::PARAM_INT);
 
             if($this->stmtUpdateOrder->execute()){
@@ -59,7 +59,7 @@ class OrderDAO extends DAO {
             $this->stmtInsertOrder->bindValue(2, $order->getPaymentMethod(), PDO::PARAM_STR);
             $this->stmtInsertOrder->bindValue(3, $order->getShippingMethod(), PDO::PARAM_STR);
             $this->stmtInsertOrder->bindValue(4, $order->getOrderDate(), PDO::PARAM_STR);
-            $this->stmtInsertOrder->bindValue(5, $order->getTotal(), PDO::PARAM_FLOAT);
+            $this->stmtInsertOrder->bindValue(5, $order->getTotal(), PDO::PARAM_STR);
 
             if($this->stmtInsertOrder->execute()){
                 $order->setId((int)$this->conn->lastInsertId());

@@ -19,20 +19,20 @@ class BookProxy extends Book {
         $this->dataLayer = $dataLayer;
     }
 
-    public function getAuthorId(): int {return $this->authorId}
-    public function setAuthorId(int $authorId): void {$this->authorId = $authorId}
+    public function getAuthorId(): int {return $this->authorId; }
+    public function setAuthorId(int $authorId): void {$this->authorId = $authorId; }
 
-    public function getPublisherId(): int {return $this->publisherId}
-    public function setPublisherId(int $publisherId): void {$this->publisherId = $publisherId}
+    public function getPublisherId(): int {return $this->publisherId; }
+    public function setPublisherId(int $publisherId): void {$this->publisherId = $publisherId; }
 
-    public function getConditionId(): int {return $this->conditionId}
-    public function setConditionId(int $conditionId): void {$this->conditionId = $conditionId}
+    public function getConditionId(): int {return $this->conditionId; }
+    public function setConditionId(int $conditionId): void {$this->conditionId = $conditionId; }
 
-    public function getCategoryId(): int {return $this->categoryId}
-    public function setCategoryId(int $categoryId): void {$this->categoryId = $categoryId}
+    public function getCategoryId(): int {return $this->categoryId; }
+    public function setCategoryId(int $categoryId): void {$this->categoryId = $categoryId; }
 
-    public function getFormatId(): int {return $this->formatId}
-    public function setFormatId(int $formatId): void {$this->formatId = $formatId}
+    public function getFormatId(): int {return $this->formatId; }
+    public function setFormatId(int $formatId): void {$this->formatId = $formatId; }
 
 
     
@@ -53,7 +53,7 @@ class BookProxy extends Book {
 
     public function getCondition(): ?Condition{
         if(parent:: getCondition() == null && $this->conditionId > 0 ){
-            parent:: setCondition((($this -> dataLayer)->getConditionDao())->getConditionById($this->ConditionId));
+            parent:: setCondition((($this -> dataLayer)->getConditionDao())->getConditionById($this->conditionId));
         }
         return parent::getCondition();
     }

@@ -9,6 +9,7 @@ class WishlistDAO extends DAO {
     private PDOStatement $stmtGetById;
     private PDOStatement $stmtGetByUser;
     private PDOStatement $stmtInsert;
+    private PDOStatement $stmtUpdate;
     private PDOStatement $stmtDelete;
     private PDOStatement $stmtDeleteByUserAndBook;
 
@@ -50,23 +51,26 @@ class WishlistDAO extends DAO {
     }
 
     public function storeWishlist(Wishlist $wishlist): ?Wishlist {
-        // Le wishlist solitamente non si aggiornano, si aggiungono o si tolgono
-        $user = $wishlist->getUser();
-        $book = $wishlist->getBook();
-        
-        $userId = ($user !== null) ? $user->getId() : null;
-        $bookId = ($book !== null) ? $book->getId() : null;
+            if ($wishlist->getId() !== null) {
+                $this->stmtUpdate->bindValue(1, $wishlist->getCreatedAt(), PDO::PARAM_STR);
+                $this->stmtUpdate->bindValue(2, $wishlist->getUser()->getId(), PDO::PARAM_INT);
+                $this->stmtUpdate->bindValue(3, $wishlist->getBook()->getId(), PDO::PARAM_INT);
+                $this->stmtUpdate->bindValue(4, $wishlist->getId(), PDO::PARAM_INT);
+                
+                if ($this->stmtUpdate->execute()) return $wishlist;
+            } else {
+                $this->stmtInsert->bindValue(1, $wishlist->getCreatedAt(), PDO::PARAM_STR);
+                $this->stmtInsert->bindValue(2, $wishlist->getUser()->getId(), PDO::PARAM_INT);
+                $this->stmtInsert->bindValue(3, $wishlist->getBook()->getId(), PDO::PARAM_INT);
 
-        $this->stmtInsert->bindValue(1, $wishlist->getCreatedAt(), PDO::PARAM_STR);
-        $this->stmtInsert->bindValue(2, $userId, PDO::PARAM_INT);
-        $this->stmtInsert->bindValue(3, $bookId, PDO::PARAM_INT);
-
-        if ($this->stmtInsert->execute()) {
-            $wishlist->setId((int)$this->conn->lastInsertId());
-            return $wishlist;
+                if($this->stmtInsert->execute()){
+                    $wishlist->setId((int)$this->conn->lastInsertId());
+                    return $wishlist;
+                }
+            }
+            return null;
         }
-        return null;
-    }
+  
 
     public function deleteWishlistItem(int $id): bool {
         $this->stmtDelete->bindValue(1, $id, PDO::PARAM_INT);

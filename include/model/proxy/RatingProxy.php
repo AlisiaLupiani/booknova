@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/Rating.php');
+require_once('include/model/Rating.php');
 
 class RatingProxy extends Rating{
 

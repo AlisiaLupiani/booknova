@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/Category.php');
+require_once('include/model/Category.php');
 
 class CategoryProxy extends Category{
 

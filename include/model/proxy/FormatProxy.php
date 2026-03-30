@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/Format.php');
+require_once('include/model/Format.php');
 
 class FormatProxy extends Format{
 

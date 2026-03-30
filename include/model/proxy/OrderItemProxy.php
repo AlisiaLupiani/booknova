@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/OrderItem.php');
+require_once('include/model/OrderItem.php');
 
 class OrderItemProxy extends OrderItem{
 
@@ -16,8 +16,8 @@ class OrderItemProxy extends OrderItem{
 
     }
     
-    public function getUserId(): ?int {return $this->orderId;}
-    public function setUserId(?int $userId): ?int {return $this->orderId = $userId;}
+    public function getOrderId(): ?int {return $this->orderId;}
+    public function setOrderId(?int $userId): ?int {return $this->orderId = $userId;}
 
     public function getBookId(): ?int{return $this->bookId;}
     public function setBookId(?int $bookId): ?int{return $this->bookId = $bookId;}

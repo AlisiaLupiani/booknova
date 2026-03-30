@@ -1,7 +1,7 @@
 <?php
 
-require_once('./User.php');
-require_once('./Book.php');
+require_once(__DIR__.'/User.php');
+require_once(__DIR__.'/Book.php');
 
 class Wishlist {
     private ?int $id;

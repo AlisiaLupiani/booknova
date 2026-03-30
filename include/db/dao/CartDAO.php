@@ -12,6 +12,7 @@ class CartDAO extends DAO {
     private PDOStatement $stmtUpdate;
     private PDOStatement $stmtDelete;
     private PDOStatement $stmtDeleteByUser;
+    private PDOStatement $stmtGetByUserAndBook;
 
     public function __construct(?DataLayer $dataLayer) {
         parent::__construct($dataLayer);
@@ -36,6 +37,9 @@ class CartDAO extends DAO {
         
         // Svuota l'intero carrello di un utente (da usare dopo l'acquisto)
         $this->stmtDeleteByUser = $this->conn->prepare("DELETE FROM CARRELLO WHERE ID_UTENTE = ?;");
+
+        // Carrello dato l'utente e il libro
+        $this->stmtGetByUserAndBook = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID_UTENTE = ? AND ID_LIBRO = ?;");
     }
 
     public function getCartById(int $id): ?Cart {
@@ -97,5 +101,15 @@ class CartDAO extends DAO {
         $cart->setBookId((int)$rs['ID_LIBRO']);
         
         return $cart;
+    }
+
+    public function getCartByUserAndBook(int $userId, int $bookId): ?Cart {
+        $this->stmtGetByUserAndBook->bindValue(1, $userId, PDO::PARAM_INT);
+        $this->stmtGetByUserAndBook->bindValue(2, $bookId, PDO::PARAM_INT);
+        $this->stmtGetByUserAndBook->execute();
+        
+        $rs = $this->stmtGetByUserAndBook->fetch(PDO::FETCH_ASSOC);
+
+        return $rs ? $this->createCart($rs) : null;
     }
 }

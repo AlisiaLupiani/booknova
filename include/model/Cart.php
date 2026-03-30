@@ -1,7 +1,7 @@
 <?php
 
-require_once('./User.php');
-require_once('./Book.php');
+require_once(__DIR__.'/User.php');
+require_once(__DIR__.'/Book.php');
 
 class Cart {
     private ?int $id;
@@ -27,8 +27,11 @@ class Cart {
     public function setQuantity(?int $quantity): void { $this->quantity = $quantity; }
 
     public function toString(): string {
-        $userName = $this->user ? $this->user->getFirstName() : "N/A";
-        $bookTitle = $this->book ? $this->book->getTitle() : "N/A";
-        return "Cart ID: " . $this->id . " | User: " . $userName . " | Book: " . $bookTitle . " | Qty: " . $this->quantity;
+        return "Carrello ID: " . $this->id . "\n" .
+               "Utente: " . $this->user->toString() . "\n" .
+               "Libro: " . $this->book->toString() . "\n" .
+               "Quantità: " . $this->quantity;
+    
+        
     }
 }

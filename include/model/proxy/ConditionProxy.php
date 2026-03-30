@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/Condition.php');
+require_once('include/model/Condition.php');
 
 class ConditionProxy extends Condition{
 

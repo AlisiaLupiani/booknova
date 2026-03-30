@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/Offer.php');
+require_once('include/model/Offer.php');
 
 class OfferProxy extends Offer{
 

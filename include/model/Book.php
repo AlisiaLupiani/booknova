@@ -49,6 +49,15 @@ class Book {
 
     // Other function
     public function toString(): ?string {
-        return $this->title;
+        return "Libro: " . $this->title . "\n" .
+               "Prezzo: " . $this->price . "\n" .
+               "Descrizione: " . $this->description . "\n" .
+               "Autore: " . $this->author->toString() . "\n" .
+               "Editore: " . $this->publisher->toString() . "\n" .
+               "Categoria: " . $this->category->toString() . "\n" .
+               "Formato: " . $this->format->toString() . "\n" .
+               "Stato: " . $this->condition->toString();
+    
+        
     }
 }

@@ -1,5 +1,9 @@
 <?php
 
+require_once(__DIR__.'/User.php');
+require_once(__DIR__.'/Book.php');
+
+
 class Rating {
     private ?int $id;
     private ?User $user;
