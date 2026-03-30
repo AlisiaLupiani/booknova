@@ -31,8 +31,13 @@ class Review {
     public function setDate(?string $date): void { $this->date = $date; }
 
     // Riepilogo della recensione
-    public function toString(): string {
-        $userName = $this->user ? $this->user->getFirstName() : "Utente eliminato";
-        return "Recensione #{$this->id} | Da: {$userName} | Data: {$this->date}";
+    public function toString(): ?String {
+        return "Review ID: " . $this->id . "\n" .
+               "User: " . $this->user->toString() . "\n" .
+               "Book: " . $this->book->toString() . "\n" .
+               "Content: " . $this->content . "\n" .
+               "Date: " . $this->date;
+    
+          
     }
 }

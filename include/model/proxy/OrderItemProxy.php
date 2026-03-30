@@ -6,7 +6,7 @@ class OrderItemProxy extends OrderItem{
 
     private ?DataLayer $dataLayer;
 
-    private ?int $userId;
+    private ?int $orderId;
     private ?int $bookId;
 
     public function __construct(?DataLayer $dataLayer){
@@ -16,19 +16,19 @@ class OrderItemProxy extends OrderItem{
 
     }
     
-    private function getUserId(): ?int {return $this->userId};
-    private function setUserId(?int $userId): ?int {return $this->userId = $userId};
+    public function getUserId(): ?int {return $this->orderId;}
+    public function setUserId(?int $userId): ?int {return $this->orderId = $userId;}
 
-    private function getBookId(): ?int{return $this->bookId};
-    private function setBookId(?int $bookId): ?int{return $this->bookId = $bookId};
+    public function getBookId(): ?int{return $this->bookId;}
+    public function setBookId(?int $bookId): ?int{return $this->bookId = $bookId;}
 
     
     
-    public function getUser(): ?User{
-        if(parent:: getUser() == null && $this->userId > 0 ){
-            parent:: setUser((($this -> dataLayer)->getUserDao())->getUserById($this->userId));
+    public function getOrder(): ?Order{
+        if(parent:: getOrder() == null && $this->orderId > 0 ){
+            parent:: setOrder((($this -> dataLayer)->getUserDao())->getUserById($this->orderId));
         }
-        return parent::getUser();
+        return parent::getOrder();
     }
 
     public function getBook(): ?Book{

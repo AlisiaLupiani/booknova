@@ -37,7 +37,7 @@ class BookDAO extends DAO {
         $this->stmtGetBooksByCategory = $this->conn->prepare("SELECT * FROM LIBRO WHERE ID_CATEGORIA = ?;");
     }
 
-    public function getBookById(int $id): ?Libro {
+    public function getBookById(int $id): ?Book {
         $this->stmtGetBookById->bindValue(1, $id, PDO::PARAM_INT);
         $this->stmtGetBookById->execute();
         $rs = $this->stmtGetBookById->fetch(PDO::FETCH_ASSOC);

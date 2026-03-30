@@ -27,7 +27,12 @@ class Rating {
     public function setValue(?int $value): void { $this->value = $value; }
     public function setDate(?string $date): void { $this->date = $date; }
 
-    public function toString(): string {
-        return "Rating: " . $this->value . "/5 (ID: " . $this->id . ")";
+    public function toString(): ?String {
+        return "Rating ID: " . $this->id . "\n" .
+               "User: " . $this->user->toString() . "\n" .
+               "Book: " . $this->book->toString() . "\n" .
+               "Value: " . $this->value . "\n" .
+               "Date: " . $this->date;
+    
     }
 }
