@@ -1,17 +1,19 @@
 <?php
 
 require_once("include/model/Cart.php");
+require_once("include/model/CartItem.php");
 require_once("include/model/proxy/CartProxy.php");
+require_once("include/model/proxy/CartItemProxy.php");
 require_once("include/db/DAO.php");
 
 class CartDAO extends DAO {
 
     private PDOStatement $stmtGetById;
-    private PDOStatement $stmtGetByUser;
+    private PDOStatement $stmtGetItemsByUserId;
     private PDOStatement $stmtInsert;
     private PDOStatement $stmtUpdate;
-    private PDOStatement $stmtDelete;
-    private PDOStatement $stmtDeleteByUser;
+    private PDOStatement $stmtDeleteById;
+    private PDOStatement $stmtEmptyByUser;
     private PDOStatement $stmtGetByUserAndBook;
 
     public function __construct(?DataLayer $dataLayer) {
@@ -20,112 +22,112 @@ class CartDAO extends DAO {
     }
 
     public function init(): void {
-        // Recupera un singolo elemento del carrello
-        $this->stmtGetById = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID = ?;");
-        
-        // Recupera tutti i libri nel carrello di un utente specifico
-        $this->stmtGetByUser = $this->conn->prepare("SELECT * FROM CART_ITEM WHERE ID_UTENTE = ?;");
-        
-        // Inserisce un nuovo libro nel carrello
-        $this->stmtInsert = $this->conn->prepare("INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (?, ?, ?);");
-        
-        // Aggiorna solo la quantità (utile se l'utente aggiunge lo stesso libro due volte)
-        $this->stmtUpdate = $this->conn->prepare("UPDATE CARRELLO SET QUANTITA = ? WHERE ID = ?;");
-        
-        // Rimuove un libro dal carrello
-        $this->stmtDelete = $this->conn->prepare("DELETE FROM CARRELLO WHERE ID = ?;");
-        
-        // Svuota l'intero carrello di un utente (da usare dopo l'acquisto)
-        $this->stmtDeleteByUser = $this->conn->prepare("DELETE FROM CARRELLO WHERE ID_UTENTE = ?;");
 
-        // Carrello dato l'utente e il libro
-        $this->stmtGetByUserAndBook = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID_UTENTE = ? AND ID_LIBRO = ?;");
+        $this->stmtGetById = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID = ?");
+        $this->stmtGetItemsByUserId = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID_UTENTE = ?");
+        $this->stmtInsert = $this->conn->prepare("INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (?, ?, ?)");
+        $this->stmtUpdate = $this->conn->prepare("UPDATE CARRELLO SET QUANTITA = ? WHERE ID = ?");
+        $this->stmtDeleteById = $this->conn->prepare("DELETE FROM CARRELLO WHERE ID = ?");
+        $this->stmtEmptyByUser = $this->conn->prepare("DELETE FROM CARRELLO WHERE ID_UTENTE = ?");
+        $this->stmtGetByUserAndBook = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID_UTENTE = ? AND ID_LIBRO = ?");
     }
 
-    public function getCartById(int $id): ?Cart {
-        $this->stmtGetById->bindValue(1, $id, PDO::PARAM_INT);
-        $this->stmtGetById->execute();
-        $rs = $this->stmtGetById->fetch(PDO::FETCH_ASSOC);
 
-        return $rs ? $this->createCart($rs) : null;
-    }
-
-    public function getCartByUser(int $userId): array {
-        $this->stmtGetByUser->bindValue(1, $userId, PDO::PARAM_INT);
-        $this->stmtGetByUser->execute();
-        $result = [];
-        while ($rs = $this->stmtGetByUser->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $this->createBook($rs);
-        }
-        return $result;
-    }
-
-    public function storeCart(Cart $cart): ?Cart {
-        if ($cart->getId() !== null) {
-            // Se l'ID esiste, aggiorniamo solo la quantità
-            $this->stmtUpdate->bindValue(1, $cart->getQuantity(), PDO::PARAM_INT);
-            $this->stmtUpdate->bindValue(2, $cart->getId(), PDO::PARAM_INT);
-            if ($this->stmtUpdate->execute()) return $cart;
-        } else {
-            // Se l'ID è nullo, inseriamo una nuova riga
-            $this->stmtInsert->bindValue(1, $cart->getUser() ? $cart->getUser()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsert->bindValue(2, $cart->getBook() ? $cart->getBook()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsert->bindValue(3, $cart->getQuantity(), PDO::PARAM_INT);
-
-            if ($this->stmtInsert->execute()) {
-                $cart->setId((int)$this->conn->lastInsertId());
-                return $cart;
-            }
-        }
-        return null;
-    }
-
-    public function deleteCartItem(int $id): bool {
-        $this->stmtDelete->bindValue(1, $id, PDO::PARAM_INT);
-        return $this->stmtDelete->execute();
-    }
-
-    public function emptyCartByUser(int $userId): bool {
-        $this->stmtDeleteByUser->bindValue(1, $userId, PDO::PARAM_INT);
-        return $this->stmtDeleteByUser->execute();
-    }
-
-    private function createCart(array $rs): Cart {
-        // Usiamo il Proxy per caricare l'utente e il libro solo quando servono
+    public function getCartByUserId(int $userId): Cart {
         $cart = new CartProxy($this->dataLayer);
-        $cart->setId((int)$rs['ID']);
-        $cart->setQuantity((int)$rs['QUANTITA']);
-        
-        // Impostiamo gli ID nel Proxy (Lazy Loading)
-        $cart->setUserId((int)$rs['ID_UTENTE']);
-        $cart->setBookId((int)$rs['ID_LIBRO']);
-        
+        $cart->setUserId($userId);
         return $cart;
     }
 
-    public function getCartByUserAndBook(int $userId, int $bookId): ?Cart {
+    public function getCartItemsByUserId(int $userId): array {
+        $this->stmtGetItemsByUserId->bindValue(1, $userId, PDO::PARAM_INT);
+        $this->stmtGetItemsByUserId->execute();
+        
+        $result = [];
+        
+        while ($rs = $this->stmtGetItemsByUserId->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $this->createCartItem($rs);
+        }
+        
+        return $result;
+    }
+
+    public function getCartItemByUserId(int $id): ?CartItem {
+        $this->stmtGetById->bindValue(1, $id, PDO::PARAM_INT);
+        $this->stmtGetById->execute();
+
+        $rs = $this->stmtGetById->fetch(PDO::FETCH_ASSOC);
+
+        return $rs ? $this->createCartItem($rs) : null;
+    }
+
+    public function getCartItemByUserAndBook(int $userId, int $bookId): ?CartItem {
         $this->stmtGetByUserAndBook->bindValue(1, $userId, PDO::PARAM_INT);
         $this->stmtGetByUserAndBook->bindValue(2, $bookId, PDO::PARAM_INT);
         $this->stmtGetByUserAndBook->execute();
-        
+
         $rs = $this->stmtGetByUserAndBook->fetch(PDO::FETCH_ASSOC);
 
-        return $rs ? $this->createCart($rs) : null;
+        return $rs ? $this->createCartItem($rs) : null;
     }
-    private function createBook(array $rs): Book {
-        $book = new BookProxy($this->dataLayer);
-        $book->setId($rs['ID']);
-        $book->setTitle($rs['TITOLO']);
-        $book->setPrice((float)$rs['PREZZO']);
-        $book->setDescription($rs['DESCRIZIONE']);
-        
-        // Impostiamo gli ID nel Proxy (Lazy Loading)
-        $book->setAuthorId($rs['ID_AUTORE']);
-        $book->setPublisherId($rs['ID_EDITORE']);
-        $book->setCategoryId($rs['ID_CATEGORIA']);
-        $book->setFormatId($rs['ID_FORMATO']);
-        $book->setConditionId($rs['ID_CONDIZIONE']);
-        
-        return $book;
+
+    public function addCartItem(int $userId, int $bookId, int $quantity): bool {
+
+        // controllo se esiste già
+        $existing = $this->getCartItemByUserAndBook($userId, $bookId);
+
+        if ($existing !== null) {
+            // incremento di UNA sola unità
+            return $this->updateCartItemQuantity(
+                $existing->getId(),
+                $existing->getQuantity() + 1
+            );
+        }
+
+        // nuovo inserimento con quantità passata
+        $this->stmtInsert->bindValue(1, $userId, PDO::PARAM_INT);
+        $this->stmtInsert->bindValue(2, $bookId, PDO::PARAM_INT);
+        $this->stmtInsert->bindValue(3, $quantity, PDO::PARAM_INT);
+
+        return $this->stmtInsert->execute();
+    }
+
+    public function updateCartItemQuantity(int $itemId, int $quantity): bool {
+        $this->stmtUpdate->bindValue(1, $quantity, PDO::PARAM_INT);
+        $this->stmtUpdate->bindValue(2, $itemId, PDO::PARAM_INT);
+
+        return $this->stmtUpdate->execute();
+    }
+
+    public function deleteCartItemById(int $id): bool {
+        $this->stmtDeleteById->bindValue(1, $id, PDO::PARAM_INT);
+        return $this->stmtDeleteById->execute();
+    }
+
+    public function deleteCartItemByUserAndBook(int $userId, int $bookId): bool {
+        $sql = "DELETE FROM CARRELLO WHERE ID_UTENTE = ? AND ID_LIBRO = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(1, $userId, PDO::PARAM_INT);
+        $stmt->bindValue(2, $bookId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function emptyCartByUser(int $userId): bool {
+        $this->stmtEmptyByUser->bindValue(1, $userId, PDO::PARAM_INT);
+        return $this->stmtEmptyByUser->execute();
+    }
+
+
+    private function createCartItem(array $rs): CartItem {
+        $item = new CartItemProxy($this->dataLayer);
+
+        $item->setId($rs['ID']);
+        $item->setQuantity((int)$rs['QUANTITA']);
+        $item->setUserId($rs['ID_UTENTE']);
+        $item->setBookId($rs['ID_LIBRO']);
+
+        return $item;
     }
 }

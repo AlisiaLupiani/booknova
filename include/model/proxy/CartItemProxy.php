@@ -1,12 +1,13 @@
 <?php
 
-require_once("include/model/Cart.php");
+require_once("include/model/CartItem.php");
 
-class CartProxy extends Cart{
+class CartItemProxy extends CartItem{
 
     private ?DataLayer $dataLayer;
 
     private ?int $userId;
+    private ?int $bookId;
 
     public function __construct(?DataLayer $dataLayer){
         parent::__construct();
@@ -15,6 +16,9 @@ class CartProxy extends Cart{
 
     public function getUserId(): ?int { return $this->userId; }
     public function setUserId(?int $userId): void {$this->userId = $userId;}
+
+    public function getBookId(): ?int { return $this->bookId; }
+    public function setBookId(?int $bookId): void {$this->bookId = $bookId;}
 
 
 
@@ -25,11 +29,9 @@ class CartProxy extends Cart{
         return parent::getUser();
     }
 
-    public function getItems(): array {
+     public function getItems(): array {
         if (parent::getItems() == null) {
-            parent::setItems(
-                ($this->dataLayer)->getCartDao()->getCartItemsByUserId($this->userId)
-            );
+            parent::setItems(($this->dataLayer)->getCartDao()->getCartItemByUserId($this->userId));
         }
         return parent::getItems();
     }
