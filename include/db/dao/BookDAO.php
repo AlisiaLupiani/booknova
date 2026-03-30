@@ -42,7 +42,7 @@ class BookDAO extends DAO {
         $this->stmtGetBookById->execute();
         $rs = $this->stmtGetBookById->fetch(PDO::FETCH_ASSOC);
 
-        return $rs ? $this->creatBook($rs) : null;
+        return $rs ? $this->createBook($rs) : null;
     }
 
     public function getAllBooks(): array {

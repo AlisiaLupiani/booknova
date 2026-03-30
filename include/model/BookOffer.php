@@ -1,28 +1,35 @@
 <?php
 
-require_once('./Book.ph');
-require_once('./Offer.ph');
+require_once('./Book.php');
+require_once('./Offer.php');
+require_once('./User.php');
 
 class BookOffer {
     private ?int $id;
     private ?Book $book;
     private ?Offer $offer;
+     private ?User $user;
 
     public function __construct() {
         $this->id = null;
         $this->book = null;
         $this->offer = null;
+            $this->user = null;
     }
 
     public function getId(): ?int { return $this->id; }
     public function getBook(): ?Book{ return $this->book; }
     public function getOffer(): ?Offer { return $this->offer; }
+    public function getUser(): ?User { return $this->user; }
 
     public function setId(?int $id): void { $this->id = $id; }
-    public function setBook(?int $book): void { $this->book = $book; }
-    public function setOffer(?int $offer): void { $this->offer = $offer; }
-
-    public function toString(): string {
+    public function setBook(?Book $book): void { $this->book = $book; }
+    public function setOffer(?Offer $offer): void { $this->offer = $offer; }
+    public function setUser(?User $user): void { $this->user = $user; }
+     public function toString(): string {
         return "ID: " . $this->id . " - Book: " . $this->book . " - Offer: " . $this->offer;
     }
 }
+
+
+  
