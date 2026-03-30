@@ -14,6 +14,7 @@ class BookDAO extends DAO {
     private PDOStatement $stmtDeleteBook;
     private PDOStatement $stmtGetBooksByCategory;
 
+
     public function __construct(?DataLayer $dataLayer) {
         parent::__construct($dataLayer);
         $this->init();
@@ -97,6 +98,11 @@ class BookDAO extends DAO {
         return $result;
     }
 
+    public function deleteBook(int $id): bool {
+        $this->stmtDeleteBook->bindValue(1, $id, PDO::PARAM_INT);
+        return $this->stmtDeleteBook->execute();
+    }
+
     private function createBook(array $rs): Book {
         $book = new BookProxy($this->dataLayer);
         $book->setId($rs['ID']);
@@ -114,4 +120,11 @@ class BookDAO extends DAO {
         return $book;
     }
 
+    
+
+
+
+
 }
+
+
