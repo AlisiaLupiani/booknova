@@ -1,6 +1,6 @@
 <?php
 
-include_once("include/model/User.php");
+require_once("include/model/User.php");
 
 class PublisherProxy extends Publisher{
     

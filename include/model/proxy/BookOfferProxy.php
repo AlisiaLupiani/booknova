@@ -11,6 +11,8 @@ class BookOfferProxy extends BookOffer{
 
     private ?int $userId;
     private ?int $bookId;
+    private ?int $offerId;
+
 
      public function __construct(?DataLayer $dataLayer){
         parent::__construct();
@@ -19,8 +21,12 @@ class BookOfferProxy extends BookOffer{
     
     public function getUserId(): ?int { return $this->userId;}
     public function setUserId(?int $userId): void {$this->userId = $userId;}
+
     public function getBookId(): ?int { return $this->bookId; }
     public function setBookId(?int $bookId): void {$this->bookId = $bookId;}
+
+    public function getOfferId(): ?int { return $this->offerId; }
+    public function setOfferId(?int $offerId): void {$this->offerId = $offerId;}
 
     
     
@@ -36,5 +42,12 @@ class BookOfferProxy extends BookOffer{
             parent::setBook((($this -> dataLayer)->getBookDao())->getBookById($this->bookId));
         }
         return parent::getBook();
+    }
+
+    public function getOffer(): ?Offer{
+        if(parent::getOffer() == null && $this->offerId > 0 ){
+            parent::setOffer((($this -> dataLayer)->getOfferDao())->getOfferById($this->offerId));
+        }
+        return parent::getOffer();
     }
 }

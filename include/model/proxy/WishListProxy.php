@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/Wishlist.php');
+require_once('include/model/Wishlist.php');
 
 class WishListProxy extends Wishlist{
 
@@ -16,11 +16,11 @@ class WishListProxy extends Wishlist{
 
     }
     
-    private function getUserId(): ?int {return $this->userId;}
-        private function setUserId(?int $userId): ?int {return $this->userId = $userId;}
+    public function getUserId(): ?int {return $this->userId;}
+    public function setUserId(?int $userId): ?int {return $this->userId = $userId;}
 
-    private function getBookId(): ?int{return $this->bookId;}
-    private function setBookId(?int $bookId): ?int{return $this->bookId = $bookId;}
+    public function getBookId(): ?int{return $this->bookId;}
+    public function setBookId(?int $bookId): ?int{return $this->bookId = $bookId;}
 
     
     

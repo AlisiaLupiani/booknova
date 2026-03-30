@@ -8,6 +8,8 @@ class BookOfferDAO extends DAO {
 
     private PDOStatement $stmtGetById;
     private PDOStatement $stmtGetByBook;
+    private PDOStatement $stmtBookOffer;
+    private PDOStatement $stmtUpdate;
     private PDOStatement $stmtInsert;
     private PDOStatement $stmtDelete;
 
@@ -33,23 +35,28 @@ class BookOfferDAO extends DAO {
 
     public function storeBookOffer(BookOffer $bo): ?BookOffer {
         if($bo->getId() !== null) {
-            $this->stmtBookOffer->binValue(1, $bo->getBookId(), PDO::PARAM_INT);
-            $this->stmtBookOffer->binValue(2, $bo->getOfferId(), PDO::PARAM_INT);
-            $this->stmtBookOffer->binValue(3, $bo->getId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(1, $bo->getBook()->getId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(2, $bo->getOffer()->getId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(3, $bo->getUser()->getId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(3, $bo->getId(), PDO::PARAM_INT);
+            
 
-            if($this->stmtBookOffer->execute()) {
-                return $bo;
-            }
-        } else {
-            $this->stmtInsert->bindValue(1, $bo->getBookId(), PDO::PARAM_INT);
-            $this->stmtInsert->bindValue(2, $bo->getOfferId(), PDO::PARAM_INT);
+            if($this->stmtUpdate->execute()) return $bo;
+        }else{
+            $this->stmtInsert->bindValue(1, $bo->getBook()->getId(), PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(2, $bo->getOffer()->getId(), PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(3, $bo->getUser()->getId(), PDO::PARAM_INT);
+            
 
-            if($this->stmtInsert->execute()) {
+            if($this->stmtInsert->execute()){
                 $bo->setId((int)$this->conn->lastInsertId());
                 return $bo;
             }
+
         }
-        return null;
+
+        return null;     
+
     }
 
     public function deleteBookOffer(int $id): bool {

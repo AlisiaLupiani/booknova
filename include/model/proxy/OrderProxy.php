@@ -39,7 +39,7 @@ class OrderProxy extends Order{
         return parent::getPaymentMethod();
     }
     
-    public function getShippingMethod(): ?ShippingMethodId{
+    public function getShippingMethod(): ?ShippingMethod{
         if(parent:: getShippingMethod() == null && $this->shippingMethodId > 0 ){
             parent:: setShippingMethod((($this -> dataLayer)->getShippingMethodDao())->getShippingMethodById($this->shippingMethodId));
         }

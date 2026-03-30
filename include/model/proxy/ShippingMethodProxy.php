@@ -1,6 +1,6 @@
 <?php
 
-include_once('include/model/ShippingMethod.php');
+require_once('include/model/ShippingMethod.php');
 
 class ShippingMethodProxy extends ShippingMethod{
 

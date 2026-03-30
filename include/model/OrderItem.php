@@ -1,7 +1,7 @@
 <?php
 
-require_once('./Order.php');
-require_once('./Book.php');
+require_once(__DIR__.'/Order.php');
+require_once(__DIR__.'/Book.php');
 
 class OrderItem {
     private ?int $id;

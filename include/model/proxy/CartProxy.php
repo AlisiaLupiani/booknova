@@ -1,12 +1,12 @@
 <?php
 
-require_once("include/model/Cart.php")
+require_once("include/model/Cart.php");
 
 class CartProxy extends Cart{
 
     private ?DataLayer $dataLayer;
 
-    private ?int $userdId;
+    private ?int $userId;
     private ?int $bookId;
 
     public function __construct(?DataLayer $dataLayer){

@@ -21,5 +21,7 @@ class Role {
     // Metodo toString aggiunto
     public function toString(): string {
         return $this->role ?? '';
+    
+        
     }
 }

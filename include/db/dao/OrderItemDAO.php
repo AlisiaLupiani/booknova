@@ -44,29 +44,24 @@ class OrderItemDAO extends DAO {
 
     public function storeOrderItem(OrderItem $orderItem): ?OrderItem {
         if ($orderItem->getId() !== null) {
-            $this->stmtUdateOrderItem->bindValue(1, $orderItem->getOrderId(), PDO::PARAM_INT);
-            $this->stmtUpdateOrderItem->bindValue(2, $orderItem->getBookId(), PDO::PARAM_INt);
+            $this->stmtUpdateOrderItem->bindValue(1, $orderItem->getOrder()->getId(), PDO::PARAM_INT);
+            $this->stmtUpdateOrderItem->bindValue(2, $orderItem->getBook()->getId(), PDO::PARAM_INT);
             $this->stmtUpdateOrderItem->bindValue(3, $orderItem->getQuantity(), PDO::PARAM_INT);
-            $this->stmtUpdateOrderItem->bindVaulue(4, $orderItem->getUnitPrice(), PDO::PARAM_FLOAT);
-            $this->stmtUpdateOrderItem->bindValue(5, $orderItem->getId(), PDO::PARAM)
-            
-            if($this->stmtUpdateOrderItem->execute()){
-                return $orderItem;
-            }
-        } else {
-            $this->stmtInsertOrderItem->bindValue(1, $orderItem->getOrderId(), PDO::PARAM_INT);
-            $this->stmtInsertOrderItem->bindValue(2, $orderItem->getBookId(), PDO::PARAM_INT);
-            $this->stmtInsertOrderItem->bindValue(3, $orderItem->getQuantity(), PDO::PARAM_INT);
-            $this->stmtInsertOrderItem->bindValue(4, $orderItem->getUnitPrice(), PDO::PARAM_FLOAT);
+            $this->stmtUpdateOrderItem->bindValue(4, $orderItem->getId(), PDO::PARAM_INT);
 
-            if($this->stmtInsertOrderItem->execute()){
+            if ($this->stmtUpdateOrderItem->execute()) return $orderItem;
+        } else {
+            $this->stmtInsertOrderItem->bindValue(1, $orderItem->getOrder()->getId(), PDO::PARAM_INT);
+            $this->stmtInsertOrderItem->bindValue(2, $orderItem->getBook()->getId(), PDO::PARAM_INT);
+            $this->stmtInsertOrderItem->bindValue(3, $orderItem->getQuantity(), PDO::PARAM_INT);
+
+            if ($this->stmtInsertOrderItem->execute()) {
                 $orderItem->setId((int)$this->conn->lastInsertId());
                 return $orderItem;
             }
         }
         return null;
-
-            
+                  
     }
 
     private function createOrderItem(array $rs): OrderItem {

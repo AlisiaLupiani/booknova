@@ -1,8 +1,6 @@
 <?php
 
-require_once('./User.php');
-require_once('./PaymentMethod.php');
-require_once('./ShippingMethod.php');
+
 
 class Order {
     private ?int $id;

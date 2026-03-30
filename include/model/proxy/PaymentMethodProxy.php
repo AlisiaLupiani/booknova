@@ -1,6 +1,6 @@
 <?php
 
-include_once("include/model/PaymentMethod.php");
+require_once("include/model/PaymentMethod.php");
 
 class PaymentMethodProxy extends PaymentMethod{
 
