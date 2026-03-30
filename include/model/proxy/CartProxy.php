@@ -7,7 +7,6 @@ class CartProxy extends Cart{
     private ?DataLayer $dataLayer;
 
     private ?int $userId;
-    private ?int $bookId;
 
     public function __construct(?DataLayer $dataLayer){
         parent::__construct();
@@ -17,8 +16,6 @@ class CartProxy extends Cart{
     public function getUserId(): ?int { return $this->userId; }
     public function setUserId(?int $userId): void {$this->userId = $userId;}
 
-    public function getBookId(): ?int {return $this->bookId;}
-    public function setBookId(?int $bookId): void {$this->bookId = $bookId;}
 
 
     public function getUser(): ?User{
@@ -28,10 +25,10 @@ class CartProxy extends Cart{
         return parent::getUser();
     }
 
-    public function getBook(): ?Book{
-        if(parent:: getBook() == null && $this->bookId > 0 ){
-            parent:: setBook((($this -> dataLayer)->getBookDao())->getBookById($this->bookId));
+    public function getBooks(): ?array{
+        if(parent:: getBooks() == null ){
+            parent:: setBooks((($this -> dataLayer)->getBookDao())->getBookById($this->bookId));
         }
-        return parent::getBook();
+        return parent::getBooks();
     }
 }

@@ -12,4 +12,8 @@ foreach($authorDAO->getAllAuthors() as $author){
 foreach($bookDAO->getAllBooks() as $book){
     echo $book -> getTitle() . "<br>";
 }
+$cartDAO = $dataLayer->getCartDAO();
+foreach($cartDAO->getCartByUser(1) as $cart){
+    echo $cart -> getId() . "<br>";
+}
 ?>

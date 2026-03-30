@@ -24,7 +24,7 @@ class CartDAO extends DAO {
         $this->stmtGetById = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID = ?;");
         
         // Recupera tutti i libri nel carrello di un utente specifico
-        $this->stmtGetByUser = $this->conn->prepare("SELECT * FROM CARRELLO WHERE ID_UTENTE = ?;");
+        $this->stmtGetByUser = $this->conn->prepare("SELECT * FROM CART_ITEM WHERE ID_UTENTE = ?;");
         
         // Inserisce un nuovo libro nel carrello
         $this->stmtInsert = $this->conn->prepare("INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (?, ?, ?);");
@@ -55,7 +55,7 @@ class CartDAO extends DAO {
         $this->stmtGetByUser->execute();
         $result = [];
         while ($rs = $this->stmtGetByUser->fetch(PDO::FETCH_ASSOC)) {
-            $result[] = $this->createCart($rs);
+            $result[] = $this->createBook($rs);
         }
         return $result;
     }
@@ -111,5 +111,21 @@ class CartDAO extends DAO {
         $rs = $this->stmtGetByUserAndBook->fetch(PDO::FETCH_ASSOC);
 
         return $rs ? $this->createCart($rs) : null;
+    }
+    private function createBook(array $rs): Book {
+        $book = new BookProxy($this->dataLayer);
+        $book->setId($rs['ID']);
+        $book->setTitle($rs['TITOLO']);
+        $book->setPrice((float)$rs['PREZZO']);
+        $book->setDescription($rs['DESCRIZIONE']);
+        
+        // Impostiamo gli ID nel Proxy (Lazy Loading)
+        $book->setAuthorId($rs['ID_AUTORE']);
+        $book->setPublisherId($rs['ID_EDITORE']);
+        $book->setCategoryId($rs['ID_CATEGORIA']);
+        $book->setFormatId($rs['ID_FORMATO']);
+        $book->setConditionId($rs['ID_CONDIZIONE']);
+        
+        return $book;
     }
 }

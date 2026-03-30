@@ -17,7 +17,7 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
 
     // Autentico l'utente
     if ($user != null && (AuthManager::verifyPasswordSHA($_POST["password"], $user->getPassword()))) {
-        
+
         $_SESSION["auth"] = true;
         $_SESSION["id"] = $user->getId();
         $_SESSION["name"] = $user->getName();
@@ -26,19 +26,17 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $_SESSION["role"] = $user->getRole();
 
         // Se l'utente è un amministratore
-        if (strtoupper($user->getRole() -> toString()) == "ADMIN") {
+        if (strtoupper($user->getRole()->toString()) == "ADMIN") {
             header("Location: index_admin.php");
             exit;
         }
 
-        // Se l'utente è un utente
-        if (strtoupper($user->getRole() -> toString()) == "CLIENTE") {
-            $redirect = isset($_REQUEST["reference"]) ? $_REQUEST["reference"] : 'index.php';
-            header("Location: " . $redirect);
-            exit;
-        }
-    }
-    else{
+
+
+        $redirect = isset($_REQUEST["reference"]) ? $_REQUEST["reference"] : 'index.php';
+        header("Location: " . $redirect);
+        exit;
+    } else {
         // Se l'email o la password sono errate e quindi il login è fallito
         header("Location: login.php?error=on");
         exit;
