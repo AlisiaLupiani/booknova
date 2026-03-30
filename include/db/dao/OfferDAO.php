@@ -21,7 +21,7 @@ class OfferDAO extends DAO {
         $this->stmtGetAllOffers = $this->conn->prepare("SELECT * FROM OFFERTA;");
 
         $this->stmtInsertOffer = $this->conn->prepare("INSERT INTO OFFERTA (VALORE, DATA_INIZIO, DATA_FINE) VALUES (?, ?, ?);");
-        $this->stmtUptadeteOffer = $this->conn->prepare("UPDATE OFFERTA SET VALORE = ?, DATA_INIZIO = ?, DATA_FINE = ? WHERE ID = ?;");
+        $this->stmtUpdateOffer = $this->conn->prepare("UPDATE OFFERTA SET VALORE = ?, DATA_INIZIO = ?, DATA_FINE = ? WHERE ID = ?;");
         $this->stmtDeleteOffer = $this->conn->prepare("DELETE FROM OFFERTA WHERE ID = ?;");
     }
 
@@ -45,12 +45,12 @@ class OfferDAO extends DAO {
 
     public function storeOffer(Offer $offer): ?Offer {
         if ($offer->getId() !== null) {
-            $this->stmtUptadeteOffer->bindValue(1, $offer->getValue(), PDO::PARAM_FLOAT);
-            $this->stmtUptadeteOffer->bindValue(2, $offer->getStartDate(), PDO::PARAM_STR);
-            $this->stmtUptadeteOffer->bindValue(3, $offer->getEndDate(), PDO::PARAM_STR);
-            $this->stmtUptadeteOffer->bindValue(4, $offer->getId(), PDO::PARAM_INT);
+            $this->stmtUpdateOffer->bindValue(1, $offer->getValue(), PDO::PARAM_FLOAT);
+            $this->stmtUpdateOffer->bindValue(2, $offer->getStartDate(), PDO::PARAM_STR);
+            $this->stmtUpdateOffer->bindValue(3, $offer->getEndDate(), PDO::PARAM_STR);
+            $this->stmtUpdateOffer->bindValue(4, $offer->getId(), PDO::PARAM_INT);
 
-            if($this->stmtUptadeteOffer->execute()){
+            if($this->stmtUpdateOffer->execute()){
                 return $offer;
             }
         } else {
@@ -72,7 +72,7 @@ class OfferDAO extends DAO {
     public function createOffer(array $rs): Offer {
         $offer = new OfferProxy($this->dataLayer);  
         $offer->setId((int)$rs['ID']);
-        $oofer->setValue((float)$rs['VALORE']);
+        $offer->setValue((float)$rs['VALORE']);
         $offer->setStartDate((string)$rs['DATA_INIZIO']);
         $offer->setEndDate((string)$rs['DATA_FINE']);
 

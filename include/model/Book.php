@@ -1,19 +1,14 @@
 <?php
 
 
-require_once('./Author.php')
-require_once('./Publisher.php')
-require_once('./Category.php')
-require_once('./Format.php')
-require_once('./Condition.php')
 
-class Libro {
+class Book {
     private ?int $id;
     private ?string $title;
     private ?float $price;
     private ?string $description;
     private ?Author $author;
-    private ?Editor $publisher;
+    private ?Publisher $publisher;
     private ?Category $category;
     private ?Format $format;
     private ?Condition $condition;
@@ -35,7 +30,7 @@ class Libro {
     public function getTitle(): ?string { return $this->title; }
     public function getPrice(): ?float { return $this->price; }
     public function getDescription(): ?string { return $this->description; }
-    public function getAuthor(): ?Authir { return $this->author; }
+    public function getAuthor(): ?Author { return $this->author; }
     public function getPublisher(): ?Publisher { return $this->publisher; }
     public function getCategory(): ?Category { return $this->category; }
     public function getFormat(): ?Format { return $this->format; }
