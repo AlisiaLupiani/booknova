@@ -16,11 +16,11 @@ class WishListProxy extends Wishlist{
 
     }
     
-    private function getUserId(): ?int {return $this->userId};
-    private function setUserId(?int $userId): ?int {return $this->userId = $userId};
+    private function getUserId(): ?int {return $this->userId;}
+        private function setUserId(?int $userId): ?int {return $this->userId = $userId;}
 
-    private function getBookId(): ?int{return $this->bookId};
-    private function setBookId(?int $bookId): ?int{return $this->bookId = $bookId};
+    private function getBookId(): ?int{return $this->bookId;}
+    private function setBookId(?int $bookId): ?int{return $this->bookId = $bookId;}
 
     
     

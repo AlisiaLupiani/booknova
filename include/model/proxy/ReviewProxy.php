@@ -11,16 +11,16 @@ class ReviewProxy extends Review{
 
     public function __construct(?DataLayer $dataLayer){
 
-        parent::_construct();
+        parent::__construct();
         $this->dataLayer = $dataLayer;
 
     }
     
-    private function getUserId(): ?int {return $this->userId};
-    private function setUserId(?int $userId): ?int {return $this->userId = $userId};
+    public function getUserId(): ?int { return $this->userId; }
+    public function setUserId(?int $userId): ?int { return $this->userId = $userId; }
 
-    private function getBookId(): ?int{return $this->bookId};
-    private function setBookId(?int $bookId): ?int{return $this->bookId = $bookId};
+    public function getBookId(): ?int{ return $this->bookId;}
+    public  function setBookId(?int $bookId): ?int{ return $this->bookId = $bookId; }
 
     
     

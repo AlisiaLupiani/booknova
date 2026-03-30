@@ -45,7 +45,7 @@ class OfferDAO extends DAO {
 
     public function storeOffer(Offer $offer): ?Offer {
         if ($offer->getId() !== null) {
-            $this->stmtUpdateOffer->bindValue(1, $offer->getValue(), PDO::PARAM_FLOAT);
+            $this->stmtUpdateOffer->bindValue(1, $offer->getValue(), PDO::PARAM_STR);
             $this->stmtUpdateOffer->bindValue(2, $offer->getStartDate(), PDO::PARAM_STR);
             $this->stmtUpdateOffer->bindValue(3, $offer->getEndDate(), PDO::PARAM_STR);
             $this->stmtUpdateOffer->bindValue(4, $offer->getId(), PDO::PARAM_INT);
@@ -54,7 +54,7 @@ class OfferDAO extends DAO {
                 return $offer;
             }
         } else {
-            $this->stmtInsertOffer->bindValue(1, $offer->getValue(), PDO::PARAM_FLOAT);
+            $this->stmtInsertOffer->bindValue(1, $offer->getValue(), PDO::PARAM_STR);
             $this->stmtInsertOffer->bindValue(2, $offer->getStartDate(), PDO::PARAM_STR);
             $this->stmtInsertOffer->bindValue(3, $offer->getEndDate(), PDO::PARAM_STR);
 

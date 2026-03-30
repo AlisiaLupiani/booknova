@@ -21,6 +21,8 @@ class ShippingMethod {
 
     // Metodo per visualizzare il metodo di spedizione (es. Standard - 5.00€)
     public function toString(): string {
-        return ($this->name ?? 'N/A') . " - " . number_format($this->cost, 2) . "€";
+        return $this->name . " - " . $this->cost . "€". " _ ". $this->id;
     }
 }
+    
+    

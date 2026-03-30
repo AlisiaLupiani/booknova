@@ -2,7 +2,7 @@
 
 require_once('include/model/Author.php');
 
-public class AuthorProxy extends Author{
+class AuthorProxy extends Author{
 
     private ?DataLayer $dataLayer;
 

@@ -49,25 +49,26 @@ class ReviewDAO extends DAO {
 
     public function storeReview(Review $review): ?Review {
         if ($review->getId() !== null) {
-            // Aggiornamento (UPDATE)
-            $this->stmtUpdate->bindValue(1, $review->getContent(), PDO::PARAM_STR);
-            $this->stmtUpdate->bindValue(2, $review->getDate(), PDO::PARAM_STR);
-            $this->stmtUpdate->bindValue(3, $review->getId(), PDO::PARAM_INT);
-            if ($this->stmtUpdate->execute()) return $review;
-        } else {
-            // Inserimento (INSERT)
-            $idUser = $review->getUser() ? $review->getUser()->getId() : null;
-            $idBook = $review->getBook() ? $review->getBook()->getId() : null;
-
-            $this->stmtInsert->bindValue(1, $idUser, PDO::PARAM_INT);
-            $this->stmtInsert->bindValue(2, $idBook, PDO::PARAM_INT);
-            $this->stmtInsert->bindValue(3, $review->getContent(), PDO::PARAM_STR);
-            $this->stmtInsert->bindValue(4, $review->getDate(), PDO::PARAM_STR);
+            $this->stmtUpdate->bindValue(1, $review->getUser()->getId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(2, $review->getBook()->getId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(3, $review->getContent(), PDO::PARAM_STR);
+            $this->stmtUpdate->bindValue(4, $review->getDate(), PDO::PARAM_STR);
+            $this->stmtUpdate->bindValue(5, $review->getId(), PDO::PARAM_INT);
 
             if ($this->stmtInsert->execute()) {
                 $review->setId((int)$this->conn->lastInsertId());
                 return $review;
+            } 
+        }else{
+            $this->stmtInsert->bindValue(1, $review->getUser()->getId(), PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(2, $review->getBook()->getId(), PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(3, $review->getContent(), PDO::PARAM_STR);
+            $this->stmtInsert->bindValue(4, $review->getDate(), PDO::PARAM_STR);
+
             }
+            if ($this->stmtInsert->execute()) {
+                $review->setId((int)$this->conn->lastInsertId());
+                return $review;
         }
         return null;
     }
@@ -78,15 +79,13 @@ class ReviewDAO extends DAO {
     }
 
     private function createReview(array $rs): Review {
-        // Caricamento tramite Proxy per gestire le relazioni con User e Book
         $review = new ReviewProxy($this->dataLayer);
         $review->setId((int)$rs['ID']);
-        $review->setContent($rs['TESTO']); // Mapping colonna TESTO -> proprietà content
-        $review->setDate($rs['DATA']);
-        
-        // Passiamo gli ID al Proxy per il Lazy Loading
         $review->setUserId((int)$rs['ID_UTENTE']);
         $review->setBookId((int)$rs['ID_LIBRO']);
+        $review->setContent((string)$rs['TESTO']);
+        $review->setDate((string)$rs['DATA']);
+        
         
         return $review;
     }

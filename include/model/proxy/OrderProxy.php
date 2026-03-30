@@ -1,6 +1,6 @@
 <?php
 
-include_once(include_once('include/model/Order.php');
+include_once('include/model/Order.php');
 
 class OrderProxy extends Order{
 
@@ -16,13 +16,13 @@ class OrderProxy extends Order{
     }
 
     public function getUserId(): ?int { return $this->userId; }
-    public function setUserId(?int $userId): void { return $this->userId = $userId; }
+    public function setUserId(?int $userId) { return $this->userId = $userId; }
 
     public function getPaymentMethodId(): ?int { return $this->paymentMethodId; }
-    public function setpaymentMethodId(?int $paymentMethodId): void { return $this->paymentMethodId = $paymentMethodId; }
+    public function setpaymentMethodId(?int $paymentMethodId) { return $this->paymentMethodId = $paymentMethodId; }
 
     public function getShippingMethodId(): ?int { return $this->shippingMethodId; }
-    public function setShippingMethodId(): void { return $this->shippingMethodId = $shippingMethodId; }
+    public function setShippingMethodId(?int $shippingMethodId) { return $this->shippingMethodId = $shippingMethodId; }
 
 
     public function getUser(): ?User{
@@ -46,4 +46,4 @@ class OrderProxy extends Order{
         return parent::getShippingMethod();
     }
 
-})
+}

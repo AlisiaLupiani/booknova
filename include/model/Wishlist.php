@@ -26,9 +26,9 @@ class Wishlist {
     public function setUser(?User $user): void { $this->user = $user; }
     public function setBook(?Book $book): void { $this->book = $book; }
 
-    public function toString(): string {
-        $userName = $this->user ? $this->user->getFirstName() : "N/A";
-        $bookTitle = $this->book ? $this->book->getTitle() : "N/A";
-        return "Wishlist Item #{$this->id} | User: {$userName} | Book: {$bookTitle}";
+    public function toString(): ?String {
+        return "Wishlist ID: " . $this->id . " - Created At: " . $this->createdAt;
+    
+        
     }
 }
