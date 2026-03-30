@@ -14,7 +14,7 @@ foreach ($categories as $category) {
     $body_page->setContent("categorytab", $category->getName());
     foreach ($bookDAO->getBooksByCategory($category->getId()) as $book) {
         $body_page->setContent("booktitle", $book->getTitle());
-        $body_page->setContent("autore", $book->getAuthor());
+        $body_page->setContent("autore", $book->getAuthor()->getName());
         $body_page->setContent("price", $book->getPrice());
     }
 }
