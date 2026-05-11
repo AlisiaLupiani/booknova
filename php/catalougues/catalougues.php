@@ -3,25 +3,39 @@
 $body_page = new Template("html/catalougues/catalougues.html");
 
 $dataLayer = new DataLayer(new DB_Connection());
+
 $categoryDAO = $dataLayer->getCategoryDAO();
 $bookDAO = $dataLayer->getBookDAO();
-$categories = $categoryDAO->getAllCategories();
 
+
+$categories = $categoryDAO->getAllCategories();
+$books = $bookDAO->getAllBooks();
+
+
+
+# Carica tutte le categorie
 foreach ($categories as $category) {
-    $body_page->setContent("category", $category->getName());
+    $body_page->setContent("category", str_replace(' ', '_', $category->getName()));
+    $body_page->setContent("categorylabel", $category->getName());
 }
 
-foreach ($bookDAO->getBooksByCategory($category->getId()) as $book) {
-        $body_page->setContent("booktitle", $book->getTitle());
-        $body_page->setContent("author", $book->getAuthor()->getName());
-        $body_page->setContent("price", $book->getPrice());
+# Prende tutti i libri
+foreach ($books as $book) {
+        $body_page->setContent("booktitleallgenre", $book->getTitle());
+        $body_page->setContent("authorallgenre", $book->getAuthor()->getName());
+        $body_page->setContent("priceallgenre", $book->getPrice());
 }
  
+# Prende i libri in base alla categoria
 foreach ($categories as $category) {
-    $body_page->setContent("categorytab", $category->getName());
-    foreach ($bookDAO->getBooksByCategory($category->getId()) as $book) {
+    $body_page->setContent("categorytab", str_replace(' ', '_', $category->getName()));
+    $books_by_category = $bookDAO->getBooksByCategory($category->getId()); 
+    
+    foreach ($books_by_category as $book) {
         $body_page->setContent("booktitlecategory", $book->getTitle());
         $body_page->setContent("authorcategory", $book->getAuthor()->getName());
         $body_page->setContent("pricecategory", $book->getPrice());
     }
+
+    
 }
