@@ -8,7 +8,7 @@ class QueryStringBuilder {
     private const SEPARATOR = "&";
     private array $params = [];
 
-     public function __construct(string $path_file){
+    public function __construct(string $path_file){
         $this->path_file = $path_file; 
     }
 

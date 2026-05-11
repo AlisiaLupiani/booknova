@@ -1,5 +1,9 @@
 <?php
 
+// Utility
+require_once("include/utility/QueryStringBuilder.php");
+
+
 $body_page = new Template("html/catalougues/catalougues.html");
 
 $dataLayer = new DataLayer(new DB_Connection());
@@ -24,6 +28,14 @@ foreach ($books as $book) {
         $body_page->setContent("booktitleallgenre", $book->getTitle());
         $body_page->setContent("authorallgenre", $book->getAuthor()->getName());
         $body_page->setContent("priceallgenre", $book->getPrice());
+
+        $string_builder = new QueryStringBuilder("book_details.php");
+        $string_builder->add("book_id", $book->getId());
+
+        $body_page->setContent("bookallgenrehrefid", $string_builder->build());
+
+
+       
 }
  
 # Prende i libri in base alla categoria
