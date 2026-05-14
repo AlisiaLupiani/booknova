@@ -10,8 +10,6 @@ $dataLayer = new DataLayer(new DB_Connection());
 
 $categoryDAO = $dataLayer->getCategoryDAO();
 $bookDAO = $dataLayer->getBookDAO();
-
-
 $categories = $categoryDAO->getAllCategories();
 $books = $bookDAO->getAllBooks();
 
@@ -46,7 +44,7 @@ foreach ($categories as $category) {
     $books_by_category = $bookDAO->getBooksByCategory($category->getId()); 
     
     foreach ($books_by_category as $book) {
-        $body_page->setContent("bookimagine", $book->getImagePath());
+        $body_page->setContent("bookimagine", "static/img/" . $book->getImagePath());
         $body_page->setContent("booktitlecategory", $book->getTitle());
         $body_page->setContent("authorcategory", $book->getAuthor()->getName());
         $body_page->setContent("pricecategory", $book->getPrice());

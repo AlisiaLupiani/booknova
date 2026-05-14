@@ -19,7 +19,7 @@
 								incontrarsi non è stato un caso…
 								ma il ricordo di qualcosa che esiste da sempre</p>
 							<div class="btn-wrap">
-								<a href="book_details.php" class="btn btn-outline-accent btn-accent-arrow">Read More<i
+								<a href="book_details.php?book_id=17" class="btn btn-outline-accent btn-accent-arrow">Read More<i
 										class="icon icon-ns-arrow-right"></i></a>
 							</div>
 						</div><!--banner-content-->
@@ -60,7 +60,7 @@
 						<div class="col-md-3">
 							<div class="product-item">
 								<figure class="product-style">
-									<img src="static/img/product1.jpeg" alt="Books" class="product-item">
+									<img src="<[random_image]>" alt="<[random_title]>" class="product-item">
 									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
 										Cart</button>
 								</figure>
@@ -104,7 +104,7 @@
 
 					<div class="col-md-6">
 						<figure class="products-thumb">
-							<img src="static/img/seconda2.jpg" alt="book" class="single-image">
+							<img src="<[random_book_image]>" alt="<[random_book_title]>" class="single-image">
 						</figure>
 					</div>
 
@@ -118,7 +118,7 @@
 								<p><[random_book_description]></p>
 								<div class="item-price">$ <[random_book_price]></div>
 								<div class="btn-wrap">
-									<a href="book_details.php" class="btn-accent-arrow">shop it now <i
+									<a href="book_details.php?book_id=<[random_book_id]>" class="btn-accent-arrow">shop it now <i
 											class="icon icon-ns-arrow-right"></i></a>
 								</div>
 							</div>
@@ -161,34 +161,16 @@
 
 	<div class="container">
 		<div class="row">
+			
 			<div class="inner-content">
+				
 				<div class="product-list" data-aos="fade-up">
 					<div class="grid product-grid">
+						<[foreach]>
 						<div class="product-item">
+							
 							<figure class="product-style">
-								<img src="static/img/product5.jpeg" alt="Books" class="product-item">
-
-
-
-
-
-
-							</figure>
-
-							<figcaption>
-								<a href="book_details.php" class="btn btn-outline-accent btn-accent-arrow">View
-									Details<i class="icon icon-ns-arrow-right"></i></a>
-								<h3>Matrimonio a beverly hills</h3>
-								<span>Aura B. Lyn</span>
-								<div class="item-price">
-									<span class="prev-price">$ 50.00</span>$ 19.00
-								</div>
-						</div>
-						</figcaption>
-
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="static/img/product6.jpeg" alt="Books" class="product-item">
+								<img src="<[random_image_offer]>" alt="Books" class="product-item">
 								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
 									Cart</button>
 							</figure>
@@ -196,50 +178,28 @@
 							<figcaption>
 								<a href="book_details.php" class="btn btn-outline-accent btn-accent-arrow">View
 									Details<i class="icon icon-ns-arrow-right"></i></a>
-								<h3>Apocalypse</h3>
-								<span>Tricel Blossom</span>
+								<h3><[random_title_offer]></h3>
+								<span><[random_author_offer]></span>
 								<div class="item-price">
-									<span class="prev-price">$ 40.00</span>$ 38.00
+									<span class="prev-price"><[random__price_offer]>$</span><[random_discounted_price]>$
 								</div>
+							</figcaption>
+								
 						</div>
-						</figcaption>
-
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="static/img/product7.jpeg" alt="Books" class="product-item">
-								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-									Cart</button>
-							</figure>
-
-							<figcaption>
-								<a href="book_details.php" class="btn btn-outline-accent btn-accent-arrow">View
-									Details<i class="icon icon-ns-arrow-right"></i></a>
-								<h3>Opposite</h3>
-								<span>Astyls</span>
-								<div class="item-price">
-									<span class="prev-price">$ 40.00</span>$ 29.00
-								</div>
-						</div>
-						</figcaption>
-
-						<div class="product-item">
-							<figure class="product-style">
-								<img src="static/img/product8.jpeg" alt="Books" class="product-item">
-								<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-									Cart</button>
-							</figure>
-
-
-
-						</div>
+						<[/foreach]>
 					</div><!--grid-->
+				
 				</div>
+				
+			
 			</div><!--inner-content-->
+			
+		</div>
 			<div class="row">
 				<div class="col-md-12">
 
 					<div class="btn-wrap align-right">
-						<a href="offer.php" class="btn-accent-arrow">View all offers <i
+						<a href="offer.php?id1=<[id_libro_1]>&id2=<[id_libro_2]>&id3=<[id_libro_3]>">View all offers <i
 								class="icon icon-ns-arrow-right"></i></a>
 					</div>
 
