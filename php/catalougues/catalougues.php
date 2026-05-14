@@ -25,6 +25,8 @@ foreach ($categories as $category) {
 
 # Prende tutti i libri
 foreach ($books as $book) {
+      
+        $body_page->setContent("bookimageallgenre", "static/img/" . $book->getImagePath());
         $body_page->setContent("booktitleallgenre", $book->getTitle());
         $body_page->setContent("authorallgenre", $book->getAuthor()->getName());
         $body_page->setContent("priceallgenre", $book->getPrice());
@@ -44,6 +46,7 @@ foreach ($categories as $category) {
     $books_by_category = $bookDAO->getBooksByCategory($category->getId()); 
     
     foreach ($books_by_category as $book) {
+        $body_page->setContent("bookimagine", $book->getImagePath());
         $body_page->setContent("booktitlecategory", $book->getTitle());
         $body_page->setContent("authorcategory", $book->getAuthor()->getName());
         $body_page->setContent("pricecategory", $book->getPrice());

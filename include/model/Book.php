@@ -14,6 +14,7 @@ class Book {
     private ?Condition $condition;
     private ?int $pages;
     private ?int $publication_year;
+    private ?string $image_path;
 
     public function __construct() {
         $this->id = null;
@@ -27,6 +28,7 @@ class Book {
         $this->condition = null;
         $this->pages = null;
         $this->publication_year = null;
+        $this->image_path = null;
     }
 
     // Getter
@@ -41,7 +43,7 @@ class Book {
     public function getCondition(): ?Condition{ return $this->condition; }
     public function getPages(): ?int { return $this->pages; }
     public function getPublicationYear(): ?int { return $this->publication_year; }
-
+    public function getImagePath(): ?string { return $this->image_path; }
 
     // Setter
     public function setId(?int $id): void { $this->id = $id; }
@@ -55,7 +57,7 @@ class Book {
     public function setCondition(?Condition $condition): void { $this->condition = $condition; }
     public function setPages(?int $pages): void { $this->pages = $pages; }
     public function setPublicationYear(?int $publication_year): void { $this->publication_year = $publication_year; }
-
+    public function setImagePath(?string $image_path): void { $this->image_path = $image_path; }
     // Other function
     public function toString(): ?string {
         return "Libro: " . $this->title . "\n" .
@@ -68,6 +70,7 @@ class Book {
                "Stato: " . $this->condition->toString() . "\n" .
                "Pagine: " . $this->pages . "\n" .
                "Anno di pubblicazione: " . $this->publication_year . "\n";
+               "Immagine: " . $this->image_path;
                
     
         

@@ -46,32 +46,32 @@ INSERT INTO FORMATO (FORMATO) VALUES ('Cartaceo'), ('Ebook');
 -- Inserimento Condizioni
 INSERT INTO CONDIZIONE (DESCRIZIONE) VALUES ('Nuovo'), ('Ottimo stato');
 -- CATEGORIA: Dark romance (ID_CATEGORIA = 2)
-INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE) VALUES
-('Balaclava', 12.90, 'Dark romance intenso e psicologico.', 1, 1, 2, 1, 1, 320, 2019),
-('Ti ritroverò Adeline', 14.90, 'Storia dark romance di ossessione e destino.', 3, 2, 2, 1, 1, 280, 2020),
-('All the devils', 13.90, 'Dark romance con toni oscuri e tormentati.', 4, 3, 2, 2, 1, 300, 2021),
-('Corrupt', 15.50, 'Dark romance tra attrazione e pericolo.', 6, 6, 2, 1, 1, 260, 2022),
-('Violent Life', 11.90, 'Storia intensa e violenta dai toni dark.', 7, 8, 2, 2, 2, 350, 2023),
-('Apocalypse', 14.20, 'Romance distopico e oscuro.', 14, 2, 2, 1, 1, 300, 2023),
-('Poisoned Love', 12.50, 'Amore tossico e pericoloso.', 16, 4, 2, 2, 1, 280, 2023),
-('Dimmi chi sei', 9.90, 'Storia d’amore e identità nel mondo del lavoro.', 5, 5, 2, 2, 2, 240, 2021);
+INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE, IMMAGINE) VALUES
+('Balaclava', 12.90, 'Dark romance intenso e psicologico.', 1, 1, 2, 1, 1, 320, 2019, 'product8.jpeg'),
+('Ti ritroverò Adeline', 14.90, 'Storia dark romance di ossessione e destino.', 3, 2, 2, 1, 1, 280, 2020, 'product10.png'),
+('All the devils', 13.90, 'Dark romance con toni oscuri e tormentati.', 4, 3, 2, 2, 1, 300, 2021, 'product11.png'),
+('Corrupt', 15.50, 'Dark romance tra attrazione e pericolo.', 6, 6, 2, 1, 1, 260, 2022, 'product13.png'),
+('Violent Life', 11.90, 'Storia intensa e violenta dai toni dark.', 7, 8, 2, 2, 2, 350, 2023, 'product15.png'),
+('Apocalypse', 14.20, 'Romance distopico e oscuro.', 14, 2, 2, 1, 1, 300, 2023, 'product6.jpeg'),
+('Poisoned Love', 12.50, 'Amore tossico e pericoloso.', 16, 4, 2, 2, 1, 280, 2023, 'product1.jpeg'),
+('Dimmi chi sei', 9.90, 'Storia d’amore e identità nel mondo del lavoro.', 5, 5, 2, 2, 2, 240, 2021, 'product12.png');
 
 
 -- CATEGORIA: Romanzo rosa (ID_CATEGORIA = 1)
-INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE) VALUES
-('Scandalo a Hollywood', 12.90, 'Romance tra fama e scandali.', 2, 7, 1, 1, 1, 280, 2022),
-('Cardigan', 10.50, 'Romance emotivo e introspettivo.', 10, 11, 1, 2, 2, 240, 2023),
-('Cercami dove finisce il rumore', 12.00, 'Storia d’amore poetica e intensa.', 11, 12, 1, 1, 1, 300, 2021),
-('Sweat turns sweet', 9.90, 'Romance giovane e passionale.', 12, 1, 1, 2, 2, 260, 2019),
-('Opposite', 10.90, 'Gli opposti che si attraggono.', 15, 3, 1, 1, 1, 280, 2022),
-('Matrimonio a Beverly Hills', 14.90, 'Romance ambientato nel mondo del lusso e del matrimonio.', 13, 5, 1, 1, 1, 320, 2023);
+INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE, IMMAGINE) VALUES
+('Scandalo a Hollywood', 12.90, 'Romance tra fama e scandali.', 2, 7, 1, 1, 1, 280, 2022, 'product14.png'),
+('Cardigan', 10.50, 'Romance emotivo e introspettivo.', 10, 11, 1, 2, 2, 240, 2023, 'seconda.jpeg'),
+('Cercami dove finisce il rumore', 12.00, 'Storia d’amore poetica e intensa.', 11, 12, 1, 1, 1, 300, 2021, 'product2.jpeg'),
+('Sweat turns sweet', 9.90, 'Romance giovane e passionale.', 12, 1, 1, 2, 2, 260, 2019, 'product4.jpeg'),
+('Opposite', 10.90, 'Gli opposti che si attraggono.', 15, 3, 1, 1, 1, 280, 2022, 'product7.jpeg'),
+('Matrimonio a Beverly Hills', 14.90, 'Romance ambientato nel mondo del lusso e del matrimonio.', 13, 5, 1, 1, 1, 320, 2023, 'product5.jpeg');
 
 
 -- CATEGORIA: Office romance (ID_CATEGORIA = 3)
-INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE) VALUES
-('Ti aspetto a Central Park', 10.90, 'Romance ambientato a New York.', 2, 4, 3, 1, 1, 280, 2023),
-('Lilium', 11.50, 'Romanzo romantico ambientato in un contesto lavorativo emotivo.', 8, 9, 3, 2, 1, 300, 2023),
-('Due cuori, un’anima', 13.90, 'Storia d’amore intensa nata in ambiente professionale.', 9, 10, 3, 1, 1, 260, 2023);
+INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE, IMMAGINE) VALUES
+('Ti aspetto a Central Park', 10.90, 'Romance ambientato a New York.', 2, 4, 3, 1, 1, 280, 2023, 'product9.png'),
+('Lilium', 11.50, 'Romanzo romantico ambientato in un contesto lavorativo emotivo.', 8, 9, 3, 2, 1, 300, 2023, 'product3.jpeg'),
+('Due cuori, un’anima', 13.90, 'Storia d’amore intensa nata in ambiente professionale.', 9, 10, 3, 1, 1, 260, 2023, 'main-banner2.jpg');
 
 INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,1);
 INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,2);

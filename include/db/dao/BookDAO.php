@@ -26,10 +26,10 @@ class BookDAO extends DAO {
         $this->stmtGetAllBooks = $this->conn->prepare("SELECT * FROM LIBRO;");
         
         // Query di inserimento (rispetta le tue colonne SQL)
-        $this->stmtInsertBook = $this->conn->prepare("INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+        $this->stmtInsertBook = $this->conn->prepare("INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE, IMMAGINE) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);");
         
         // Query di aggiornamento
-        $this->stmtUpdateBook = $this->conn->prepare("UPDATE LIBRO SET TITOLO = ?, PREZZO = ?, DESCRIZIONE = ?, ID_AUTORE = ?, ID_EDITORE = ?, ID_CATEGORIA = ?, ID_FORMATO = ?, ID_CONDIZIONE = ? WHERE ID = ?;");
+        $this->stmtUpdateBook = $this->conn->prepare("UPDATE LIBRO SET TITOLO = ?, PREZZO = ?, DESCRIZIONE = ?, ID_AUTORE = ?, ID_EDITORE = ?, ID_CATEGORIA = ?, ID_FORMATO = ?, ID_CONDIZIONE = ?, PAGINE = ?, ANNO_PUBBLICAZIONE = ?, IMMAGINE = ? WHERE ID = ?;");
         
         // Query di cancellazione
         $this->stmtDeleteBook = $this->conn->prepare("DELETE FROM LIBRO WHERE ID = ?;");
@@ -72,7 +72,8 @@ class BookDAO extends DAO {
             $this->stmtUpdateBook->bindValue(9, $book->getId(), PDO::PARAM_INT);
             $this->stmtUpdateBook->bindValue(10, $book->getPages(), PDO::PARAM_INT); 
             $this->stmtUpdateBook->bindValue(11, $book->getPublicationYear(), PDO::PARAM_INT); 
-
+            $this->stmtUpdateBook->bindValue(12, $book->getImagePath(), PDO::PARAM_STR);
+          
             if($this->stmtUpdateBook->execute()) return $book;
         } else {
             // Logica INSERT
@@ -84,8 +85,10 @@ class BookDAO extends DAO {
             $this->stmtInsertBook->bindValue(6, $book->getCategory() ? $book->getCategory()->getId() : null, PDO::PARAM_INT);
             $this->stmtInsertBook->bindValue(7, $book->getFormat() ? $book->getFormat()->getId() : null, PDO::PARAM_INT);
             $this->stmtInsertBook->bindValue(8, $book->getCondition() ? $book->getCondition()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(9, $book->getPages(), PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(10, $book->getPublicationYear(), PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(9, $book->getId(), PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(10, $book->getPages(), PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(11, $book->getPublicationYear(), PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(12, $book->getImagePath(), PDO::PARAM_STR);
 
             if($this->stmtInsertBook->execute()){
                 $book->setId($this->conn->lastInsertId());
@@ -118,7 +121,7 @@ class BookDAO extends DAO {
         $book->setDescription($rs['DESCRIZIONE']);
         $book->setPages((int)$rs['PAGINE']);
         $book->setPublicationYear((int)$rs['ANNO_PUBBLICAZIONE']);
-        
+        $book->setImagePath((string)$rs['IMMAGINE']);
         // Impostiamo gli ID nel Proxy (Lazy Loading)
         $book->setAuthorId($rs['ID_AUTORE']);
         $book->setPublisherId($rs['ID_EDITORE']);
