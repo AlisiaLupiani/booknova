@@ -12,6 +12,8 @@ class Book {
     private ?Category $category;
     private ?Format $format;
     private ?Condition $condition;
+    private ?int $pages;
+    private ?int $publication_year;
 
     public function __construct() {
         $this->id = null;
@@ -23,6 +25,8 @@ class Book {
         $this->category = null;
         $this->format = null;
         $this->condition = null;
+        $this->pages = null;
+        $this->publication_year = null;
     }
 
     // Getter
@@ -35,6 +39,9 @@ class Book {
     public function getCategory(): ?Category { return $this->category; }
     public function getFormat(): ?Format { return $this->format; }
     public function getCondition(): ?Condition{ return $this->condition; }
+    public function getPages(): ?int { return $this->pages; }
+    public function getPublicationYear(): ?int { return $this->publication_year; }
+
 
     // Setter
     public function setId(?int $id): void { $this->id = $id; }
@@ -46,6 +53,8 @@ class Book {
     public function setCategory(?Category $category): void { $this->category = $category; }
     public function setFormat(?Format $format): void { $this->format = $format; }
     public function setCondition(?Condition $condition): void { $this->condition = $condition; }
+    public function setPages(?int $pages): void { $this->pages = $pages; }
+    public function setPublicationYear(?int $publication_year): void { $this->publication_year = $publication_year; }
 
     // Other function
     public function toString(): ?string {
@@ -56,7 +65,10 @@ class Book {
                "Editore: " . $this->publisher->toString() . "\n" .
                "Categoria: " . $this->category->toString() . "\n" .
                "Formato: " . $this->format->toString() . "\n" .
-               "Stato: " . $this->condition->toString();
+               "Stato: " . $this->condition->toString() . "\n" .
+               "Pagine: " . $this->pages . "\n" .
+               "Anno di pubblicazione: " . $this->publication_year . "\n";
+               
     
         
     }

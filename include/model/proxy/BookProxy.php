@@ -12,6 +12,7 @@ class BookProxy extends Book {
     private int $conditionId;
     private int $categoryId;
     private int $formatId;
+    
 
 
     public function __construct(?DataLayer $dataLayer){
@@ -34,8 +35,8 @@ class BookProxy extends Book {
     public function getFormatId(): int {return $this->formatId; }
     public function setFormatId(int $formatId): void {$this->formatId = $formatId; }
 
-
-    
+ 
+  
 
     public function getAuthor(): ?Author{
         if(parent::getAuthor() == null && $this->authorId > 0){
@@ -71,6 +72,7 @@ class BookProxy extends Book {
         }
         return parent::getFormat();
     }
-
+     
+    
 
 }

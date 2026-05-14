@@ -26,17 +26,7 @@
 						<img src="static/img/main-banner2.jpg" alt="banner" class="banner-image">
 					</div><!--slider-item-->
 
-					<div class="slider-item">
-						<div class="banner-content">
-							<h2 class="banner-title">Cardigan</h2>
-							<p>Dark Romance ambientato a Westminster, Londra.</p>
-							<div class="btn-wrap">
-								<a href="book_details.php" class="btn btn-outline-accent btn-accent-arrow">Read More<i
-										class="icon icon-ns-arrow-right"></i></a>
-							</div>
-						</div><!--banner-content-->
-						<img src="static/img/seconda2.jpg" alt="banner" class="banner-image">
-					</div><!--slider-item-->
+					
 
 				</div><!--slider-->
 
@@ -66,7 +56,7 @@
 
 				<div class="product-list" data-aos="fade-up">
 					<div class="row">
-
+						<[foreach]>
 						<div class="col-md-3">
 							<div class="product-item">
 								<figure class="product-style">
@@ -75,58 +65,14 @@
 										Cart</button>
 								</figure>
 								<figcaption>
-									<h3>Poisoned love</h3>
-									<span>Elaya Lyn</span>
-									<div class="item-price">$ 40.00</div>
+									<h3><[random_title]></h3>
+									<span><[random_author]></span>
+									<div class="item-price"> <[random__price]>$</div>
 								</figcaption>
 							</div>
+						
 						</div>
-
-						<div class="col-md-3">
-							<div class="product-item">
-								<figure class="product-style">
-									<img src="static/img/product2.jpeg" alt="Books" class="product-item">
-									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-										Cart</button>
-								</figure>
-								<figcaption>
-									<h3>Cercami dove finisce il rumore</h3>
-									<span>Doire Oak</span>
-									<div class="item-price">$ 37.00</div>
-								</figcaption>
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="product-item">
-								<figure class="product-style">
-									<img src="static/img/product3.jpeg" alt="Books" class="product-item">
-									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-										Cart</button>
-								</figure>
-								<figcaption>
-									<h3>Lilium</h3>
-									<span>Arya Beker</span>
-									<div class="item-price">$ 25.00</div>
-								</figcaption>
-							</div>
-						</div>
-
-						<div class="col-md-3">
-							<div class="product-item">
-								<figure class="product-style">
-									<img src="static/img/product4.jpeg" alt="Books" class="product-item">
-									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-										Cart</button>
-								</figure>
-								<figcaption>
-									<h3>Sweet tunrs sweet</h3>
-									<span>Esme Pavard</span>
-									<div class="item-price">$ 34.00</div>
-								</figcaption>
-							</div>
-						</div>
-
+						<[/foreach]>
 					</div><!--ft-books-slider-->
 				</div><!--grid-->
 
@@ -167,10 +113,10 @@
 							<h2 class="section-title divider">Best Selling Book</h2>
 
 							<div class="products-content">
-								<div class="author-name">By Joana M.</div>
-								<h3 class="item-title">Cardigan</h3>
-								<p>Dark Romance ambientato a Westminster, Londra.</p>
-								<div class="item-price">$ 30.00</div>
+								<div class="author-name"><[random_book_author]></div>
+								<h3 class="item-title"><[random_book_title]></h3>
+								<p><[random_book_description]></p>
+								<div class="item-price">$ <[random_book_price]></div>
 								<div class="btn-wrap">
 									<a href="book_details.php" class="btn-accent-arrow">shop it now <i
 											class="icon icon-ns-arrow-right"></i></a>

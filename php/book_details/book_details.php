@@ -18,6 +18,14 @@ $book = $bookDAO->getBookById($book_id);
 
 
 $body_page->setContent("booktitle", $book->getTitle());
+$body_page->setContent("author", $book->getAuthor()->getName());
+$body_page->setContent("description", $book->getDescription());
+$body_page->setContent("price", $book->getPrice());
+$body_page->setContent("pages", $book->getPages());
+$body_page->setContent("condition", $book->getCondition()->getCondition());
+$body_page->setContent("publisher", $book->getPublisher()->getName());
+$body_page->setContent("publication_year", $book->getPublicationYear());
+
 
 
 

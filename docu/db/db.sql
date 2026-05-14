@@ -46,32 +46,32 @@ INSERT INTO FORMATO (FORMATO) VALUES ('Cartaceo'), ('Ebook');
 -- Inserimento Condizioni
 INSERT INTO CONDIZIONE (DESCRIZIONE) VALUES ('Nuovo'), ('Ottimo stato');
 -- CATEGORIA: Dark romance (ID_CATEGORIA = 2)
-INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE) VALUES
-('Balaclava', 12.90, 'Dark romance intenso e psicologico.', 1, 1, 2, 1, 1),
-('Ti ritroverò Adeline', 14.90, 'Storia dark romance di ossessione e destino.', 3, 2, 2, 1, 1),
-('All the devils', 13.90, 'Dark romance con toni oscuri e tormentati.', 4, 3, 2, 2, 1),
-('Corrupt', 15.50, 'Dark romance tra attrazione e pericolo.', 6, 6, 2, 1, 1),
-('Violent Life', 11.90, 'Storia intensa e violenta dai toni dark.', 7, 8, 2, 2, 2),
-('Apocalypse', 14.20, 'Romance distopico e oscuro.', 14, 2, 2, 1, 1),
-('Poisoned Love', 12.50, 'Amore tossico e pericoloso.', 16, 4, 2, 2, 1),
-('Dimmi chi sei', 9.90, 'Storia d’amore e identità nel mondo del lavoro.', 5, 5, 2, 2, 2);
+INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE) VALUES
+('Balaclava', 12.90, 'Dark romance intenso e psicologico.', 1, 1, 2, 1, 1, 320, 2019),
+('Ti ritroverò Adeline', 14.90, 'Storia dark romance di ossessione e destino.', 3, 2, 2, 1, 1, 280, 2020),
+('All the devils', 13.90, 'Dark romance con toni oscuri e tormentati.', 4, 3, 2, 2, 1, 300, 2021),
+('Corrupt', 15.50, 'Dark romance tra attrazione e pericolo.', 6, 6, 2, 1, 1, 260, 2022),
+('Violent Life', 11.90, 'Storia intensa e violenta dai toni dark.', 7, 8, 2, 2, 2, 350, 2023),
+('Apocalypse', 14.20, 'Romance distopico e oscuro.', 14, 2, 2, 1, 1, 300, 2023),
+('Poisoned Love', 12.50, 'Amore tossico e pericoloso.', 16, 4, 2, 2, 1, 280, 2023),
+('Dimmi chi sei', 9.90, 'Storia d’amore e identità nel mondo del lavoro.', 5, 5, 2, 2, 2, 240, 2021);
 
 
 -- CATEGORIA: Romanzo rosa (ID_CATEGORIA = 1)
-INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE) VALUES
-('Scandalo a Hollywood', 12.90, 'Romance tra fama e scandali.', 2, 7, 1, 1, 1),
-('Cardigan', 10.50, 'Romance emotivo e introspettivo.', 10, 11, 1, 2, 2),
-('Cercami dove finisce il rumore', 12.00, 'Storia d’amore poetica e intensa.', 11, 12, 1, 1, 1),
-('Sweat turns sweet', 9.90, 'Romance giovane e passionale.', 12, 1, 1, 2, 2),
-('Opposite', 10.90, 'Gli opposti che si attraggono.', 15, 3, 1, 1, 1),
-('Matrimonio a Beverly Hills', 14.90, 'Romance ambientato nel mondo del lusso e del matrimonio.', 13, 5, 1, 1, 1);
+INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE) VALUES
+('Scandalo a Hollywood', 12.90, 'Romance tra fama e scandali.', 2, 7, 1, 1, 1, 280, 2022),
+('Cardigan', 10.50, 'Romance emotivo e introspettivo.', 10, 11, 1, 2, 2, 240, 2023),
+('Cercami dove finisce il rumore', 12.00, 'Storia d’amore poetica e intensa.', 11, 12, 1, 1, 1, 300, 2021),
+('Sweat turns sweet', 9.90, 'Romance giovane e passionale.', 12, 1, 1, 2, 2, 260, 2019),
+('Opposite', 10.90, 'Gli opposti che si attraggono.', 15, 3, 1, 1, 1, 280, 2022),
+('Matrimonio a Beverly Hills', 14.90, 'Romance ambientato nel mondo del lusso e del matrimonio.', 13, 5, 1, 1, 1, 320, 2023);
 
 
 -- CATEGORIA: Office romance (ID_CATEGORIA = 3)
-INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE) VALUES
-('Ti aspetto a Central Park', 10.90, 'Romance ambientato a New York.', 2, 4, 3, 1, 1),
-('Lilium', 11.50, 'Romanzo romantico ambientato in un contesto lavorativo emotivo.', 8, 9, 3, 2, 1),
-('Due cuori, un’anima', 13.90, 'Storia d’amore intensa nata in ambiente professionale.', 9, 10, 3, 1, 1);
+INSERT INTO LIBRO (TITOLO, PREZZO, DESCRIZIONE, ID_AUTORE, ID_EDITORE, ID_CATEGORIA, ID_FORMATO, ID_CONDIZIONE, PAGINE, ANNO_PUBBLICAZIONE) VALUES
+('Ti aspetto a Central Park', 10.90, 'Romance ambientato a New York.', 2, 4, 3, 1, 1, 280, 2023),
+('Lilium', 11.50, 'Romanzo romantico ambientato in un contesto lavorativo emotivo.', 8, 9, 3, 2, 1, 300, 2023),
+('Due cuori, un’anima', 13.90, 'Storia d’amore intensa nata in ambiente professionale.', 9, 10, 3, 1, 1, 260, 2023);
 
 INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,1);
 INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,2);

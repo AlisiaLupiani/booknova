@@ -13,7 +13,7 @@ class BookDAO extends DAO {
     private PDOStatement $stmtUpdateBook;
     private PDOStatement $stmtDeleteBook;
     private PDOStatement $stmtGetBooksByCategory;
-
+    private PDOStatement $stmtGetRandomBook;    
 
     public function __construct(?DataLayer $dataLayer) {
         parent::__construct($dataLayer);
@@ -36,6 +36,9 @@ class BookDAO extends DAO {
         
         // Query per ottenere i libri per categoria
         $this->stmtGetBooksByCategory = $this->conn->prepare("SELECT * FROM LIBRO WHERE ID_CATEGORIA = ?;");
+        
+        // Query per ottenere un libro casuale
+        $this->stmtGetRandomBook = $this->conn->prepare("SELECT * FROM LIBRO ORDER BY RAND() LIMIT ?;");
     }
 
     public function getBookById(int $id): ?Book {
@@ -67,7 +70,9 @@ class BookDAO extends DAO {
             $this->stmtUpdateBook->bindValue(7, $book->getFormat() ? $book->getFormat()->getId() : null, PDO::PARAM_INT);
             $this->stmtUpdateBook->bindValue(8, $book->getCondition() ? $book->getCondition()->getId() : null, PDO::PARAM_INT);
             $this->stmtUpdateBook->bindValue(9, $book->getId(), PDO::PARAM_INT);
-            
+            $this->stmtUpdateBook->bindValue(10, $book->getPages(), PDO::PARAM_INT); 
+            $this->stmtUpdateBook->bindValue(11, $book->getPublicationYear(), PDO::PARAM_INT); 
+
             if($this->stmtUpdateBook->execute()) return $book;
         } else {
             // Logica INSERT
@@ -79,7 +84,9 @@ class BookDAO extends DAO {
             $this->stmtInsertBook->bindValue(6, $book->getCategory() ? $book->getCategory()->getId() : null, PDO::PARAM_INT);
             $this->stmtInsertBook->bindValue(7, $book->getFormat() ? $book->getFormat()->getId() : null, PDO::PARAM_INT);
             $this->stmtInsertBook->bindValue(8, $book->getCondition() ? $book->getCondition()->getId() : null, PDO::PARAM_INT);
-            
+            $this->stmtInsertBook->bindValue(9, $book->getPages(), PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(10, $book->getPublicationYear(), PDO::PARAM_INT);
+
             if($this->stmtInsertBook->execute()){
                 $book->setId($this->conn->lastInsertId());
                 return $book;
@@ -109,6 +116,8 @@ class BookDAO extends DAO {
         $book->setTitle($rs['TITOLO']);
         $book->setPrice((float)$rs['PREZZO']);
         $book->setDescription($rs['DESCRIZIONE']);
+        $book->setPages((int)$rs['PAGINE']);
+        $book->setPublicationYear((int)$rs['ANNO_PUBBLICAZIONE']);
         
         // Impostiamo gli ID nel Proxy (Lazy Loading)
         $book->setAuthorId($rs['ID_AUTORE']);
@@ -120,9 +129,18 @@ class BookDAO extends DAO {
         return $book;
     }
 
+        public function getRandomBook(int $limit = 4): array {
+        $this->stmtGetRandomBook->bindValue(1, $limit, PDO::PARAM_INT);
+        $this->stmtGetRandomBook->execute();
+
+        $result = [];
+        while ($rs = $this->stmtGetRandomBook->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $this->createBook($rs);
+        }
+
+        return $result;
+        }
     
-
-
 
 
 }
