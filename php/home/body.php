@@ -83,7 +83,7 @@ $body_page->setContent("id_libro_1", $id1);
 $body_page->setContent("id_libro_2", $id2);
 $body_page->setContent("id_libro_3", $id3);
 
-// 3. Generiamo il link completo DIRETTAMENTE a mano (Addio QueryStringBuilder!)
+
 $offer_link = "offer.php?id1=" . $id1 . "&id2=" . $id2 . "&id3=" . $id3;
 $body_page->setContent("offer_link", $offer_link);
 $body_page->setContent("id_libro_1", $id_salvati[0] ?? 0);

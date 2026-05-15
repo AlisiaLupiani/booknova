@@ -73,50 +73,42 @@
 <body>
 
     <div class="table-container">
-        <h2>Utenti iscritti alla piattaforma</h2>
+        <h2>Offerte disponibili</h2>
 
         <table class="book-table">
             <thead>
                 <tr>
-                    <th>Nome</th>
+                    <th>ID Offerta</th>
+                 
                     <th>Data Inizio</th>
                     <th>Data Fine</th>
+                    <th>Sconto</th>
+                    <th>Azioni</th>
                     
                     
                 </tr>
             </thead>
             <tbody>
+                <[foreach]>
                 <tr>
-                    <td>1</td>
-                    <td><strong>Il Nome della Rosa</strong></td>
-                    <td>Umberto Eco</td>
-                    <td>Bompiani</td>
-                    <td>Giallo</td>
-                    <td>€ 15,00</td>
-                    <td><span class="badge badge-fisico">Rigida</span></td>
+                    <td><[offer_id]></td>
+                   
+                    <td><[data_inizio]></td>
+                    <td><[data_fine]></td>
+                    <td><[value]>%</td>
+                  
+              
                     <td>
-                        <a href="elimina_offerta.php?id=1" class="btn-action btn-edit">Elimina Offerta
+                        <a href="elimina_offerta.php?offer_id=<[offer_id]>" class="btn-action btn-edit">Elimina Offerta
                         </a>
-                        <a href="aggiungi_offerta.php?id=1" class="btn-action btn-edit">Modifica
+                        <a href="modifica_offerta.php?offer_id=<[offer_id]>" class="btn-action btn-edit">Modifica
+                        </a>
+                         <a href="libri_offerta.php?offer_id=<[offer_id]>" class="btn-action btn-edit">Visualizza libri con offerte
                         </a>
                     </td>
                 </tr>
 
-                <tr>
-                    <td>2</td>
-                    <td><strong>Clean Code</strong></td>
-                    <td>Robert C. Martin</td>
-                    <td>Prentice Hall</td>
-                    <td>Informatica</td>
-                    <td>€ 32,50</td>
-                    <td><span class="badge badge-ebook">Ebook</span></td>
-                    <td>
-                        <a href="elimina_offerta.php?id=2" class="btn-action btn-edit">Elimina offerta</a>
-                        <a href="aggiungi_offerta.php?id=1" class="btn-action btn-edit">Modifica
-                        </a>
-                    </td>
-                </tr>
-                
+                <[/foreach]>
                 </tbody>
         </table>
     </div>

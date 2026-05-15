@@ -78,42 +78,31 @@
         <table class="book-table">
             <thead>
                 <tr>
-                    <th>Utente</th>
-                    <th>Libro</th>
-                    <th>Contenuto</th>
+                    <th>ID Recensione</th>
+                    <th>Nome Utente</th>
+                    <th>Cognome Utente</th>
                     <th>Data</th>
+                    <th>Contenuto</th>
+                    <th>Azioni</th>
                     
                    
                     
                 </tr>
             </thead>
             <tbody>
+                <[foreach]>
                 <tr>
-                    <td>1</td>
-                    <td><strong>Il Nome della Rosa</strong></td>
-                    <td>Umberto Eco</td>
-                    <td>Bompiani</td>
-                    <td>Giallo</td>
-                    <td>€ 15,00</td>
-                    <td><span class="badge badge-fisico">Rigida</span></td>
+                    <td><[recensioni_id]></td>
+                    <td><strong><[username_recensioni]></strong></td>
+                    <td><[usersurnaname_recensioni]></td>
+                    <td><[date_recensioni]></td>
+                    <td><[content_recensioni]></td>
                     <td>
-                        <a href="elimina_categoria.php" class="btn-action btn-edit">Elimina</a>
+                        <a href="elimina_recensione.php" class="btn-action btn-edit">Elimina</a>
                     </td>
                 </tr>
-
-                <tr>
-                    <td>2</td>
-                    <td><strong>Clean Code</strong></td>
-                    <td>Robert C. Martin</td>
-                    <td>Prentice Hall</td>
-                    <td>Informatica</td>
-                    <td>€ 32,50</td>
-                    <td><span class="badge badge-ebook">Ebook</span></td>
-                    <td>
-                         <a href="elimina_categoria.php" class="btn-action btn-edit">Elimina</a>
-                    </td>
-                    </td>
-                </tr>
+                <[/foreach]>
+                
                 
                 </tbody>
         </table>
