@@ -78,39 +78,31 @@
         <table class="book-table">
             <thead>
                 <tr>
+                     <th>ID</th>
                     <th>Nome</th>
                     <th>Cognome</th>
                     <th>Email</th>
                     <th>Indirizzo</th>
+                    <th>Azioni</th>
                     
                 </tr>
             </thead>
             <tbody>
+                <[foreach]>
                 <tr>
-                    <td>1</td>
-                    <td><strong>Il Nome della Rosa</strong></td>
-                    <td>Umberto Eco</td>
-                    <td>Bompiani</td>
-                    <td>Giallo</td>
-                    <td>€ 15,00</td>
-                    <td><span class="badge badge-fisico">Rigida</span></td>
+                    <td><[user_id]></td>
+                    <td><strong><[name]></strong></td>
+                    <td><[surname]></td>
+                    <td><[email]></td>
+                    <td><[indirizzo]></td>
+                    
                     <td>
-                        <a href="elimina_utente.php?id=1" class="btn-action btn-edit">Elimina utente</a>
+                        <a href="elimina_utente.php?user_id=<[user_id]>" class="btn-action btn-edit">Elimina utente</a>
                     </td>
                 </tr>
 
-                <tr>
-                    <td>2</td>
-                    <td><strong>Clean Code</strong></td>
-                    <td>Robert C. Martin</td>
-                    <td>Prentice Hall</td>
-                    <td>Informatica</td>
-                    <td>€ 32,50</td>
-                    <td><span class="badge badge-ebook">Ebook</span></td>
-                    <td>
-                        <a href="elimina_utente.php?" class="btn-action btn-edit">Elimina utente</a>
-                    </td>
-                </tr>
+                <[/foreach]>
+                
                 
                 </tbody>
         </table>

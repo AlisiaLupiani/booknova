@@ -84,38 +84,29 @@
                     <th>Editore</th>
                     <th>Categoria</th>
                     <th>Prezzo</th>
-                    <th>Condizione</th>
+                    <th>Pagine</th>
                     <th>Azioni</th>
                 </tr>
             </thead>
             <tbody>
+               <[foreach]>
                 <tr>
-                    <td>1</td>
-                    <td><strong>Il Nome della Rosa</strong></td>
-                    <td>Umberto Eco</td>
-                    <td>Bompiani</td>
-                    <td>Giallo</td>
-                    <td>€ 15,00</td>
-                    <td><span class="badge badge-fisico">Rigida</span></td>
+                     
+                    <td><[book_id]></td>
+                    <td><strong><[booktitle]></strong></td>
+                    <td><[author]></td>
+                    <td><[publisher]></td>
+                    <td><[category]></td>
+                    <td><[price]>$</td>
+                    <td><[pages]></td>
                     <td>
-                        <a href="modifica_libro.php" class="btn-action btn-edit">Modifica</a>
-                        <a href="delete.php?id=1" class="btn-action btn-delete" onclick="return confirm('Sei sicuro?')">Elimina</a>
+                        <a href="modifica_libro.php?book_id=<[book_id]>" class="btn-action btn-edit">Modifica</a>
+                        <a href="delete.php?book_id" class="btn-action btn-delete" onclick="return confirm('Sei sicuro?')">Elimina</a>
                     </td>
+                        
                 </tr>
-
-                <tr>
-                    <td>2</td>
-                    <td><strong>Clean Code</strong></td>
-                    <td>Robert C. Martin</td>
-                    <td>Prentice Hall</td>
-                    <td>Informatica</td>
-                    <td>€ 32,50</td>
-                    <td><span class="badge badge-ebook">Ebook</span></td>
-                    <td>
-                        <a href="modifica_libro.php" class="btn-action btn-edit">Modifica</a>
-                        <a href="delete.php?id=2" class="btn-action btn-delete" onclick="return confirm('Sei sicuro?')">Elimina</a>
-                    </td>
-                </tr>
+                 <[/foreach]>
+           
                 
                 </tbody>
         </table>

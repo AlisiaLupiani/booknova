@@ -73,47 +73,42 @@
 <body>
 
     <div class="table-container">
-        <h2>Catalogo Libri Disponibili</h2>
+        <h2>Ordini Disponibili</h2>
 
         <table class="book-table">
             <thead>
                 <tr>
-                    <th>Utente</th>
-                    <th>Pagamento</th>
-                     <th>Prezzo</th>
-                       <th>Data</th>
+                    <th>Ordine ID</th>
+                    <th>Nome Utente</th>
+                    <th>Cognome Utente</th>
+                    <th>Data Ordine</th>
+                    <th>Prezzo Totale</th>
+                    <th>Metodo di Pagamento</th>
+                    <th>Indirizzo di Consegna</th>
+                    <th>Azioni</th>
                     
                    
                     
                 </tr>
             </thead>
             <tbody>
+                <[foreach]>
                 <tr>
-                    <td>1</td>
-                    <td><strong>Il Nome della Rosa</strong></td>
-                    <td>Umberto Eco</td>
-                    <td>Bompiani</td>
-                    <td>Giallo</td>
-                    <td>€ 15,00</td>
-                    <td><span class="badge badge-fisico">Rigida</span></td>
+                    <td><[order_id]></td>
+                    <td><strong><[username_order]></strong></td>
+                    <td><[usersurname_order]></td>
+                    <td><[date_order]></td>
+                    <td><[total_order]>$</td>
+                    <td><[payment_order]></td>
+                    <td><[shipping_order]>$</td>
+                   
                     <td>
-                        <a href="elimina_autore.php" class="btn-action btn-edit">Elimina</a>
+                        <a href="order_details.php?order_id=<[order_id]>" class="btn-action btn-edit">Dettagli</a>
+                        <a href="delete_order.php class="btn-action btn-edit">Elimina</a>
                     </td>
                 </tr>
-
-                <tr>
-                    <td>2</td>
-                    <td><strong>Clean Code</strong></td>
-                    <td>Robert C. Martin</td>
-                    <td>Prentice Hall</td>
-                    <td>Informatica</td>
-                    <td>€ 32,50</td>
-                    <td><span class="badge badge-ebook">Ebook</span></td>
-                    <td>
-                        <a href="elimina_autore.php" class="btn-action btn-edit">Elimina</a>
-                    </td>
-                </tr>
-                
+                <[/foreach]>
+               
                 </tbody>
         </table>
     </div>

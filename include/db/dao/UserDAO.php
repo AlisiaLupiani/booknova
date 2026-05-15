@@ -35,10 +35,11 @@ class UserDAO extends DAO{
         $this->stmtGetAllUsersCount = $this->conn->prepare("SELECT COUNT(*) AS COUNTER FROM UTENTE WHERE RUOLO = ?;");
         $this->stmtGetAllUsersByRole = $this->conn->prepare("SELECT * FROM UTENTE WHERE RUOLO = ?;");
         $this->stmtGetAllUsersExceptId = $this->conn->prepare("SELECT * FROM UTENTE WHERE ID != ?;");
-        $this->stmtGetAllUsersByGenericString = $this->conn->prepare("SELECT * FROM UTENTE WHERE NOME LIKE ? OR COGNOME LIKE ? OR EMAIL LIKE ?");
-        $this->stmtInsertUser = $this->conn->prepare("INSERT INTO UTENTE (NOME, COGNOME, EMAIL, PASSWORD, RUOLO, URL_IMAGE, NUMERO_TELEFONO) VALUES (?, ?, ?, ?, ?, ?, ?);");
-        $this->stmtUpdateUser = $this->conn->prepare("UPDATE UTENTE SET NOME = ?, COGNOME = ?, EMAIL = ?, PASSWORD = ?, URL_IMAGE = ?, NUMERO_TELEFONO = ?, RUOLO = ? WHERE ID = ?;");
+        $this->stmtGetAllUsersByGenericString = $this->conn->prepare("SELECT * FROM UTENTE WHERE NOME LIKE ? OR COGNOME LIKE ? OR EMAIL LIKE ? OR INDIRIZZO LIKE ?; ");
+        $this->stmtInsertUser = $this->conn->prepare("INSERT INTO UTENTE (NOME, COGNOME, EMAIL, PASSWORD, RUOLO, URL_IMAGE, NUMERO_TELEFONO, INDIRIZZO) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+        $this->stmtUpdateUser = $this->conn->prepare("UPDATE UTENTE SET NOME = ?, COGNOME = ?, EMAIL = ?, PASSWORD = ?, URL_IMAGE = ?, NUMERO_TELEFONO = ?, RUOLO = ?, INDIRIZZO = ? WHERE ID = ?;");
         $this->stmtDeleteUser = $this->conn->prepare("DELETE FROM UTENTE WHERE ID = ?;");
+
     }
 
 
@@ -189,6 +190,8 @@ class UserDAO extends DAO{
             $this->stmtUpdateUser->bindValue(4, $user->getPassword(), PDO::PARAM_STR);
             $this->stmtUpdateUser->bindValue(7, $user->getRole(), PDO::PARAM_STR);
             $this->stmtUpdateUser->bindValue(8, $user->getId(), PDO::PARAM_INT);
+            $this->stmtUpdateUser->bindValue(5, $user->getIndirizzo(), PDO::PARAM_STR);
+
 
             if($this->stmtUpdateUser->execute()){
                 return $user;
@@ -200,6 +203,7 @@ class UserDAO extends DAO{
             $this->stmtInsertUser->bindValue(3, $user->getEmail(), PDO::PARAM_STR);
             $this->stmtInsertUser->bindValue(4, $user->getPassword(), PDO::PARAM_STR);
             $this->stmtInsertUser->bindValue(5, $user->getRole(), PDO::PARAM_STR);
+            $this->stmtInsertUser->bindValue(6, $user->getIndirizzo(), PDO::PARAM_STR);
 
             
             if($this->stmtInsertUser->execute()){
@@ -242,6 +246,8 @@ class UserDAO extends DAO{
         $user->setEmail($rs['EMAIL']);
         $user->setPassword($rs['PASSWORD']);
         $user->setRoleId($rs['ID_RUOLO']);
+        $user->setIndirizzo($rs['INDIRIZZO']);
+
         return $user;
     }
 

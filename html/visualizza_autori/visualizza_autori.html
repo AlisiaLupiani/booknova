@@ -78,38 +78,27 @@
         <table class="book-table">
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Nome</th>
                     <th>Biografia</th>
+                    <th>Azioni</th>
                    
                     
                 </tr>
             </thead>
             <tbody>
+                <[foreach]>
                 <tr>
-                    <td>1</td>
-                    <td><strong>Il Nome della Rosa</strong></td>
-                    <td>Umberto Eco</td>
-                    <td>Bompiani</td>
-                    <td>Giallo</td>
-                    <td>€ 15,00</td>
-                    <td><span class="badge badge-fisico">Rigida</span></td>
+                    <td><[author_id]></td>
+                    <td><strong><[name]></strong></td>
+                    <td><[biography]></td>
+                   
                     <td>
-                        <a href="elimina_autore.php" class="btn-action btn-edit">Elimina</a>
+                        <a href="elimina_autore.php?author_id=<[author_id]>" class="btn-action btn-edit">Elimina</a>
                     </td>
                 </tr>
+                <[/foreach]>
 
-                <tr>
-                    <td>2</td>
-                    <td><strong>Clean Code</strong></td>
-                    <td>Robert C. Martin</td>
-                    <td>Prentice Hall</td>
-                    <td>Informatica</td>
-                    <td>€ 32,50</td>
-                    <td><span class="badge badge-ebook">Ebook</span></td>
-                    <td>
-                        <a href="elimina_autore.php" class="btn-action btn-edit">Elimina</a>
-                    </td>
-                </tr>
                 
                 </tbody>
         </table>

@@ -9,6 +9,7 @@ class User{
     private ?string $surname;
     private ?string $email;
     private ?string $password;
+    private ?string $indirizzo;
     private ?Role $role;
 
 
@@ -19,6 +20,7 @@ class User{
         $this->surname = '';
         $this->email = '';
         $this->password = '';
+        $this->indirizzo = '';
         $this->role = null;
     }
 
@@ -28,6 +30,7 @@ class User{
     public function getSurname(): ?string {return $this->surname;}
     public function getEmail(): ?string {return $this->email;}
     public function getPassword(): ?string {return $this->password;}
+    public function getIndirizzo(): ?string {return $this->indirizzo;}
     public function getRole(): ?Role {return $this->role;}
 
 
@@ -37,6 +40,7 @@ class User{
     public function setSurname(?string $surname) { $this->surname = $surname; }
     public function setEmail(?string $email) { $this->email = $email; }
     public function setPassword(?string $password) { $this->password = $password; }
+    public function setIndirizzo(?string $indirizzo) { $this->indirizzo = $indirizzo; }
     public function setRole(?Role $role) { $this->role = $role; }
 
     // Other function
