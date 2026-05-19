@@ -14,25 +14,43 @@
             <tbody id="cart-items">
                 <[foreach]>
                 <tr>
-                    <td><[booktitle]></td>
-                    <td>€<[price]></td>
-                    <td><input type="number" value="<[quantity]>" min="1"></td>
-                    <td>€<[total]></td>
-                    <td><button>Rimuovi</button></td>
+                    <!-- Immagine e Titolo uniti nella colonna Prodotto -->
+                    <td>
+                        <img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" style="width: 50px; marginRight: 10px;">
+                        <a href="<[bookallgenrehrefid]>"><[booktitleallgenre]></a>
+                        <br><small><[authorallgenre]></small>
+                    </td>
+                    <td>€ <[priceallgenre]></td>
+                    <td>
+                        <input type="number" value="<[quantity]>" min="1">
+                    </td>
+                    <!-- Totale di questa riga (Prezzo * Quantità) -->
+                    <td>€ <[single_item_total]></td>
+                    <td><button class="btn-remove">Rimuovi</button></td>
                 </tr>
                 <[/foreach]>
             </tbody>
         </table>
+
         <div class="cart-summary">
-            <p>Subtotale: <strong>€19.99</strong></p>
-            <p>Spedizione: <strong>€5.00</strong></p>
-            <p>Totale: <strong>€24.99</strong></p>
+            <form id="shipping-form" method="get" action="cart.php">
+                <input type="hidden" name="user_id" value="<[user_id]>">
+                <label for="shipping_method_id">Tipo di spedizione:</label>
+                <select id="shipping_method_id" name="shipping_method_id" onchange="document.getElementById('shipping-form').submit()">
+                    <option value="0">-- Seleziona spedizione --</option>
+                    <[shipping_options]>
+                </select>
+            </form>
+
+            <p>Subtotale: <strong>€ <[subtotal]></strong></p>
+            <p>Spedizione: <strong><[shipping_label]></strong></p>
+            <hr>
+            <p>Totale: <strong>€ <[order_total]></strong></p>
         </div>
+
         <div class="cart-actions">
             <a href="catalougues.php" class="btn-continue">Continua Acquisti</a>
-        </div>
-        <div>
-            <a href="pay.php" class="btn-checkout">Procedi al Pagamento</a></div>
+            <a href="pay.php" class="btn-checkout">Procedi al Pagamento</a>
         </div>
     </div>
 </body>

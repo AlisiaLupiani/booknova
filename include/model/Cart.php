@@ -9,7 +9,7 @@ class Cart {
 
     public function __construct() {
         $this->user = null;
-        $this->items = null;
+        $this->items = [];
     }
 
     public function getUser(): ?User { return $this->user; }

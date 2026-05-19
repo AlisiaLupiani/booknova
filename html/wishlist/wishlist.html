@@ -1,82 +1,49 @@
 <body>
-	<h1>📚 La Mia Lista dei Desideri</h1>
 
-	<div class="product-list" data-aos="fade-up">
-		<div class="row">
+	<section id="wishlist" class="bookshelf py-5 my-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
 
-			<div class="col-md-3">
-				<div class="product-item">
-					<figure class="product-style">
-						<img src="static/img/product1.jpeg" alt="Books" class="product-item">
-						<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-							Cart</button>
-					</figure>
-					<figcaption>
-						<h3>Poisoned love</h3>
-						<span>Elaya Lyn</span>
-						<div class="item-price">$ 40.00</div>
-					</figcaption>
-					<div class="book-actions">
-						
-						<button class="btn-remove">🗑️ Rimuovi dalla wishlist</button>
+					<!-- Intestazione della pagina in stile Catalogo -->
+					<div class="section-header align-center">
+						<div class="title">
+							<span>Your saved items</span>
+						</div>
+						<h2 class="section-title">La Mia Lista dei Desideri 📚</h2>
 					</div>
+
+					<div class="tab-content">
+						<!-- Contenitore della griglia dei libri -->
+						<div id="all-genre" data-tab-content class="active">
+							<div class="row">
+
+								<[foreach]>
+									<div class="col-md-3">
+										<div class="product-item">
+											<figure class="product-style">
+												<!-- Immagine fluida adattata alla griglia -->
+												<img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" class="product-item img-fluid">
+												<button type="button" class="add-to-cart" data-product-tile="add-to-cart">
+													Add to Cart
+												</button>
+											</figure>
+											<figcaption>
+												<h3><a href="<[bookallgenrehrefid]>"><[booktitleallgenre]></a></h3>
+												<span><[authorallgenre]></span>
+												<div class="item-price">$ <[priceallgenre]></div>
+											</figcaption>
+										</div>
+									</div>
+								<[/foreach]>
+
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
+		</div>
+	</section>
 
-			<div class="col-md-3">
-				<div class="product-item">
-					<figure class="product-style">
-						<img src="static/img/product2.jpeg" alt="Books" class="product-item">
-						<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-							Cart</button>
-					</figure>
-					<figcaption>
-						<h3>Cercami dove finisce il rumore</h3>
-						<span>Doire Oak</span>
-						<div class="item-price">$ 37.00</div>
-					</figcaption>
-					<div class="book-actions">
-					<button class="btn-remove">🗑️ Rimuovi dalla wishlist</button>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-md-3">
-				<div class="product-item">
-					<figure class="product-style">
-						<img src="static/img/product3.jpeg" alt="Books" class="product-item">
-						<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-							Cart</button>
-					</figure>
-					<figcaption>
-						<h3>Lilium</h3>
-						<span>Arya Beker</span>
-						<div class="item-price">$ 25.00</div>
-					</figcaption>
-					<div class="book-actions">
-						<button class="btn-remove">🗑️ Rimuovi dalla wishlist</button>
-					</div>
-				</div>
-			</div>
-
-			<div class="col-md-3">
-				<div class="product-item">
-					<figure class="product-style">
-						<img src="static/img/product4.jpeg" alt="Books" class="product-item">
-						<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
-							Cart</button>
-					</figure>
-					<figcaption>
-						<h3>Sweet tunrs sweet</h3>
-						<span>Esme Pavard</span>
-						<div class="item-price">$ 34.00</div>
-					</figcaption>
-					<div class="book-actions">
-						<button class="btn-remove">🗑️ Rimuovi dalla wishlist</button>
-					</div>
-				</div>
-			</div>
-
-		</div><!--ft-books-slider-->
-	</div><!--grid-->
 </body>

@@ -1,4 +1,12 @@
 <?php 
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => $_SERVER['HTTP_HOST'],
+    'secure' => false, // Metti true se usi HTTPS
+    'httponly' => true,
+    'samesite' => 'Lax'
+]);
 session_start();
 
 require_once("include/template2.inc.php");

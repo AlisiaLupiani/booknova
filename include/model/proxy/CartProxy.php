@@ -26,7 +26,7 @@ class CartProxy extends Cart{
     }
 
     public function getItems(): array {
-        if (parent::getItems() == null) {
+        if (empty(parent::getItems())) {
             parent::setItems(
                 ($this->dataLayer)->getCartDao()->getCartItemsByUserId($this->userId)
             );

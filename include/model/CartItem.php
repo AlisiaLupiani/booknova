@@ -18,7 +18,7 @@ class CartItem {
 
     public function getId(): ?int { return $this->id; }
     public function getUser(): ?User { return $this->user; }
-    public function getBook(): ?array { return $this->book; }
+    public function getBook(): ?Book { return $this->book; }
     public function getQuantity(): ?int { return $this->quantity; }
 
     public function setId(?int $id): void { $this->id = $id; }

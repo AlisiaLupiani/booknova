@@ -77,10 +77,9 @@ class CartDAO extends DAO {
         $existing = $this->getCartItemByUserAndBook($userId, $bookId);
 
         if ($existing !== null) {
-            // incremento di UNA sola unità
             return $this->updateCartItemQuantity(
                 $existing->getId(),
-                $existing->getQuantity() + 1
+                $existing->getQuantity() + $quantity
             );
         }
 

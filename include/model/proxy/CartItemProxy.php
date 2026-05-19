@@ -2,37 +2,38 @@
 
 require_once("include/model/CartItem.php");
 
-class CartItemProxy extends CartItem{
+class CartItemProxy extends CartItem {
 
     private ?DataLayer $dataLayer;
-
     private ?int $userId;
     private ?int $bookId;
 
-    public function __construct(?DataLayer $dataLayer){
+    public function __construct(?DataLayer $dataLayer) {
         parent::__construct();
         $this->dataLayer = $dataLayer;
+        $this->userId = null;
+        $this->bookId = null;
     }
 
     public function getUserId(): ?int { return $this->userId; }
-    public function setUserId(?int $userId): void {$this->userId = $userId;}
+    public function setUserId(?int $userId): void { $this->userId = $userId; }
 
     public function getBookId(): ?int { return $this->bookId; }
-    public function setBookId(?int $bookId): void {$this->bookId = $bookId;}
+    public function setBookId(?int $bookId): void { $this->bookId = $bookId; }
 
-
-
-    public function getUser(): ?User{
-        if(parent:: getUser() == null && $this->userId > 0 ){
-            parent:: setUser((($this -> dataLayer)->getUserDao())->getUserById($this->userId));
+    // Carica l'utente dal DB solo se serve
+    public function getUser(): ?User {
+        if (parent::getUser() == null && $this->userId > 0) {
+            parent::setUser(($this->dataLayer->getUserDAO())->getUserById($this->userId));
         }
         return parent::getUser();
     }
 
-     public function getItems(): array {
-        if (parent::getItems() == null) {
-            parent::setItems(($this->dataLayer)->getCartDao()->getCartItemByUserId($this->userId));
+    // Carica il libro dal DB solo se serve (Questo mancava ed è fondamentale per cart.php!)
+    public function getBook(): ?Book {
+        if (parent::getBook() == null && $this->bookId > 0) {
+            parent::setBook(($this->dataLayer->getBookDAO())->getBookById($this->bookId));
         }
-        return parent::getItems();
+        return parent::getBook();
     }
 }
