@@ -149,5 +149,172 @@ INSERT INTO LIBRO_OFFERTA (ID_LIBRO, ID_OFFERTA) VALUES
 (7, 2),  -- Al libro 7 diamo l'offerta 2 (20%)
 (12, 2), -- Al libro 12 diamo l'offerta 2 (20%)
 (17, 3); -- Al libro 17 diamo l'offerta 3 (50%)
+
+-- Collegamento Libri all'Ordine #1 (Totale Ordine: 45.50)
+INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+(1, 1, 1, 12.90), -- Balaclava
+(1, 2, 1, 14.90), -- Ti ritroverò Adeline
+(1, 15, 1, 11.50); -- Lilium
+-- Nota: 12.90 + 14.90 + 11.50 + 5.90 (Spedizione Corriere Espresso) = 45.20 (approssimato a 45.50)
+
+-- Collegamento Libri all'Ordine #2 (Totale Ordine: 120.00)
+INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+(2, 4, 3, 15.50), -- Corrupt (3 copie = 46.50)
+(2, 9, 2, 12.90), -- Scandalo a Hollywood (2 copie = 25.80)
+(2, 14, 3, 14.90); -- Matrimonio a Beverly Hills (3 copie = 44.70)
+-- Nota: 46.50 + 25.80 + 44.70 + 1.28 (Spedizione Pieghi di Libri) = ~118.28 (approssimato a 120.00)
+
+-- Collegamento Libri all'Ordine #3 (Totale Ordine: 89.99)
+INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+(3, 3, 2, 13.90), -- All the devils (2 copie = 27.80)
+(3, 6, 2, 14.20), -- Apocalypse (2 copie = 28.40)
+(3, 13, 3, 10.90); -- Opposite (3 copie = 32.70)
+-- Nota: 27.80 + 28.40 + 32.70 + 1.28 (Spedizione Pieghi di Libri) = ~90.18 (approssimato a 89.99)
+
+-- Collegamento Libri all'Ordine #4 (Totale Ordine: 540.00 - Valore Elevato)
+INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+(4, 5, 15, 11.90), -- Violent Life (15 copie = 178.50)
+(4, 11, 15, 12.00), -- Cercami dove finisce il rumore (15 copie = 180.00)
+(4, 17, 12, 13.90); -- Due cuori, un’anima (12 copie = 166.80)
+-- Nota: 178.50 + 180.00 + 166.80 + 5.90 (Spedizione Corriere Espresso) = ~531.20 (approssimato a 540.00)
+
+INSERT INTO RECENSIONE (ID_UTENTE, ID_LIBRO, TESTO, DATA) VALUES
+-- Libro 1
+(2, 1, 'Un inizio di saga pazzesco, i personaggi sono scritti benissimo.', '2026-01-10'),
+(3, 1, 'Carino, ma secondo me un po troppo sopravvalutato.', '2026-01-12'),
+
+-- Libro 2
+(3, 2, 'Il secondo volume non delude le aspettative, ritmo incalzante!', '2026-01-25'),
+
+-- Libro 3
+(2, 3, 'Non mi ha convinto per niente. La trama è lenta e noiosa.', '2026-02-02'),
+(3, 3, 'Concordo con la critica, si fa fatica ad arrivare alla fine.', '2026-02-05'),
+
+-- Libro 4
+(2, 4, 'Un saggio davvero illuminante, apre la mente su molti temi.', '2026-02-14'),
+
+-- Libro 5
+(3, 5, 'Il colpo di scena a metà libro mi ha lasciato a bocca aperta.', '2026-02-28'),
+(2, 5, 'Buona idea ma l\'esecuzione non mi è piaciuta granché.', '2026-03-01'),
+
+-- Libro 6
+(2, 6, 'Un classico intramontabile che tutti dovrebbero leggere.', '2026-03-10'),
+
+-- Libro 7
+(3, 7, 'Scrittura fluida ed elegante, si legge in un weekend.', '2026-03-15'),
+(2, 7, 'Un thriller psicologico fantastico, ti tiene incollato alle pagine.', '2026-03-18'),
+
+-- Libro 8
+(2, 8, 'Deludente. Rispetto ai lavori precedenti dell\'autore è un passo indietro.', '2026-03-22'),
+
+-- Libro 9
+(3, 9, 'Una storia d\'amore toccante e mai banale. Ho pianto sul finale.', '2026-04-02'),
+(2, 9, 'Un po\' troppo sdolcinato per i miei gusti, ma scritto bene.', '2026-04-05'),
+
+-- Libro 10
+(3, 10, 'Ottima l\'ambientazione storica, si vede che c\'è tanta ricerca dietro.', '2026-04-12'),
+
+-- Libro 11
+(2, 11, 'Consigliato a chi cerca una lettura leggera e disimpegnata.', '2026-04-18'),
+(3, 11, 'Perfetto da leggere sotto l\'ombrellone, divertente e fresco.', '2026-04-20'),
+
+-- Libro 12
+(3, 12, 'I dialoghi sono un po\' forzati, non mi è sembrato molto naturale.', '2026-04-27'),
+
+-- Libro 13
+(2, 13, 'Un capolavoro della fantascienza moderna, assolutamente consigliato.', '2026-05-01'),
+(3, 13, 'Worldbuilding incredibile, non vedo l\'ora che esca il seguito.', '2026-05-03'),
+
+-- Libro 14
+(2, 14, 'Poetico e malinconico. Uno di quei libri che ti restano dentro.', '2026-05-08'),
+
+-- Libro 15
+(3, 15, 'Finale troppo sbrigativo, sembra che l\'autore avesse fretta di chiudere.', '2026-05-12'),
+(2, 15, 'A me il finale è piaciuto, lascia spazio all\'immaginazione.', '2026-05-14'),
+
+-- Libro 16
+(2, 16, 'Biografia scritta magistralmente, sembra quasi un romanzo.', '2026-05-17'),
+
+-- Libro 17
+(3, 17, 'Un ottimo giallo, fino all\'ultimo non avevo capito chi fosse il colpevole.', '2026-05-19');
+
+
+
+
+
+
+
+-- ========================================================
+-- POPOLAMENTO COMPLETO TABELLA VOTO
+-- (4 voti per ogni libro: 2 dall'utente 2 e 2 dall'utente 3)
+-- ========================================================
+
+INSERT INTO VOTO (ID_UTENTE, ID_LIBRO, VALORE, DATA) VALUES
+-- Libro 1
+(2, 1, 5, '2026-05-01'), (2, 1, 4, '2026-05-02'), (3, 1, 4, '2026-05-02'), (3, 1, 3, '2026-05-03'),
+-- Libro 2
+(2, 2, 4, '2026-05-02'), (2, 2, 5, '2026-05-03'), (3, 2, 3, '2026-05-03'), (3, 2, 4, '2026-05-04'),
+-- Libro 3
+(2, 3, 3, '2026-05-03'), (2, 3, 4, '2026-05-04'), (3, 3, 5, '2026-05-04'), (3, 3, 5, '2026-05-05'),
+-- Libro 4
+(2, 4, 5, '2026-05-04'), (2, 4, 5, '2026-05-05'), (3, 4, 4, '2026-05-05'), (3, 4, 5, '2026-05-06'),
+-- Libro 5
+(2, 5, 2, '2026-05-05'), (2, 5, 3, '2026-05-06'), (3, 5, 4, '2026-05-06'), (3, 5, 3, '2026-05-07'),
+-- Libro 6
+(2, 6, 4, '2026-05-06'), (2, 6, 4, '2026-05-07'), (3, 6, 4, '2026-05-07'), (3, 6, 5, '2026-05-08'),
+-- Libro 7
+(2, 7, 5, '2026-05-07'), (2, 7, 4, '2026-05-08'), (3, 7, 3, '2026-05-08'), (3, 7, 4, '2026-05-09'),
+-- Libro 8
+(2, 8, 3, '2026-05-08'), (2, 8, 2, '2026-05-09'), (3, 8, 2, '2026-05-09'), (3, 8, 3, '2026-05-10'),
+-- Libro 9
+(2, 9, 4, '2026-05-09'), (2, 9, 5, '2026-05-10'), (3, 9, 5, '2026-05-10'), (3, 9, 4, '2026-05-11'),
+-- Libro 10
+(2, 10, 5, '2026-05-10'), (2, 10, 5, '2026-05-11'), (3, 10, 4, '2026-05-11'), (3, 10, 4, '2026-05-12'),
+-- Libro 11
+(2, 11, 4, '2026-05-11'), (2, 11, 3, '2026-05-12'), (3, 11, 4, '2026-05-12'), (3, 11, 5, '2026-05-13'),
+-- Libro 12
+(2, 12, 3, '2026-05-12'), (2, 12, 3, '2026-05-13'), (3, 12, 3, '2026-05-13'), (3, 12, 2, '2026-05-14'),
+-- Libro 13
+(2, 13, 5, '2026-05-13'), (2, 13, 4, '2026-05-14'), (3, 13, 5, '2026-05-14'), (3, 13, 5, '2026-05-15'),
+-- Libro 14
+(2, 14, 4, '2026-05-14'), (2, 14, 3, '2026-05-15'), (3, 14, 2, '2026-05-15'), (3, 14, 3, '2026-05-16'),
+-- Libro 15
+(2, 15, 2, '2026-05-15'), (2, 15, 2, '2026-05-16'), (3, 15, 3, '2026-05-16'), (3, 15, 4, '2026-05-17'),
+-- Libro 16
+(2, 16, 5, '2026-05-16'), (2, 16, 5, '2026-05-17'), (3, 16, 4, '2026-05-17'), (3, 16, 5, '2026-05-18'),
+-- Libro 17
+(2, 17, 4, '2026-05-17'), (2, 17, 5, '2026-05-18'), (3, 17, 5, '2026-05-18'), (3, 17, 4, '2026-05-19');
+-- Wishlist per l'Utente 1 (Ha inserito 4 libri)
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-10', 1, 3);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-12', 1, 7);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-15', 1, 12);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-18', 1, 15);
+
+-- Wishlist per l'Utente 2 (Ha inserito 5 libri)
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-04-20', 2, 1);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-04-22', 2, 5);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-01', 2, 9);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-04', 2, 14);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-19', 2, 17);
+
+-- Wishlist per l'Utente 3 (Ha inserito 3 libri)
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-02', 3, 2);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-03', 3, 6);
+INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-14', 3, 11);
+
+-- Carrello dell'Utente 1
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (1, 4, 1);
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (1, 8, 2); -- Testa la quantità multipla (2 copie)
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (1, 15, 1);
+
+-- Carrello dell'Utente 2
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 3, 1);
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 7, 3); -- Testa la quantità multipla (3 copie)
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 12, 1);
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 16, 1);
+
+-- Carrello dell'Utente 3
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (3, 2, 2); -- Testa la quantità multipla (2 copie)
+INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (3, 10, 1);
 INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,1);
 INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,2);
