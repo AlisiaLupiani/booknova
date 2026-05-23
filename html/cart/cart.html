@@ -13,7 +13,7 @@
             </thead>
             <tbody id="cart-items">
                 <[foreach]>
-                <tr>
+                <tr id="cart-row-<[cartitemid]>" data-item-total="<[single_item_total]>" data-book-id="<[bookidallgenre]>" data-price="<[priceallgenre]>">
                     <!-- Immagine e Titolo uniti nella colonna Prodotto -->
                     <td>
                         <img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" style="width: 50px; marginRight: 10px;">
@@ -22,11 +22,11 @@
                     </td>
                     <td>€ <[priceallgenre]></td>
                     <td>
-                        <input type="number" value="<[quantity]>" min="1">
+                        <input type="number" class="cart-qty" value="<[quantity]>" min="1" data-cart-item-id="<[cartitemid]>" data-book-id="<[bookidallgenre]>">
                     </td>
                     <!-- Totale di questa riga (Prezzo * Quantità) -->
                     <td>€ <[single_item_total]></td>
-                    <td><button class="btn-remove">Rimuovi</button></td>
+                    <td><button type="button" class="btn-remove" data-cart-item-id="<[cartitemid]>" data-book-id="<[bookidallgenre]>">Rimuovi</button></td>
                 </tr>
                 <[/foreach]>
             </tbody>
@@ -42,10 +42,10 @@
                 </select>
             </form>
 
-            <p>Subtotale: <strong>€ <[subtotal]></strong></p>
+            <p>Subtotale: <strong id="cart-subtotal">€ <[subtotal]></strong></p>
             <p>Spedizione: <strong><[shipping_label]></strong></p>
             <hr>
-            <p>Totale: <strong>€ <[order_total]></strong></p>
+            <p>Totale: <strong id="cart-total">€ <[order_total]></strong></p>
         </div>
 
         <div class="cart-actions">

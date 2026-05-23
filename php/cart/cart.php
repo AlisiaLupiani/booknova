@@ -115,6 +115,8 @@ foreach ($cart_items as $cart_item) {
         $body_page->setContent("authorallgenre", $libro->getAuthor()->getName());
         $body_page->setContent("priceallgenre", $libro->getPrice());
         $body_page->setContent("quantity", $quantita);
+        $body_page->setContent("bookidallgenre", $libro->getId());
+        $body_page->setContent("cartitemid", $cart_item->getId());
 
         $totale_singolo_libro = ((float)$libro->getPrice() * (int)$quantita);
         $body_page->setContent("single_item_total", number_format($totale_singolo_libro, 2, '.', ''));

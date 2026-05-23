@@ -28,7 +28,7 @@ foreach ($books as $book) {
         $body_page->setContent("booktitleallgenre", $book->getTitle());
         $body_page->setContent("authorallgenre", $book->getAuthor()->getName());
         $body_page->setContent("priceallgenre", $book->getPrice());
-
+        $body_page->setContent("bookidallgenre", $book->getId());   
         $string_builder = new QueryStringBuilder("book_details.php");
         $string_builder->add("book_id", $book->getId());
 
@@ -48,6 +48,7 @@ foreach ($categories as $category) {
         $body_page->setContent("booktitlecategory", $book->getTitle());
         $body_page->setContent("authorcategory", $book->getAuthor()->getName());
         $body_page->setContent("pricecategory", $book->getPrice());
+         $body_page->setContent("bookidallcategory", $book->getId()); 
     }
 
     

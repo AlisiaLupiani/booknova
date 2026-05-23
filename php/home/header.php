@@ -11,12 +11,25 @@ if (isset($_SESSION["auth"]) && $_SESSION["auth"] === true) {
     
     // 2. Passiamo l'ID dell'utente al segnaposto dell'header HTML per i link (Wishlist, Account, Cart)
     $header_page->setContent("user_id", $_SESSION["id"]);
+    // Compute cart count from DB
+    require_once __DIR__ . '/../../include/db/DB_Connection.php';
+    require_once __DIR__ . '/../../include/db/DataLayer.php';
+    try {
+        $dl = new DataLayer(new DB_Connection());
+        $cartDAO = $dl->getCartDAO();
+        $items = $cartDAO->getCartItemsByUserId((int)$_SESSION["id"]);
+        $cart_count = is_array($items) ? count($items) : 0;
+    } catch (Exception $e) {
+        $cart_count = 0;
+    }
+    $header_page->setContent("cart_count", $cart_count);
 } else {
     // Se l'utente NON è loggato, mostra Accedi
     $login_button = '<a href="login.php" class="nav-link">Accedi</a>';
     
     // Se non è loggato, svuotiamo il tag nell'HTML (o lo lasciamo vuoto per non rompere i link)
     $header_page->setContent("user_id", "");
+    $header_page->setContent("cart_count", 0);
 }
 
 // Inietta il bottone nel segnaposto dell'header HTML

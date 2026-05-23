@@ -39,20 +39,17 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         }
 
         // --- GESTIONE RE-DIRECT CON USER ID NELL'URL ---
-        // Impostiamo il default includendo l'ID dell'utente appena loggato
-        $redirect = 'index.php?user_id=' . $user->getId(); 
+        $defaultRedirect = 'index.php?user_id=' . $user->getId(); 
+        $redirect = $defaultRedirect;
 
         if (isset($_REQUEST["reference"]) && !empty($_REQUEST["reference"])) {
-            // Il parametro true attiva un controllo rigido sulla validità del Base64
-            $decoded = base64_decode($_REQUEST["reference"], true); 
-            
-            // Se è un Base64 valido E non contiene caratteri corrotti o strani
+            $decoded = base64_decode($_REQUEST["reference"], true);
+
             if ($decoded !== false && preg_match('/^[a-zA-Z0-9_\-\.\/\?&\=]+$/', $decoded)) {
                 $redirect = $decoded;
 
-                // Se il reference decodificato è solo "index.php" senza parametri, gli appendiamo l'ID
-                if ($redirect === "index.php") {
-                    $redirect .= "?user_id=" . $user->getId();
+                if (preg_match('/^index\.php(\?user_id=)?$/', $redirect)) {
+                    $redirect = $defaultRedirect;
                 }
             }
         }
@@ -86,7 +83,7 @@ $body_page->setContent("auth_button", $login_button);
 if (isset($_REQUEST["reference"]) && !empty($_REQUEST["reference"])) {
     $reference = $_REQUEST["reference"];
 } else {
-    $reference = base64_encode("index.php?user_id=" . (isset($_SESSION["id"]) ? $_SESSION["id"] : ""));
+    $reference = base64_encode("index.php");
 }
 $body_page->setContent("reference_page", $reference);
 
