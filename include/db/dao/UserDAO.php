@@ -17,6 +17,7 @@ class UserDAO extends DAO{
     private PDOStatement $stmtGetAllUsersByGenericString;
     private PDOStatement $stmtInsertUser;   // 
     private PDOStatement $stmtUpdateUser;   //
+    private PDOStatement $stmtUpdatePassword; // Per aggiornare solo la password
     private PDOStatement $stmtDeleteUser;   //
 
 
@@ -32,12 +33,13 @@ class UserDAO extends DAO{
         $this->stmtGetUserById = $this->conn->prepare("SELECT * FROM UTENTE WHERE ID = ?;");
         $this->stmtGetAllUsers = $this->conn->prepare("SELECT * FROM UTENTE;");
         $this->stmtGetUserByEmail = $this->conn->prepare("SELECT * FROM UTENTE WHERE EMAIL = ?;");
-        $this->stmtGetAllUsersCount = $this->conn->prepare("SELECT COUNT(*) AS COUNTER FROM UTENTE WHERE RUOLO = ?;");
-        $this->stmtGetAllUsersByRole = $this->conn->prepare("SELECT * FROM UTENTE WHERE RUOLO = ?;");
+        $this->stmtGetAllUsersCount = $this->conn->prepare("SELECT COUNT(*) AS COUNTER FROM UTENTE WHERE ID_RUOLO = ?;");
+        $this->stmtGetAllUsersByRole = $this->conn->prepare("SELECT * FROM UTENTE WHERE ID_RUOLO = ?;");
         $this->stmtGetAllUsersExceptId = $this->conn->prepare("SELECT * FROM UTENTE WHERE ID != ?;");
         $this->stmtGetAllUsersByGenericString = $this->conn->prepare("SELECT * FROM UTENTE WHERE NOME LIKE ? OR COGNOME LIKE ? OR EMAIL LIKE ? OR INDIRIZZO LIKE ?; ");
-        $this->stmtInsertUser = $this->conn->prepare("INSERT INTO UTENTE (NOME, COGNOME, EMAIL, PASSWORD, RUOLO, URL_IMAGE, NUMERO_TELEFONO, INDIRIZZO) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
-        $this->stmtUpdateUser = $this->conn->prepare("UPDATE UTENTE SET NOME = ?, COGNOME = ?, EMAIL = ?, PASSWORD = ?, URL_IMAGE = ?, NUMERO_TELEFONO = ?, RUOLO = ?, INDIRIZZO = ? WHERE ID = ?;");
+        $this->stmtInsertUser = $this->conn->prepare("INSERT INTO UTENTE (NOME, COGNOME, EMAIL, PASSWORD, ID_RUOLO, INDIRIZZO) VALUES (?, ?, ?, ?, ?, ?);");
+        $this->stmtUpdateUser = $this->conn->prepare("UPDATE UTENTE SET NOME = ?, COGNOME = ?, EMAIL = ?, PASSWORD = ?, ID_RUOLO = ?, INDIRIZZO = ? WHERE ID = ?;");
+        $this->stmtUpdatePassword = $this->conn->prepare("UPDATE UTENTE SET PASSWORD = ? WHERE ID = ?;");
         $this->stmtDeleteUser = $this->conn->prepare("DELETE FROM UTENTE WHERE ID = ?;");
 
     }
@@ -188,10 +190,9 @@ class UserDAO extends DAO{
             $this->stmtUpdateUser->bindValue(2, $user->getSurname(), PDO::PARAM_STR);
             $this->stmtUpdateUser->bindValue(3, $user->getEmail(), PDO::PARAM_STR);
             $this->stmtUpdateUser->bindValue(4, $user->getPassword(), PDO::PARAM_STR);
-            $this->stmtUpdateUser->bindValue(7, $user->getRole(), PDO::PARAM_STR);
-            $this->stmtUpdateUser->bindValue(8, $user->getId(), PDO::PARAM_INT);
-            $this->stmtUpdateUser->bindValue(5, $user->getIndirizzo(), PDO::PARAM_STR);
-
+            $this->stmtUpdateUser->bindValue(5, $user->getRole(), PDO::PARAM_STR); // ID_RUOLO
+            $this->stmtUpdateUser->bindValue(6, $user->getIndirizzo(), PDO::PARAM_STR);
+            $this->stmtUpdateUser->bindValue(7, $user->getId(), PDO::PARAM_INT);
 
             if($this->stmtUpdateUser->execute()){
                 return $user;
@@ -202,7 +203,7 @@ class UserDAO extends DAO{
             $this->stmtInsertUser->bindValue(2, $user->getSurname(), PDO::PARAM_STR);
             $this->stmtInsertUser->bindValue(3, $user->getEmail(), PDO::PARAM_STR);
             $this->stmtInsertUser->bindValue(4, $user->getPassword(), PDO::PARAM_STR);
-            $this->stmtInsertUser->bindValue(5, $user->getRole(), PDO::PARAM_STR);
+            $this->stmtInsertUser->bindValue(5, 2, PDO::PARAM_INT); // ID_RUOLO: 2 = CLIENTE/USER
             $this->stmtInsertUser->bindValue(6, $user->getIndirizzo(), PDO::PARAM_STR);
 
             
@@ -212,6 +213,18 @@ class UserDAO extends DAO{
             }
         }
         return null;
+    }
+    /**
+     * Aggiorna solo la password di un utente
+     * 
+     * @param int $userId ID dell'utente
+     * @param string $newPasswordHash Password già criptata
+     * @return bool true se l'aggiornamento è riuscito, false altrimenti
+     */
+    public function updatePassword(int $userId, string $newPasswordHash): bool {
+        $this->stmtUpdatePassword->bindValue(1, $newPasswordHash, PDO::PARAM_STR);
+        $this->stmtUpdatePassword->bindValue(2, $userId, PDO::PARAM_INT);
+        return $this->stmtUpdatePassword->execute();
     }
     /**
     * 

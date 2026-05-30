@@ -268,4 +268,207 @@ document.addEventListener('DOMContentLoaded', function () {
         const el = document.getElementById('cart-count');
         if (el) el.textContent = '(' + parseInt(count, 10) + ')';
     }
+
+    // ============================
+    // REGISTRAZIONE - STEP 1: Verifica email
+    // ============================
+    const registrationForm = document.getElementById('registration-form');
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const name = document.getElementById('name').value.trim();
+            const surname = document.getElementById('surname').value.trim();
+            const shipping_address = document.getElementById('shipping_address').value.trim();
+            const password = document.getElementById('password').value;
+            const submitBtn = document.getElementById('submit-btn');
+            
+            // Validazione client-side
+            if (!email || !name || !surname || !shipping_address || !password) {
+                showRegistrationStatus('✗ Compila tutti i campi', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showRegistrationStatus('✗ La password deve avere almeno 6 caratteri', 'error');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registrazione in corso...';
+            
+            // Invia i dati al server
+            fetch('register_user.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'Accept': 'application/json'
+                },
+                body: 'email=' + encodeURIComponent(email) + 
+                      '&name=' + encodeURIComponent(name) + 
+                      '&surname=' + encodeURIComponent(surname) + 
+                      '&shipping_address=' + encodeURIComponent(shipping_address) + 
+                      '&password=' + encodeURIComponent(password)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showRegistrationStatus('✓ ' + data.message, 'success');
+                    registrationForm.reset();
+                    setTimeout(() => {
+                        window.location.href = data.redirect || 'login.php';
+                    }, 2000);
+                } else {
+                    showRegistrationStatus('✗ ' + (data.message || 'Errore durante la registrazione'), 'error');
+                }
+            })
+            .catch(err => {
+                console.error('Errore:', err);
+                showRegistrationStatus('✗ Errore di connessione. Riprova.', 'error');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Registrati';
+            });
+        });
+    }
+
+    // ============================
+    // CAMBIO PASSWORD - STEP 1: Verifica email e nuova password
+    // ============================
+    const passwordFormStep1 = document.getElementById('form-step1');
+    if (passwordFormStep1) {
+        passwordFormStep1.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const newPassword = document.getElementById('new-password').value;
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            if (!email || !newPassword) {
+                showPasswordStatus('✗ Compila tutti i campi', 'error');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Verifica in corso...';
+            
+            fetch('change_password.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'Accept': 'application/json'
+                },
+                body: 'action=verify_email&email=' + encodeURIComponent(email) + '&new_password=' + encodeURIComponent(newPassword)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showPasswordStatus('✓ ' + data.message, 'success');
+                    document.getElementById('step1').style.display = 'none';
+                    document.getElementById('step2').style.display = 'block';
+                    document.getElementById('old-password').focus();
+                } else {
+                    showPasswordStatus('✗ ' + (data.message || 'Errore durante la verifica'), 'error');
+                }
+            })
+            .catch(err => {
+                console.error('Errore:', err);
+                showPasswordStatus('✗ Errore di connessione. Riprova.', 'error');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Recupera Password';
+            });
+        });
+    }
+
+    // ============================
+    // CAMBIO PASSWORD - STEP 2: Verifica vecchia password e aggiorna
+    // ============================
+    const passwordFormStep2 = document.getElementById('form-step2');
+    if (passwordFormStep2) {
+        passwordFormStep2.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const oldPassword = document.getElementById('old-password').value;
+            const submitBtn = this.querySelector('button[type="submit"]');
+            
+            if (!oldPassword) {
+                showPasswordStatus('✗ Inserisci la vecchia password', 'error');
+                return;
+            }
+            
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Aggiornamento in corso...';
+            
+            fetch('change_password.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'Accept': 'application/json'
+                },
+                body: 'action=verify_old_password&old_password=' + encodeURIComponent(oldPassword)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    showPasswordStatus('✓ ' + data.message, 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect || 'login.php';
+                    }, 2000);
+                } else {
+                    showPasswordStatus('✗ ' + (data.message || 'Errore durante l\'aggiornamento'), 'error');
+                }
+            })
+            .catch(err => {
+                console.error('Errore:', err);
+                showPasswordStatus('✗ Errore di connessione. Riprova.', 'error');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Conferma Cambio Password';
+            });
+        });
+    }
+
+    // ============================
+    // FUNZIONI HELPER PER STATUS
+    // ============================
+    function showRegistrationStatus(message, type = 'info') {
+        const statusEl = document.getElementById('status-message');
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.className = type;
+            statusEl.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function showPasswordStatus(message, type = 'info') {
+        const statusEl = document.getElementById('status-message');
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.className = type;
+            statusEl.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function resetPasswordForm() {
+        const form1 = document.getElementById('form-step1');
+        const form2 = document.getElementById('form-step2');
+        if (form1) form1.reset();
+        if (form2) form2.reset();
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        if (step1) step1.style.display = 'block';
+        if (step2) step2.style.display = 'none';
+        const statusEl = document.getElementById('status-message');
+        if (statusEl) statusEl.style.display = 'none';
+    }
+
+    // Esponi la funzione nel global scope per il pulsante HTML
+    window.resetPasswordForm = resetPasswordForm;
 });

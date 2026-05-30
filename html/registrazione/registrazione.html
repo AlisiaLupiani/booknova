@@ -1,7 +1,12 @@
 <body>
     <div class="registrazione-container">
         <h1>Registrati per la prima volta!</h1>
-        <form action="login.php" method="POST" class="auth-form">
+        
+        <!-- Messaggio di status -->
+        <div id="status-message" style="display:none; padding:12px; margin-bottom:15px; border-radius:4px; text-align:center;"></div>
+        
+        <!-- Form di registrazione -->
+        <form id="registration-form" class="auth-form">
             <div class="form-group">
                 <label for="email">Indirizzo Email</label>
                 <input type="email" id="email" name="email" required>
@@ -13,40 +18,61 @@
             </div>
             
             <div class="form-group">
-                <label for="surname"> Cognome</label>
+                <label for="surname">Cognome</label>
                 <input type="text" id="surname" name="surname" required>
-            </div>
-
-            <div class="form-group">
-                <label for="birth_date">Data di Nascita</label>
-                <input type="date" id="birth_date" name="birth_date" required>
             </div>
 
             <div class="form-group">
                 <label for="shipping_address">Indirizzo di spedizione</label>
                 <input type="text" id="shipping_address" name="shipping_address" required>
             </div>
+            
             <div class="form-group">
-                <label for="password">Nuova Password</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required minlength="6">
+                <small style="color:#999; display:block; margin-top:5px;">Minimo 6 caratteri</small>
             </div>
             
-
-            
-            
-            
-            <button type="submit" class="btn-pay">Registrati</button>
-            <a href="login.php">Torna al Login</a>
+            <button type="submit" class="btn-pay" id="submit-btn">Registrati</button>
+            <a href="login.php" style="display:block; text-align:center; margin-top:10px;">Hai già un account? Accedi</a>
         </form>
     </div>
 
     <style>
-        .registrazione-container { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        .registrazione-container { max-width: 450px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .form-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        .form-group input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .form-group input:focus { outline: none; border-color: #aa5656; box-shadow: 0 0 5px rgba(170, 86, 86, 0.3); }
         .form-row { display: flex; gap: 10px; }
         .form-row .form-group { flex: 1; }
-        .btn-pay { width: 100%; padding: 10px; background-color: #aa5656; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-pay { 
+            width: 100%; 
+            padding: 10px; 
+            background-color: #aa5656; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn-pay:hover:not(:disabled) { background-color: #8b4444; }
+        .btn-pay:disabled { background-color: #ccc; cursor: not-allowed; }
+        #status-message.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        #status-message.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        #status-message.info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
     </style>
 </body>
