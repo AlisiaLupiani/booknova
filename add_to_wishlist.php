@@ -7,17 +7,12 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once("include/db/DB_Connection.php");
 require_once("include/db/DataLayer.php");
 require_once("include/model/Wishlist.php");
+require_once("include/model/proxy/WishlistProxy.php");
 
 function isAjaxRequest() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        return true;
-    }
-    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-        return true;
-    }
-    if (!empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) {
-        return true;
-    }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') return true;
+    if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') return true;
+    if (!empty($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) return true;
     return false;
 }
 
@@ -55,15 +50,11 @@ if ($book === null) {
 // Check if book is already in wishlist
 $wishlist_items = $wishlistDAO->getWishlistByUser($user_id);
 $book_in_wishlist = false;
+
 foreach ($wishlist_items as $item) {
-    if (method_exists($item, 'getBookId')) {
-        if ($item->getBookId() === $book_id) {
-            $book_in_wishlist = true;
-            if (method_exists($item, 'getId')) {
-                $item_id = $item->getId();
-                break;
-            }
-        }
+    if ($item->getBookId() === $book_id) {
+        $book_in_wishlist = true;
+        break;
     }
 }
 
@@ -71,11 +62,11 @@ if ($book_in_wishlist) {
     // Remove from wishlist
     try {
         $success = $wishlistDAO->removeBookFromWishlist($user_id, $book_id);
-        if ($success) {
-            echo json_encode(['success' => true, 'message' => 'Libro rimosso dalla wishlist.', 'in_wishlist' => false]);
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Errore durante la rimozione dalla wishlist.']);
-        }
+        echo json_encode([
+            'success' => $success,
+            'message' => $success ? 'Libro rimosso dalla wishlist.' : 'Errore durante la rimozione dalla wishlist.',
+            'in_wishlist' => false
+        ]);
     } catch (Exception $e) {
         echo json_encode(['success' => false, 'message' => 'Errore: ' . $e->getMessage()]);
     }
@@ -84,24 +75,23 @@ if ($book_in_wishlist) {
 
 // Add to wishlist
 try {
-    $wishlist = new Wishlist();
+    // QUI È LA CORREZIONE FONDAMENTALE
+    $wishlist = new WishlistProxy($dataLayer);
+
     $wishlist->setCreatedAt(date('Y-m-d H:i:s'));
-    
-    // Use proxy to set user and book IDs
-    if (method_exists($wishlist, 'setUserId')) {
-        $wishlist->setUserId($user_id);
-    }
-    if (method_exists($wishlist, 'setBookId')) {
-        $wishlist->setBookId($book_id);
-    }
-    
+    $wishlist->setUserId($user_id);
+    $wishlist->setBookId($book_id);
+
     $result = $wishlistDAO->storeWishlist($wishlist);
+
     if ($result !== null) {
         echo json_encode(['success' => true, 'message' => 'Libro aggiunto alla wishlist.', 'in_wishlist' => true]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Errore durante l\'aggiunta alla wishlist.']);
     }
+
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Errore: ' . $e->getMessage()]);
 }
+
 exit;

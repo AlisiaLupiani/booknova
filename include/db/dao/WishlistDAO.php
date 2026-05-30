@@ -3,6 +3,9 @@
 require_once("include/model/Wishlist.php");
 require_once("include/model/proxy/WishlistProxy.php");
 require_once("include/db/DAO.php");
+require_once("include/db/DataLayer.php");
+require_once("include/db/dao/BookDAO.php");
+require_once("include/db/dao/UserDAO.php");
 
 class WishlistDAO extends DAO {
 
@@ -19,14 +22,32 @@ class WishlistDAO extends DAO {
     }
 
     public function init(): void {
-        // Query basate sulla tabella WISHLIST del tuo database
-        $this->stmtGetById = $this->conn->prepare("SELECT * FROM WISHLIST WHERE ID = ?;");
-        $this->stmtGetByUser = $this->conn->prepare("SELECT * FROM WISHLIST WHERE ID_UTENTE = ? ORDER BY DATA_INSERIMENTO DESC;");
-        $this->stmtInsert = $this->conn->prepare("INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES (?, ?, ?);");
-        $this->stmtDelete = $this->conn->prepare("DELETE FROM WISHLIST WHERE ID = ?;");
-        
-        // Comodo per rimuovere un libro dalla wishlist direttamente dalla scheda libro
-        $this->stmtDeleteByUserAndBook = $this->conn->prepare("DELETE FROM WISHLIST WHERE ID_UTENTE = ? AND ID_LIBRO = ?;");
+
+        $this->stmtGetById = $this->conn->prepare(
+            "SELECT * FROM WISHLIST WHERE ID = ?;"
+        );
+
+        $this->stmtGetByUser = $this->conn->prepare(
+            "SELECT * FROM WISHLIST WHERE ID_UTENTE = ? ORDER BY DATA_INSERIMENTO DESC;"
+        );
+
+        $this->stmtInsert = $this->conn->prepare(
+            "INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO)
+             VALUES (?, ?, ?);"
+        );
+
+        $this->stmtUpdate = $this->conn->prepare(
+            "UPDATE WISHLIST SET DATA_INSERIMENTO = ?, ID_UTENTE = ?, ID_LIBRO = ?
+             WHERE ID = ?;"
+        );
+
+        $this->stmtDelete = $this->conn->prepare(
+            "DELETE FROM WISHLIST WHERE ID = ?;"
+        );
+
+        $this->stmtDeleteByUserAndBook = $this->conn->prepare(
+            "DELETE FROM WISHLIST WHERE ID_UTENTE = ? AND ID_LIBRO = ?;"
+        );
     }
 
     public function getWishlistItemById(int $id): ?Wishlist {
@@ -37,12 +58,10 @@ class WishlistDAO extends DAO {
         return $rs ? $this->createWishlist($rs) : null;
     }
 
-    /**
-     * Recupera l'intera lista dei desideri di un utente
-     */
     public function getWishlistByUser(int $userId): array {
         $this->stmtGetByUser->bindValue(1, $userId, PDO::PARAM_INT);
         $this->stmtGetByUser->execute();
+
         $result = [];
         while ($rs = $this->stmtGetByUser->fetch(PDO::FETCH_ASSOC)) {
             $result[] = $this->createWishlist($rs);
@@ -51,26 +70,34 @@ class WishlistDAO extends DAO {
     }
 
     public function storeWishlist(Wishlist $wishlist): ?Wishlist {
-            if ($wishlist->getId() !== null) {
-                $this->stmtUpdate->bindValue(1, $wishlist->getCreatedAt(), PDO::PARAM_STR);
-                $this->stmtUpdate->bindValue(2, $wishlist->getUser()->getId(), PDO::PARAM_INT);
-                $this->stmtUpdate->bindValue(3, $wishlist->getBook()->getId(), PDO::PARAM_INT);
-                $this->stmtUpdate->bindValue(4, $wishlist->getId(), PDO::PARAM_INT);
-                
-                if ($this->stmtUpdate->execute()) return $wishlist;
-            } else {
-                $this->stmtInsert->bindValue(1, $wishlist->getCreatedAt(), PDO::PARAM_STR);
-                $this->stmtInsert->bindValue(2, $wishlist->getUser()->getId(), PDO::PARAM_INT);
-                $this->stmtInsert->bindValue(3, $wishlist->getBook()->getId(), PDO::PARAM_INT);
 
-                if($this->stmtInsert->execute()){
-                    $wishlist->setId((int)$this->conn->lastInsertId());
-                    return $wishlist;
-                }
+        // UPDATE
+        if ($wishlist->getId() !== null) {
+
+            $this->stmtUpdate->bindValue(1, $wishlist->getCreatedAt(), PDO::PARAM_STR);
+            $this->stmtUpdate->bindValue(2, $wishlist->getUserId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(3, $wishlist->getBookId(), PDO::PARAM_INT);
+            $this->stmtUpdate->bindValue(4, $wishlist->getId(), PDO::PARAM_INT);
+
+            if ($this->stmtUpdate->execute()) {
+                return $wishlist;
             }
-            return null;
+
+        } else {
+
+            // INSERT
+            $this->stmtInsert->bindValue(1, $wishlist->getCreatedAt(), PDO::PARAM_STR);
+            $this->stmtInsert->bindValue(2, $wishlist->getUserId(), PDO::PARAM_INT);
+            $this->stmtInsert->bindValue(3, $wishlist->getBookId(), PDO::PARAM_INT);
+
+            if ($this->stmtInsert->execute()) {
+                $wishlist->setId((int)$this->conn->lastInsertId());
+                return $wishlist;
+            }
         }
-  
+
+        return null;
+    }
 
     public function deleteWishlistItem(int $id): bool {
         $this->stmtDelete->bindValue(1, $id, PDO::PARAM_INT);
@@ -84,19 +111,17 @@ class WishlistDAO extends DAO {
     }
 
     private function createWishlist(array $rs): Wishlist {
-        // Proxy per caricare User e Book solo all'occorrenza
+
+        // Usa SEMPRE WishlistProxy
         $wishlist = new WishlistProxy($this->dataLayer);
+
         $wishlist->setId((int)$rs['ID']);
         $wishlist->setCreatedAt($rs['DATA_INSERIMENTO']);
-        
-        // Passiamo gli ID delle chiavi esterne al Proxy
-        if (method_exists($wishlist, 'setUserId')) {
-            $wishlist->setUserId((int)$rs['ID_UTENTE']);
-        }
-        if (method_exists($wishlist, 'setBookId')) {
-            $wishlist->setBookId((int)$rs['ID_LIBRO']);
-        }
-        
+
+        // Imposta gli ID (il Proxy carica gli oggetti quando servono)
+        $wishlist->setUserId((int)$rs['ID_UTENTE']);
+        $wishlist->setBookId((int)$rs['ID_LIBRO']);
+
         return $wishlist;
     }
 }

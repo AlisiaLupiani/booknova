@@ -4,14 +4,14 @@ require_once(__DIR__.'/User.php');
 require_once(__DIR__.'/Book.php');
 
 class Wishlist {
-    private ?int $id;
-    private ?string $createdAt;
-    private ?User $user; // Oggetto User, non int
-    private ?Book $book; // Oggetto Book, non int
+    protected ?int $id;
+    protected ?string $createdAt;
+    protected ?User $user;
+    protected ?Book $book;
 
     public function __construct() {
         $this->id = null;
-        $this->createdAt = date("Y-m-d H:i:s"); // Inizializziamo con la data attuale
+        $this->createdAt = date("Y-m-d H:i:s");
         $this->user = null;
         $this->book = null;
     }
@@ -25,10 +25,4 @@ class Wishlist {
     public function setCreatedAt(?string $createdAt): void { $this->createdAt = $createdAt; }
     public function setUser(?User $user): void { $this->user = $user; }
     public function setBook(?Book $book): void { $this->book = $book; }
-
-    public function toString(): ?String {
-        return "Wishlist ID: " . $this->id . " - Created At: " . $this->createdAt;
-    
-        
-    }
 }

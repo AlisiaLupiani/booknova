@@ -1,49 +1,77 @@
 <body>
 
-	<section id="wishlist" class="bookshelf py-5 my-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
+<section id="wishlist" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
 
-					<!-- Intestazione della pagina in stile Catalogo -->
-					<div class="section-header align-center">
-						<div class="title">
-							<span>Your saved items</span>
-						</div>
-						<h2 class="section-title">La Mia Lista dei Desideri 📚</h2>
-					</div>
+                <!-- Intestazione -->
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Your saved items</span>
+                    </div>
+                    <h2 class="section-title">La Mia Lista dei Desideri 📚</h2>
+                </div>
 
-					<div class="tab-content">
-						<!-- Contenitore della griglia dei libri -->
-						<div id="all-genre" data-tab-content class="active">
-							<div class="row">
+                <div class="tab-content">
+                    <div id="all-genre" data-tab-content class="active">
+                        <div class="row">
 
-								<[foreach]>
-									<div class="col-md-3">
-										<div class="product-item">
-											<figure class="product-style">
-												<!-- Immagine fluida adattata alla griglia -->
-												<img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" class="product-item img-fluid">
-												<button type="button" class="add-to-cart" data-product-tile="add-to-cart">
-													Add to Cart
-												</button>
-											</figure>
-											<figcaption>
-												<h3><a href="<[bookallgenrehrefid]>"><[booktitleallgenre]></a></h3>
-												<span><[authorallgenre]></span>
-												<div class="item-price">$ <[priceallgenre]></div>
-											</figcaption>
-										</div>
-									</div>
-								<[/foreach]>
+                            <!-- CICLO DEI LIBRI -->
+                            <[foreach]>
+                                <div class="col-md-3">
+                                    <div class="product-item">
 
-							</div>
-						</div>
-					</div>
+                                        <figure class="product-style">
+                                            <!-- Immagine -->
+                                            <img src="<[bookimageallgenre]>" 
+                                                 alt="<[booktitleallgenre]>" 
+                                                 class="product-item img-fluid">
+                                        </figure>
 
-				</div>
-			</div>
-		</div>
-	</section>
+                                        <figcaption>
+
+                                            <!-- TITOLO -->
+                                            <h3 style="margin-bottom:6px;">
+                                                <a href="<[bookallgenrehrefid]>">
+                                                    <[booktitleallgenre]>
+                                                </a>
+                                            </h3>
+
+                                            
+                                            <!-- Autore -->
+                                            <span><[authorallgenre]></span>
+
+                                            <!-- Prezzo -->
+                                            <div class="item-price">$ <[priceallgenre]></div>
+<button 
+                                                type="button" 
+                                                class="remove-from-wishlist" 
+                                                data-book-id="<[bookidallgenre]>"
+                                                style="
+                                                   
+                                                    border:none;
+                                                    padding:3px 7px;
+                                                    font-size:11px;
+                                                    border-radius:4px;
+                                                    margin-bottom:10px;
+                                                    cursor:pointer;
+                                                ">
+                                                Remove ❤️
+                                            </button>
+                                        </figcaption>
+
+                                    </div>
+                                </div>
+                            <[/foreach]>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
