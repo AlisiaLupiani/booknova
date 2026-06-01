@@ -519,6 +519,163 @@ document.addEventListener('DOMContentLoaded', function () {
         if (statusEl) statusEl.style.display = 'none';
     }
 
+    // ============================
+    // PROFILE FORM - Aggiorna nome, email, telefono via AJAX
+    // Cerca il form nella sezione #profile
+    const profileSection = document.querySelector('#profile');
+    if (profileSection) {
+        const profileForm = profileSection.querySelector('form');
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const submitBtn = this.querySelector('button[type="submit"]');
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Salvataggio...'; }
+
+                const name = this.querySelector('#name') ? this.querySelector('#name').value.trim() : '';
+                const email = this.querySelector('#email') ? this.querySelector('#email').value.trim() : '';
+                const phone = this.querySelector('#phone') ? this.querySelector('#phone').value.trim() : '';
+
+                const payload = new URLSearchParams();
+                payload.append('name', name);
+                payload.append('email', email);
+                payload.append('phone', phone);
+
+                fetch('update_profile.php', {
+                    method: 'POST',
+                    body: payload,
+                    credentials: 'same-origin',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || 'Profilo aggiornato.');
+                    } else {
+                        alert(data.message || 'Errore durante il salvataggio.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Errore update profile:', err);
+                    alert('Errore di connessione. Riprova.');
+                })
+                .finally(() => {
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Salva Modifiche'; }
+                });
+            });
+        }
+    }
+
+    // PAYMENT / SHIPPING FORM handler
+    // Many pages use a form with id 'paymentForm' (indirizzo, modifica_pay, pay). Distinguish by presence of specific fields.
+    const globalPaymentForm = document.getElementById('paymentForm');
+    if (globalPaymentForm) {
+        globalPaymentForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Invio...'; }
+
+            // If the form contains an input named 'amount' -> pay page
+            if (this.querySelector('#amount')) {
+                // invia a pay.php (stessa pagina che ha generato il form)
+                const formData = new FormData(this);
+                fetch(window.location.href, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || 'Pagamento effettuato con successo.');
+                        // possibile redirect o aggiornamento della pagina
+                    } else {
+                        alert(data.message || 'Errore durante il pagamento.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Errore payment:', err);
+                    alert('Errore di connessione. Riprova.');
+                })
+                .finally(() => {
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Paga Ora'; }
+                });
+
+                return;
+            }
+
+            // If the form contains cardNumber but not amount -> modifica_pay page
+            if (this.querySelector('#cardNumber')) {
+                const formData = new FormData(this);
+                fetch('update_payment.php', {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message || 'Metodo di pagamento aggiornato.');
+                    } else {
+                        alert(data.message || 'Errore durante il salvataggio.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Errore modifica payment:', err);
+                    alert('Errore di connessione. Riprova.');
+                })
+                .finally(() => {
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Modifica'; }
+                });
+
+                return;
+            }
+
+            // Otherwise assume it's indirizzo page (cityName/provincia/cap/via)
+            const city = this.querySelector('#cityName') ? this.querySelector('#cityName').value.trim() : '';
+            const prov = this.querySelector('#provincia') ? this.querySelector('#provincia').value.trim() : '';
+            const cap = this.querySelector('#cap') ? this.querySelector('#cap').value.trim() : '';
+            const via = this.querySelector('#via') ? this.querySelector('#via').value.trim() : '';
+
+            const payload = new URLSearchParams();
+            payload.append('cityName', city);
+            payload.append('provincia', prov);
+            payload.append('cap', cap);
+            payload.append('via', via);
+
+            fetch('update_shipping.php', {
+                method: 'POST',
+                body: payload,
+                credentials: 'same-origin',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message || 'Indirizzo aggiornato.');
+                } else {
+                    alert(data.message || 'Errore durante il salvataggio.');
+                }
+            })
+            .catch(err => {
+                console.error('Errore update shipping:', err);
+                alert('Errore di connessione. Riprova.');
+            })
+            .finally(() => {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Modifica'; }
+            });
+        });
+    }
+
     // Esponi la funzione nel global scope per il pulsante HTML
     window.resetPasswordForm = resetPasswordForm;
 });
