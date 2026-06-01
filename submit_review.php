@@ -8,6 +8,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once("include/db/DB_Connection.php");
 require_once("include/db/DataLayer.php");
+require_once("include/model/Review.php");
+require_once("include/model/Rating.php");
+
 
 function isAjaxRequest() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') return true;

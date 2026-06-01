@@ -56,12 +56,24 @@ $body_page->setContent("dynamic_stars", $stars_string);
 
 // Usiamo il ciclo for classico con setContent e il parametro true per accodare
 $total_reviews = count($reviews);
+
+// Costruiamo una mappa userId => rating value per evitare mismatch d'indice
+$ratingsMap = [];
+foreach ($ratings as $rt) {
+    // Preferiamo usare getUserId() per non forzare ulteriori fetch lazy
+    $userId = method_exists($rt, 'getUserId') ? $rt->getUserId() : ($rt->getUser() ? $rt->getUser()->getId() : null);
+    if ($userId !== null) {
+        $ratingsMap[$userId] = $rt->getValue();
+    }
+}
+
 for ($i = 0; $i < $total_reviews; $i++) {
     
     $current_review = $reviews[$i];
     
-    // Prendiamo il voto corrispondente se esiste, altrimenti mettiamo "N/D"
-    $current_rating_value = isset($ratings[$i]) ? $ratings[$i]->getValue() : "N/D";
+    // Recuperiamo il voto corrispondente usando la mappa (per evitare mismatch d'ordine)
+    $reviewUserId = $current_review->getUser() ? $current_review->getUser()->getId() : null;
+    $current_rating_value = ($reviewUserId !== null && isset($ratingsMap[$reviewUserId])) ? $ratingsMap[$reviewUserId] : "N/D";
 
     // NOTA: Usiamo nomi univoci ("review_rating" e "single_comment") per non sovrascrivere "review_value"
     $body_page->setContent("reviewer_name", $current_review->getUser()->getName(), true);
