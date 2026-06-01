@@ -1,10 +1,12 @@
 <body>
     <div class="review-container">
         <h1>Lascia una Recensione</h1>
+        <div class="message" id="review-message"><[messaggio]></div>
         <form id="reviewForm">
+            <input type="hidden" name="bookId" id="bookId" value="<[book_id]>">
             <div class="form-group">
                 <label for="userName">Il tuo Nome</label>
-                <input type="text" id="userName" name="userName" placeholder="Mario Rossi" required>
+                <input type="text" id="userName" name="userName" value="<[user_name]>" placeholder="Mario Rossi" required>
             </div>
             
             <div class="form-group">
@@ -23,10 +25,14 @@
 
     <style>
         .review-container { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; font-family: sans-serif; }
+        .message { margin-bottom: 10px; color: #155724; background: #d4edda; padding: 8px; border-radius: 4px; display: none; }
+        .message.error { color: #721c24; background: #f8d7da; display: block; }
+        .message.success { color: #155724; background: #d4edda; display: block; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
         .form-group input, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
         .btn-submit { width: 100%; padding: 10px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
         .btn-submit:hover { background-color: #218838; }
     </style>
+    <!-- Review submit handled in js/my_script.js -->
 </body>

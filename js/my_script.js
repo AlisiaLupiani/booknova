@@ -335,6 +335,56 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ============================
+    // AGGIUNGI RECENSIONE - SUBMIT VIA AJAX
+    // Cerca il form con id 'reviewForm' e gestisci l'invio in modo coerente con gli altri endpoint
+    const reviewForm = document.getElementById('reviewForm');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const msg = document.getElementById('review-message');
+            if (msg) { msg.className = ''; msg.textContent = ''; }
+
+            const submitBtn = reviewForm.querySelector('button[type="submit"]');
+            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Invio...'; }
+
+            const formData = new FormData(reviewForm);
+
+            fetch('submit_review.php', {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (msg) {
+                    if (data.success) {
+                        msg.className = 'success';
+                        msg.textContent = data.message || 'Recensione inviata con successo.';
+                    } else {
+                        msg.className = 'error';
+                        msg.textContent = data.message || 'Errore nell\'invio della recensione.';
+                    }
+                }
+
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
+            })
+            .catch(err => {
+                if (msg) { msg.className = 'error'; msg.textContent = 'Errore di rete durante l\'invio.'; }
+                console.error('Errore submit review:', err);
+            })
+            .finally(() => {
+                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia Recensione'; }
+            });
+        });
+    }
+
+    // ============================
     // CAMBIO PASSWORD - STEP 1: Verifica email e nuova password
     // ============================
     const passwordFormStep1 = document.getElementById('form-step1');

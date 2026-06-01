@@ -1,8 +1,9 @@
 <?php
 // Questo è il file: php/home/header.php
 
-// Carica il template dell'header HTML
-$header_page = new Template("html/home/header.html"); // Verifica che il percorso del file HTML sia corretto!
+// Scegli il template dell'header in base allo stato di autenticazione
+$templateFile = (isset($_SESSION["auth"]) && $_SESSION["auth"] === true) ? "html/home/header.html" : "html/home/header_guest.html";
+$header_page = new Template($templateFile); // Verifica che il percorso del file HTML sia corretto!
 
 // Controlliamo lo stato del login (la sessione è già attiva grazie a index.php)
 if (isset($_SESSION["auth"]) && $_SESSION["auth"] === true) {
@@ -26,8 +27,8 @@ if (isset($_SESSION["auth"]) && $_SESSION["auth"] === true) {
 } else {
     // Se l'utente NON è loggato, mostra Accedi
     $login_button = '<a href="login.php" class="nav-link">Accedi</a>';
-    
-    // Se non è loggato, svuotiamo il tag nell'HTML (o lo lasciamo vuoto per non rompere i link)
+    // Se non è loggato usando il template guest non ci sono altri segnaposti necessari,
+    // ma impostiamo comunque valori di default per evitare placeholder non sostituiti.
     $header_page->setContent("user_id", "");
     $header_page->setContent("cart_count", 0);
 }
