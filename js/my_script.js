@@ -1,15 +1,69 @@
 document.addEventListener('DOMContentLoaded', function () {
     console.log('my_script.js loaded');
 
-    // EVENT DELEGATION: intercetta tutti i click
-    document.addEventListener('click', function (event) {
+    // ============================
+    // CHECKOUT PAYMENT FORM
+    // ============================
+  const checkoutPaymentForm = document.getElementById('checkoutPaymentForm');
 
-        // ============================
-        //  ADD TO CART
-        // ============================
+if (checkoutPaymentForm) {
+    checkoutPaymentForm.addEventListener('submit', function (e) {
+        e.preventDefault(); // blocca il submit normale
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Pagamento in corso...';
+        }
+
+        const formData = new FormData(this);
+
+        fetch('pay.php', {
+            method: 'POST',
+            body: formData,
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (data) {
+            alert(data.message || 'Pagamento completato.');
+
+            if (data.success) {
+                window.location.href =
+                    'cart.php?user_id=' + encodeURIComponent(formData.get('user_id'));
+            }
+        })
+        .catch(function (err) {
+            console.error('Errore pagamento:', err);
+            alert('Errore di connessione. Riprova.');
+        })
+        .finally(function () {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Paga Ora';
+            }
+        });
+
+        return false;   
+    });
+}
+
+
+    // ============================
+    // EVENT DELEGATION CLICK
+    // ============================
+    document.addEventListener('click', function (event) {
         const addBtn = event.target.closest('.add-to-cart, #add_to_cart_btn');
+
         if (addBtn) {
             event.preventDefault();
+
             const bookId = addBtn.getAttribute('data-book-id') || addBtn.dataset.bookId;
 
             if (!bookId) {
@@ -25,25 +79,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: 'book_id=' + encodeURIComponent(bookId)
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (!data.success) {
                     alert(data.message || 'Errore durante l\'aggiunta al carrello.');
                     if (data.redirect) window.location.href = data.redirect;
                     return;
                 }
+
                 alert(data.message || 'Libro aggiunto al carrello.');
-                if (typeof data.cart_count !== 'undefined') updateHeaderCartCount(data.cart_count);
+
+                if (typeof data.cart_count !== 'undefined') {
+                    updateHeaderCartCount(data.cart_count);
+                }
             })
-            .catch(err => console.error('Errore add_to_cart:', err));
+            .catch(function (err) {
+                console.error('Errore add_to_cart:', err);
+            });
 
             return;
         }
 
-        // ============================
-        //  REMOVE FROM CART
-        // ============================
         const remBtn = event.target.closest('.btn-remove');
+
         if (remBtn) {
             event.preventDefault();
 
@@ -51,12 +111,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const bookId = remBtn.getAttribute('data-book-id') || remBtn.dataset.bookId;
             const row = remBtn.closest('tr');
 
-            const oldRowTotal = parseFloat(row.dataset.itemTotal) ||
-                parseFloat((row.querySelector('td:nth-child(4)') || {}).textContent.replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+            const oldRowTotal = row
+                ? parseFloat(row.dataset.itemTotal) ||
+                  parseFloat((row.querySelector('td:nth-child(4)') || {}).textContent.replace(/[^0-9.,]/g, '').replace(',', '.')) ||
+                  0
+                : 0;
 
             const payload = cartItemId
-                ? ('cart_item_id=' + encodeURIComponent(cartItemId))
-                : ('book_id=' + encodeURIComponent(bookId));
+                ? 'cart_item_id=' + encodeURIComponent(cartItemId)
+                : 'book_id=' + encodeURIComponent(bookId);
 
             fetch('remove_from_cart.php', {
                 method: 'POST',
@@ -66,35 +129,40 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: payload
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (!data.success) {
                     alert(data.message || 'Errore durante la rimozione.');
                     return;
                 }
 
                 if (row) row.remove();
+
                 updateCartTotals(-oldRowTotal);
 
-                if (typeof data.cart_count !== 'undefined') updateHeaderCartCount(data.cart_count);
+                if (typeof data.cart_count !== 'undefined') {
+                    updateHeaderCartCount(data.cart_count);
+                }
             })
-            .catch(err => console.error('Errore remove:', err));
+            .catch(function (err) {
+                console.error('Errore remove:', err);
+            });
 
             return;
         }
 
-        // ============================
-        //  ADD TO WISHLIST (catalogo / dettagli)
-        // ============================
-        let t = event.target;
-        if (t.nodeType !== 1) t = t.parentElement;
+        let target = event.target;
+        if (target.nodeType !== 1) target = target.parentElement;
 
-        const wishBtn = t.closest('.add-to-wishlist, #add_to_wishlist_btn');
+        const wishBtn = target.closest('.add-to-wishlist, #add_to_wishlist_btn');
 
         if (wishBtn) {
             event.preventDefault();
 
             const bookId = wishBtn.getAttribute('data-book-id') || wishBtn.dataset.bookId;
+
             if (!bookId) {
                 alert('ID libro non trovato.');
                 return;
@@ -109,8 +177,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: 'book_id=' + encodeURIComponent(bookId)
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (!data.success) {
                     alert(data.message || 'Errore durante l\'aggiornamento della wishlist.');
                     if (data.redirect) window.location.href = data.redirect;
@@ -119,26 +189,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 alert(data.message || 'Wishlist aggiornata.');
 
-                // Toggle grafico
                 if (data.in_wishlist) {
-                    wishBtn.textContent = '♥ In wishlist';
+                    wishBtn.textContent = 'In wishlist';
                     wishBtn.classList.remove('btn-outline-secondary');
                     wishBtn.classList.add('btn-secondary');
                 } else {
-                    wishBtn.textContent = '♡ Wishlist';
+                    wishBtn.textContent = 'Wishlist';
                     wishBtn.classList.remove('btn-secondary');
                     wishBtn.classList.add('btn-outline-secondary');
                 }
             })
-            .catch(err => console.error('Errore wishlist:', err));
+            .catch(function (err) {
+                console.error('Errore wishlist:', err);
+            });
 
             return;
         }
 
-        // ============================
-        //  REMOVE FROM WISHLIST (pagina wishlist)
-        // ============================
-        const removeWishBtn = t.closest('.remove-from-wishlist');
+        const removeWishBtn = target.closest('.remove-from-wishlist');
 
         if (removeWishBtn) {
             event.preventDefault();
@@ -159,30 +227,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: 'book_id=' + encodeURIComponent(bookId)
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (!data.success) {
                     alert(data.message || 'Errore durante la rimozione dalla wishlist.');
                     return;
                 }
 
-                // Rimuove il libro dalla pagina
                 const card = removeWishBtn.closest('.col-md-3');
                 if (card) card.remove();
 
                 alert(data.message || 'Libro rimosso dalla wishlist.');
             })
-            .catch(err => console.error('Errore remove wishlist:', err));
-
-            return;
+            .catch(function (err) {
+                console.error('Errore remove wishlist:', err);
+            });
         }
     });
 
     // ============================
-    //  QUANTITY CHANGE HANDLER
+    // QUANTITY CHANGE HANDLER
     // ============================
     document.addEventListener('change', function (event) {
         const el = event.target;
+
         if (!el.classList.contains('cart-qty')) return;
 
         let qty = parseInt(el.value, 10);
@@ -190,22 +260,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const cartItemId = el.dataset.cartItemId || null;
         const bookId = el.dataset.bookId || null;
-
         const row = el.closest('tr');
+
+        if (!row) return;
+
         const price = parseFloat(row.dataset.price) ||
-            parseFloat((row.querySelector('td:nth-child(2)') || {}).textContent.replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+            parseFloat((row.querySelector('td:nth-child(2)') || {}).textContent.replace(/[^0-9.,]/g, '').replace(',', '.')) ||
+            0;
 
         const oldRowTotal = parseFloat(row.dataset.itemTotal) || 0;
         const newRowTotal = +(price * qty).toFixed(2);
 
-        // Aggiorna UI immediatamente
         const totalCell = row.querySelector('td:nth-child(4)');
-        if (totalCell) totalCell.textContent = '€ ' + newRowTotal.toFixed(2);
+        if (totalCell) totalCell.textContent = '\u20ac ' + newRowTotal.toFixed(2);
+
         row.dataset.itemTotal = newRowTotal;
 
         const payload = cartItemId
-            ? ('cart_item_id=' + encodeURIComponent(cartItemId) + '&quantity=' + encodeURIComponent(qty))
-            : ('book_id=' + encodeURIComponent(bookId) + '&quantity=' + encodeURIComponent(qty));
+            ? 'cart_item_id=' + encodeURIComponent(cartItemId) + '&quantity=' + encodeURIComponent(qty)
+            : 'book_id=' + encodeURIComponent(bookId) + '&quantity=' + encodeURIComponent(qty);
 
         fetch('update_cart.php', {
             method: 'POST',
@@ -215,15 +288,17 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: payload
         })
-        .then(res => res.json())
-        .then(data => {
+        .then(function (res) {
+            return res.json();
+        })
+        .then(function (data) {
             if (!data.success) {
                 alert(data.message || 'Errore aggiornamento carrello');
                 return;
             }
 
             if (data.removed) {
-                if (row) row.remove();
+                row.remove();
                 updateCartTotals(-oldRowTotal);
                 return;
             }
@@ -231,103 +306,84 @@ document.addEventListener('DOMContentLoaded', function () {
             if (typeof data.subtotal !== 'undefined') {
                 const subtotalEl = document.getElementById('cart-subtotal');
                 const totalEl = document.getElementById('cart-total');
-                if (subtotalEl) subtotalEl.textContent = '€ ' + parseFloat(data.subtotal).toFixed(2);
-                if (totalEl) totalEl.textContent = '€ ' + parseFloat(data.subtotal).toFixed(2);
-                if (typeof data.cart_count !== 'undefined') updateHeaderCartCount(data.cart_count);
+
+                if (subtotalEl) subtotalEl.textContent = '\u20ac ' + parseFloat(data.subtotal).toFixed(2);
+                if (totalEl) totalEl.textContent = '\u20ac ' + parseFloat(data.subtotal).toFixed(2);
+
+                if (typeof data.cart_count !== 'undefined') {
+                    updateHeaderCartCount(data.cart_count);
+                }
             } else {
-                const delta = newRowTotal - oldRowTotal;
-                updateCartTotals(delta);
+                updateCartTotals(newRowTotal - oldRowTotal);
             }
         })
-        .catch(err => console.error('Errore update_cart:', err));
+        .catch(function (err) {
+            console.error('Errore update_cart:', err);
+        });
     });
 
     // ============================
-    //  FUNZIONI DI SUPPORTO
-    // ============================
-    function updateCartTotals(delta) {
-        const subtotalEl = document.getElementById('cart-subtotal');
-        const totalEl = document.getElementById('cart-total');
-        if (!subtotalEl || !totalEl) return;
-
-        function parseMoney(el) {
-            return parseFloat(el.textContent.replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
-        }
-
-        let subtotal = parseMoney(subtotalEl);
-        let total = parseMoney(totalEl);
-
-        subtotal = +(subtotal + delta).toFixed(2);
-        total = +(total + delta).toFixed(2);
-
-        subtotalEl.textContent = '€ ' + subtotal.toFixed(2);
-        totalEl.textContent = '€ ' + total.toFixed(2);
-    }
-
-    function updateHeaderCartCount(count) {
-        const el = document.getElementById('cart-count');
-        if (el) el.textContent = '(' + parseInt(count, 10) + ')';
-    }
-
-    // ============================
-    // REGISTRAZIONE - STEP 1: Verifica email
+    // REGISTRAZIONE
     // ============================
     const registrationForm = document.getElementById('registration-form');
+
     if (registrationForm) {
-        registrationForm.addEventListener('submit', function(e) {
+        registrationForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const email = document.getElementById('email').value.trim();
             const name = document.getElementById('name').value.trim();
             const surname = document.getElementById('surname').value.trim();
-            const shipping_address = document.getElementById('shipping_address').value.trim();
+            const shippingAddress = document.getElementById('shipping_address').value.trim();
             const password = document.getElementById('password').value;
             const submitBtn = document.getElementById('submit-btn');
-            
-            // Validazione client-side
-            if (!email || !name || !surname || !shipping_address || !password) {
-                showRegistrationStatus('✗ Compila tutti i campi', 'error');
+
+            if (!email || !name || !surname || !shippingAddress || !password) {
+                showRegistrationStatus('Compila tutti i campi', 'error');
                 return;
             }
-            
+
             if (password.length < 6) {
-                showRegistrationStatus('✗ La password deve avere almeno 6 caratteri', 'error');
+                showRegistrationStatus('La password deve avere almeno 6 caratteri', 'error');
                 return;
             }
-            
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Registrazione in corso...';
-            
-            // Invia i dati al server
+
             fetch('register_user.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     'Accept': 'application/json'
                 },
-                body: 'email=' + encodeURIComponent(email) + 
-                      '&name=' + encodeURIComponent(name) + 
-                      '&surname=' + encodeURIComponent(surname) + 
-                      '&shipping_address=' + encodeURIComponent(shipping_address) + 
-                      '&password=' + encodeURIComponent(password)
+                body:
+                    'email=' + encodeURIComponent(email) +
+                    '&name=' + encodeURIComponent(name) +
+                    '&surname=' + encodeURIComponent(surname) +
+                    '&shipping_address=' + encodeURIComponent(shippingAddress) +
+                    '&password=' + encodeURIComponent(password)
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (data.success) {
-                    showRegistrationStatus('✓ ' + data.message, 'success');
+                    showRegistrationStatus(data.message || 'Registrazione completata.', 'success');
                     registrationForm.reset();
-                    setTimeout(() => {
+
+                    setTimeout(function () {
                         window.location.href = data.redirect || 'login.php';
                     }, 2000);
                 } else {
-                    showRegistrationStatus('✗ ' + (data.message || 'Errore durante la registrazione'), 'error');
+                    showRegistrationStatus(data.message || 'Errore durante la registrazione', 'error');
                 }
             })
-            .catch(err => {
-                console.error('Errore:', err);
-                showRegistrationStatus('✗ Errore di connessione. Riprova.', 'error');
+            .catch(function (err) {
+                console.error('Errore registrazione:', err);
+                showRegistrationStatus('Errore di connessione. Riprova.', 'error');
             })
-            .finally(() => {
+            .finally(function () {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Registrati';
             });
@@ -335,75 +391,86 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ============================
-    // AGGIUNGI RECENSIONE - SUBMIT VIA AJAX
-    // Cerca il form con id 'reviewForm' e gestisci l'invio in modo coerente con gli altri endpoint
+    // RECENSIONE
+    // ============================
     const reviewForm = document.getElementById('reviewForm');
+
     if (reviewForm) {
         reviewForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
             const msg = document.getElementById('review-message');
-            if (msg) { msg.className = ''; msg.textContent = ''; }
-
             const submitBtn = reviewForm.querySelector('button[type="submit"]');
-            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Invio...'; }
 
-            const formData = new FormData(reviewForm);
+            if (msg) {
+                msg.className = '';
+                msg.textContent = '';
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Invio...';
+            }
 
             fetch('submit_review.php', {
                 method: 'POST',
-                body: formData,
+                body: new FormData(reviewForm),
                 credentials: 'same-origin',
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (msg) {
-                    if (data.success) {
-                        msg.className = 'success';
-                        msg.textContent = data.message || 'Recensione inviata con successo.';
-                    } else {
-                        msg.className = 'error';
-                        msg.textContent = data.message || 'Errore nell\'invio della recensione.';
-                    }
+                    msg.className = data.success ? 'success' : 'error';
+                    msg.textContent = data.message || (data.success ? 'Recensione inviata con successo.' : 'Errore nell\'invio della recensione.');
                 }
 
                 if (data.redirect) {
                     window.location.href = data.redirect;
                 }
             })
-            .catch(err => {
-                if (msg) { msg.className = 'error'; msg.textContent = 'Errore di rete durante l\'invio.'; }
+            .catch(function (err) {
+                if (msg) {
+                    msg.className = 'error';
+                    msg.textContent = 'Errore di rete durante l\'invio.';
+                }
+
                 console.error('Errore submit review:', err);
             })
-            .finally(() => {
-                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Invia Recensione'; }
+            .finally(function () {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Invia Recensione';
+                }
             });
         });
     }
 
     // ============================
-    // CAMBIO PASSWORD - STEP 1: Verifica email e nuova password
+    // CAMBIO PASSWORD - STEP 1
     // ============================
     const passwordFormStep1 = document.getElementById('form-step1');
+
     if (passwordFormStep1) {
-        passwordFormStep1.addEventListener('submit', function(e) {
+        passwordFormStep1.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const email = document.getElementById('email').value.trim();
             const newPassword = document.getElementById('new-password').value;
             const submitBtn = this.querySelector('button[type="submit"]');
-            
+
             if (!email || !newPassword) {
-                showPasswordStatus('✗ Compila tutti i campi', 'error');
+                showPasswordStatus('Compila tutti i campi', 'error');
                 return;
             }
-            
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Verifica in corso...';
-            
+
             fetch('change_password.php', {
                 method: 'POST',
                 headers: {
@@ -412,22 +479,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: 'action=verify_email&email=' + encodeURIComponent(email) + '&new_password=' + encodeURIComponent(newPassword)
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (data.success) {
-                    showPasswordStatus('✓ ' + data.message, 'success');
+                    showPasswordStatus(data.message || 'Email verificata.', 'success');
                     document.getElementById('step1').style.display = 'none';
                     document.getElementById('step2').style.display = 'block';
                     document.getElementById('old-password').focus();
                 } else {
-                    showPasswordStatus('✗ ' + (data.message || 'Errore durante la verifica'), 'error');
+                    showPasswordStatus(data.message || 'Errore durante la verifica', 'error');
                 }
             })
-            .catch(err => {
-                console.error('Errore:', err);
-                showPasswordStatus('✗ Errore di connessione. Riprova.', 'error');
+            .catch(function (err) {
+                console.error('Errore cambio password:', err);
+                showPasswordStatus('Errore di connessione. Riprova.', 'error');
             })
-            .finally(() => {
+            .finally(function () {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Recupera Password';
             });
@@ -435,24 +504,25 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ============================
-    // CAMBIO PASSWORD - STEP 2: Verifica vecchia password e aggiorna
+    // CAMBIO PASSWORD - STEP 2
     // ============================
     const passwordFormStep2 = document.getElementById('form-step2');
+
     if (passwordFormStep2) {
-        passwordFormStep2.addEventListener('submit', function(e) {
+        passwordFormStep2.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             const oldPassword = document.getElementById('old-password').value;
             const submitBtn = this.querySelector('button[type="submit"]');
-            
+
             if (!oldPassword) {
-                showPasswordStatus('✗ Inserisci la vecchia password', 'error');
+                showPasswordStatus('Inserisci la vecchia password', 'error');
                 return;
             }
-            
+
             submitBtn.disabled = true;
             submitBtn.textContent = 'Aggiornamento in corso...';
-            
+
             fetch('change_password.php', {
                 method: 'POST',
                 headers: {
@@ -461,22 +531,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 body: 'action=verify_old_password&old_password=' + encodeURIComponent(oldPassword)
             })
-            .then(res => res.json())
-            .then(data => {
+            .then(function (res) {
+                return res.json();
+            })
+            .then(function (data) {
                 if (data.success) {
-                    showPasswordStatus('✓ ' + data.message, 'success');
-                    setTimeout(() => {
+                    showPasswordStatus(data.message || 'Password aggiornata.', 'success');
+
+                    setTimeout(function () {
                         window.location.href = data.redirect || 'login.php';
                     }, 2000);
                 } else {
-                    showPasswordStatus('✗ ' + (data.message || 'Errore durante l\'aggiornamento'), 'error');
+                    showPasswordStatus(data.message || 'Errore durante l\'aggiornamento', 'error');
                 }
             })
-            .catch(err => {
-                console.error('Errore:', err);
-                showPasswordStatus('✗ Errore di connessione. Riprova.', 'error');
+            .catch(function (err) {
+                console.error('Errore cambio password:', err);
+                showPasswordStatus('Errore di connessione. Riprova.', 'error');
             })
-            .finally(() => {
+            .finally(function () {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Conferma Cambio Password';
             });
@@ -484,61 +557,28 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ============================
-    // FUNZIONI HELPER PER STATUS
+    // PROFILE FORM
     // ============================
-    function showRegistrationStatus(message, type = 'info') {
-        const statusEl = document.getElementById('status-message');
-        if (statusEl) {
-            statusEl.textContent = message;
-            statusEl.className = type;
-            statusEl.style.display = 'block';
-            window.scrollTo(0, 0);
-        }
-    }
-
-    function showPasswordStatus(message, type = 'info') {
-        const statusEl = document.getElementById('status-message');
-        if (statusEl) {
-            statusEl.textContent = message;
-            statusEl.className = type;
-            statusEl.style.display = 'block';
-            window.scrollTo(0, 0);
-        }
-    }
-
-    function resetPasswordForm() {
-        const form1 = document.getElementById('form-step1');
-        const form2 = document.getElementById('form-step2');
-        if (form1) form1.reset();
-        if (form2) form2.reset();
-        const step1 = document.getElementById('step1');
-        const step2 = document.getElementById('step2');
-        if (step1) step1.style.display = 'block';
-        if (step2) step2.style.display = 'none';
-        const statusEl = document.getElementById('status-message');
-        if (statusEl) statusEl.style.display = 'none';
-    }
-
-    // ============================
-    // PROFILE FORM - Aggiorna nome, email, telefono via AJAX
-    // Cerca il form nella sezione #profile
     const profileSection = document.querySelector('#profile');
+
     if (profileSection) {
         const profileForm = profileSection.querySelector('form');
-        if (profileForm) {
-            profileForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const submitBtn = this.querySelector('button[type="submit"]');
-                if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Salvataggio...'; }
 
-                const name = this.querySelector('#name') ? this.querySelector('#name').value.trim() : '';
-                const email = this.querySelector('#email') ? this.querySelector('#email').value.trim() : '';
-                const phone = this.querySelector('#phone') ? this.querySelector('#phone').value.trim() : '';
+        if (profileForm) {
+            profileForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const submitBtn = this.querySelector('button[type="submit"]');
+
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Salvataggio...';
+                }
 
                 const payload = new URLSearchParams();
-                payload.append('name', name);
-                payload.append('email', email);
-                payload.append('phone', phone);
+                payload.append('name', this.querySelector('#name') ? this.querySelector('#name').value.trim() : '');
+                payload.append('email', this.querySelector('#email') ? this.querySelector('#email').value.trim() : '');
+                payload.append('phone', this.querySelector('#phone') ? this.querySelector('#phone').value.trim() : '');
 
                 fetch('update_profile.php', {
                     method: 'POST',
@@ -548,107 +588,80 @@ document.addEventListener('DOMContentLoaded', function () {
                         'Accept': 'application/json'
                     }
                 })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message || 'Profilo aggiornato.');
-                    } else {
-                        alert(data.message || 'Errore durante il salvataggio.');
-                    }
+                .then(function (res) {
+                    return res.json();
                 })
-                .catch(err => {
+                .then(function (data) {
+                    alert(data.message || (data.success ? 'Profilo aggiornato.' : 'Errore durante il salvataggio.'));
+                })
+                .catch(function (err) {
                     console.error('Errore update profile:', err);
                     alert('Errore di connessione. Riprova.');
                 })
-                .finally(() => {
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Salva Modifiche'; }
+                .finally(function () {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Salva Modifiche';
+                    }
                 });
             });
         }
     }
 
-    // PAYMENT / SHIPPING FORM handler
-    // Many pages use a form with id 'paymentForm' (indirizzo, modifica_pay, pay). Distinguish by presence of specific fields.
+    // ============================
+    // PAYMENT METHOD / SHIPPING FORM
+    // ============================
     const globalPaymentForm = document.getElementById('paymentForm');
+
     if (globalPaymentForm) {
-        globalPaymentForm.addEventListener('submit', function(e) {
+        globalPaymentForm.addEventListener('submit', function (e) {
             e.preventDefault();
+
             const submitBtn = this.querySelector('button[type="submit"]');
-            if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Invio...'; }
+            const originalText = submitBtn ? submitBtn.textContent : 'Modifica';
 
-            // If the form contains an input named 'amount' -> pay page
-            if (this.querySelector('#amount')) {
-                // invia a pay.php (stessa pagina che ha generato il form)
-                const formData = new FormData(this);
-                fetch(window.location.href, {
-                    method: 'POST',
-                    body: formData,
-                    credentials: 'same-origin',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message || 'Pagamento effettuato con successo.');
-                        // possibile redirect o aggiornamento della pagina
-                    } else {
-                        alert(data.message || 'Errore durante il pagamento.');
-                    }
-                })
-                .catch(err => {
-                    console.error('Errore payment:', err);
-                    alert('Errore di connessione. Riprova.');
-                })
-                .finally(() => {
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Paga Ora'; }
-                });
-
-                return;
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Invio...';
             }
 
-            // If the form contains cardNumber but not amount -> modifica_pay page
-            if (this.querySelector('#cardNumber')) {
-                const formData = new FormData(this);
+            const isPaymentEditPage = this.querySelector('#cardNumber');
+
+            if (isPaymentEditPage) {
                 fetch('update_payment.php', {
                     method: 'POST',
-                    body: formData,
+                    body: new FormData(this),
                     credentials: 'same-origin',
                     headers: {
+                        'Accept': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        alert(data.message || 'Metodo di pagamento aggiornato.');
-                    } else {
-                        alert(data.message || 'Errore durante il salvataggio.');
-                    }
+                .then(function (res) {
+                    return res.json();
                 })
-                .catch(err => {
+                .then(function (data) {
+                    alert(data.message || (data.success ? 'Metodo di pagamento aggiornato.' : 'Errore durante il salvataggio.'));
+                })
+                .catch(function (err) {
                     console.error('Errore modifica payment:', err);
                     alert('Errore di connessione. Riprova.');
                 })
-                .finally(() => {
-                    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Modifica'; }
+                .finally(function () {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                    }
                 });
 
                 return;
             }
 
-            // Otherwise assume it's indirizzo page (cityName/provincia/cap/via)
-            const city = this.querySelector('#cityName') ? this.querySelector('#cityName').value.trim() : '';
-            const prov = this.querySelector('#provincia') ? this.querySelector('#provincia').value.trim() : '';
-            const cap = this.querySelector('#cap') ? this.querySelector('#cap').value.trim() : '';
-            const via = this.querySelector('#via') ? this.querySelector('#via').value.trim() : '';
-
             const payload = new URLSearchParams();
-            payload.append('cityName', city);
-            payload.append('provincia', prov);
-            payload.append('cap', cap);
-            payload.append('via', via);
+            payload.append('cityName', this.querySelector('#cityName') ? this.querySelector('#cityName').value.trim() : '');
+            payload.append('provincia', this.querySelector('#provincia') ? this.querySelector('#provincia').value.trim() : '');
+            payload.append('cap', this.querySelector('#cap') ? this.querySelector('#cap').value.trim() : '');
+            payload.append('via', this.querySelector('#via') ? this.querySelector('#via').value.trim() : '');
 
             fetch('update_shipping.php', {
                 method: 'POST',
@@ -658,24 +671,88 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Accept': 'application/json'
                 }
             })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message || 'Indirizzo aggiornato.');
-                } else {
-                    alert(data.message || 'Errore durante il salvataggio.');
-                }
+            .then(function (res) {
+                return res.json();
             })
-            .catch(err => {
+            .then(function (data) {
+                alert(data.message || (data.success ? 'Indirizzo aggiornato.' : 'Errore durante il salvataggio.'));
+            })
+            .catch(function (err) {
                 console.error('Errore update shipping:', err);
                 alert('Errore di connessione. Riprova.');
             })
-            .finally(() => {
-                if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Modifica'; }
+            .finally(function () {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                }
             });
         });
     }
 
-    // Esponi la funzione nel global scope per il pulsante HTML
+    // ============================
+    // FUNZIONI DI SUPPORTO
+    // ============================
+    function updateCartTotals(delta) {
+        const subtotalEl = document.getElementById('cart-subtotal');
+        const totalEl = document.getElementById('cart-total');
+
+        if (!subtotalEl || !totalEl) return;
+
+        function parseMoney(el) {
+            return parseFloat(el.textContent.replace(/[^0-9.,]/g, '').replace(',', '.')) || 0;
+        }
+
+        const subtotal = +(parseMoney(subtotalEl) + delta).toFixed(2);
+        const total = +(parseMoney(totalEl) + delta).toFixed(2);
+
+        subtotalEl.textContent = '\u20ac ' + subtotal.toFixed(2);
+        totalEl.textContent = '\u20ac ' + total.toFixed(2);
+    }
+
+    function updateHeaderCartCount(count) {
+        const el = document.getElementById('cart-count');
+
+        if (el) {
+            el.textContent = '(' + parseInt(count, 10) + ')';
+        }
+    }
+
+    function showRegistrationStatus(message, type) {
+        const statusEl = document.getElementById('status-message');
+
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.className = type || 'info';
+            statusEl.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function showPasswordStatus(message, type) {
+        const statusEl = document.getElementById('status-message');
+
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.className = type || 'info';
+            statusEl.style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+    }
+
+    function resetPasswordForm() {
+        const form1 = document.getElementById('form-step1');
+        const form2 = document.getElementById('form-step2');
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const statusEl = document.getElementById('status-message');
+
+        if (form1) form1.reset();
+        if (form2) form2.reset();
+        if (step1) step1.style.display = 'block';
+        if (step2) step2.style.display = 'none';
+        if (statusEl) statusEl.style.display = 'none';
+    }
+
     window.resetPasswordForm = resetPasswordForm;
 });

@@ -11,7 +11,7 @@ if (!isset($_SESSION['auth']) || $_SESSION['auth'] !== true) {
 
 require_once("include/db/DB_Connection.php");
 require_once("include/db/DataLayer.php");
-require_once("include/models");
+require_once("include/model/User.php");
 
 
 try {

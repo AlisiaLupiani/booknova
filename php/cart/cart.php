@@ -27,7 +27,9 @@ $body_page = new Template("html/cart/cart.html");
 $dataLayer = new DataLayer(new DB_Connection());
 
 // 5. Recuperiamo i dati dal DB tramite il DataLayer
-$user_id = (int)$_GET["user_id"];
+$user_id = (int) $_GET["user_id"];
+$_SESSION['user_id'] = $user_id;
+
 $UserDAO = $dataLayer->getUserDAO();
 $user = $UserDAO->getUserById($user_id);
 
@@ -41,42 +43,52 @@ $bookDAO = $dataLayer->getBookDAO();
 $shippingDAO = $dataLayer->getShippingMethodDAO();
 
 // 6. Controlliamo se arriva un libro da aggiungere al carrello
-$book_id = isset($_GET["book_id"]) && is_numeric($_GET["book_id"]) ? (int)$_GET["book_id"] : 0;
+$book_id = isset($_GET["book_id"]) && is_numeric($_GET["book_id"]) ? (int) $_GET["book_id"] : 0;
+
 $quantity = 1;
 if (isset($_POST["quantity"]) && is_numeric($_POST["quantity"])) {
-    $quantity = max(1, (int)$_POST["quantity"]);
+    $quantity = max(1, (int) $_POST["quantity"]);
 } elseif (isset($_GET["quantity"]) && is_numeric($_GET["quantity"])) {
-    $quantity = max(1, (int)$_GET["quantity"]);
+    $quantity = max(1, (int) $_GET["quantity"]);
 }
 
 $shipping_method_id = 0;
 if (isset($_POST["shipping_method_id"]) && is_numeric($_POST["shipping_method_id"])) {
-    $shipping_method_id = (int)$_POST["shipping_method_id"];
+    $shipping_method_id = (int) $_POST["shipping_method_id"];
 } elseif (isset($_GET["shipping_method_id"]) && is_numeric($_GET["shipping_method_id"])) {
-    $shipping_method_id = (int)$_GET["shipping_method_id"];
+    $shipping_method_id = (int) $_GET["shipping_method_id"];
 }
 
 $shipping_method = null;
 $shipping_cost = 0.0;
 $shipping_label = "Nessuna spedizione selezionata";
+
 if ($shipping_method_id > 0) {
     $shipping_method = $shippingDAO->getShippingMethodById($shipping_method_id);
+
     if ($shipping_method !== null) {
-        $shipping_cost = $shipping_method->getCost() ?? 0.0;
+        $shipping_cost = (float) ($shipping_method->getCost() ?? 0.0);
         $shipping_label = $shipping_method->getName() . " - € " . number_format($shipping_cost, 2, '.', '');
     }
 }
 
 $shipping_methods = $shippingDAO->getAllShippingMethods();
 $shipping_options = "";
+
 foreach ($shipping_methods as $method) {
     $method_id = $method->getId();
-    if ($method_id === null) continue;
+
+    if ($method_id === null) {
+        continue;
+    }
+
     $selected = ($method_id === $shipping_method_id) ? ' selected' : '';
+
     $shipping_options .= '<option value="' . $method_id . '"' . $selected . '>'
         . htmlspecialchars($method->getName()) . ' - € ' . number_format($method->getCost() ?? 0.0, 2, '.', '')
         . '</option>';
 }
+
 $body_page->setContent("shipping_options", $shipping_options);
 $body_page->setContent("user_id", $user_id);
 $body_page->setContent("shipping_method_id", $shipping_method_id);
@@ -84,8 +96,10 @@ $body_page->setContent("shipping_label", $shipping_label);
 
 if ($book_id > 0) {
     $book = $bookDAO->getBookById($book_id);
+
     if ($book !== null) {
         $existingItem = $cartDAO->getCartItemByUserAndBook($user_id, $book_id);
+
         if ($existingItem !== null) {
             $cartDAO->updateCartItemQuantity(
                 $existingItem->getId(),
@@ -118,7 +132,7 @@ foreach ($cart_items as $cart_item) {
         $body_page->setContent("bookidallgenre", $libro->getId());
         $body_page->setContent("cartitemid", $cart_item->getId());
 
-        $totale_singolo_libro = ((float)$libro->getPrice() * (int)$quantita);
+        $totale_singolo_libro = ((float) $libro->getPrice() * (int) $quantita);
         $body_page->setContent("single_item_total", number_format($totale_singolo_libro, 2, '.', ''));
 
         $string_builder = new QueryStringBuilder("book_details.php");
@@ -129,10 +143,19 @@ foreach ($cart_items as $cart_item) {
     }
 }
 
-// 9. Inviamo il totale finito al tag del template
+$order_total = $totale_ordine + $shipping_cost;
+
+// 9. Salviamo i dati del carrello in sessione per la pagina di pagamento
+$_SESSION['cart_subtotal'] = number_format($totale_ordine, 2, '.', '');
+$_SESSION['shipping_cost'] = number_format($shipping_cost, 2, '.', '');
+$_SESSION['shipping_method_id'] = $shipping_method_id;
+$_SESSION['shipping_label'] = $shipping_label;
+$_SESSION['order_total'] = number_format($order_total, 2, '.', '');
+
+// 10. Inviamo il totale finito al tag del template
 $body_page->setContent("subtotal", number_format($totale_ordine, 2, '.', ''));
 $body_page->setContent("spedizione", $shipping_label);
-$body_page->setContent("order_total", number_format($totale_ordine + $shipping_cost, 2, '.', ''));
+$body_page->setContent("order_total", number_format($order_total, 2, '.', ''));
 $body_page->setContent("shipping_cost", number_format($shipping_cost, 2, '.', ''));
 $body_page->setContent("shipping_method_id", $shipping_method_id);
 

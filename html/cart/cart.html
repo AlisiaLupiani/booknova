@@ -1,6 +1,7 @@
 <body>
     <div class="container">
         <h1>Carrello d'Acquisto</h1>
+
         <table class="cart-table">
             <thead>
                 <tr>
@@ -11,22 +12,42 @@
                     <th>Azione</th>
                 </tr>
             </thead>
+
             <tbody id="cart-items">
                 <[foreach]>
                 <tr id="cart-row-<[cartitemid]>" data-item-total="<[single_item_total]>" data-book-id="<[bookidallgenre]>" data-price="<[priceallgenre]>">
-                    <!-- Immagine e Titolo uniti nella colonna Prodotto -->
                     <td>
-                        <img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" style="width: 50px; marginRight: 10px;">
+                        <img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" style="width: 50px; margin-right: 10px;">
                         <a href="<[bookallgenrehrefid]>"><[booktitleallgenre]></a>
-                        <br><small><[authorallgenre]></small>
+                        <br>
+                        <small><[authorallgenre]></small>
                     </td>
+
                     <td>€ <[priceallgenre]></td>
+
                     <td>
-                        <input type="number" class="cart-qty" value="<[quantity]>" min="1" data-cart-item-id="<[cartitemid]>" data-book-id="<[bookidallgenre]>">
+                        <input
+                            type="number"
+                            class="cart-qty"
+                            value="<[quantity]>"
+                            min="1"
+                            data-cart-item-id="<[cartitemid]>"
+                            data-book-id="<[bookidallgenre]>"
+                        >
                     </td>
-                    <!-- Totale di questa riga (Prezzo * Quantità) -->
+
                     <td>€ <[single_item_total]></td>
-                    <td><button type="button" class="btn-remove" data-cart-item-id="<[cartitemid]>" data-book-id="<[bookidallgenre]>">Rimuovi</button></td>
+
+                    <td>
+                        <button
+                            type="button"
+                            class="btn-remove"
+                            data-cart-item-id="<[cartitemid]>"
+                            data-book-id="<[bookidallgenre]>"
+                        >
+                            Rimuovi
+                        </button>
+                    </td>
                 </tr>
                 <[/foreach]>
             </tbody>
@@ -35,6 +56,7 @@
         <div class="cart-summary">
             <form id="shipping-form" method="get" action="cart.php">
                 <input type="hidden" name="user_id" value="<[user_id]>">
+
                 <label for="shipping_method_id">Tipo di spedizione:</label>
                 <select id="shipping_method_id" name="shipping_method_id" onchange="document.getElementById('shipping-form').submit()">
                     <option value="0">-- Seleziona spedizione --</option>
@@ -50,7 +72,12 @@
 
         <div class="cart-actions">
             <a href="catalougues.php" class="btn-continue">Continua Acquisti</a>
-            <a href="pay.php" class="btn-checkout">Procedi al Pagamento</a>
+            <a
+                href="pay.php?user_id=<[user_id]>&shipping_method_id=<[shipping_method_id]>"
+                class="btn-checkout"
+            >
+                Procedi al Pagamento
+            </a>
         </div>
     </div>
 </body>
