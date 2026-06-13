@@ -40,8 +40,22 @@ class OrderDAO extends DAO {
         return $result;
     }
 
+    // ⭐⭐ ECCO IL METODO CHE TI SERVE ⭐⭐
+    public function getOrdersByUserId(int $userId): array {
+        $sql = "SELECT * FROM ORDINE WHERE ID_UTENTE = ? ORDER BY DATA_ORDINE DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(1, $userId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        while ($rs = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $this->createOrder($rs);
+        }
+
+        return $result;
+    }
+
     public function storeOrder(Order $order): ?Order {
-        // Estraggo gli ID dagli oggetti per il database
         $userId = $order->getUser()->getId();
         $paymentId = $order->getPaymentMethod()->getId();
         $shippingId = $order->getShippingMethod()->getId();
@@ -76,12 +90,9 @@ class OrderDAO extends DAO {
         $order = new OrderProxy($this->dataLayer);
         $order->setId($rs['ID']);
         
-        // SOLUZIONE TYPERROR: Recupero l'oggetto User tramite il suo DAO
-        // Invece di passare l'intero $rs['ID_UTENTE'], passiamo l'oggetto User
         $user = $this->dataLayer->getUserDAO()->getUserById($rs['ID_UTENTE']);
         $order->setUser($user);
 
-        // Fai lo stesso per i metodi di pagamento e spedizione se il modello Order lo richiede
         $payment = $this->dataLayer->getPaymentMethodDAO()->getPaymentMethodById($rs['ID_METODO_PAGAMENTO']);
         $order->setPaymentMethod($payment);
 

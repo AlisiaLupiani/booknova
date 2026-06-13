@@ -20,8 +20,16 @@ class OrderItemDAO extends DAO {
         $this->stmtGetOrderItemById = $this->conn->prepare("SELECT * FROM ORDINE_OGGETTO WHERE ID = ?;");
         $this->stmtGetAllOrderItems = $this->conn->prepare("SELECT * FROM ORDINE_OGGETTO;");
 
-        $this->stmtInsertOrderItem = $this->conn->prepare("INSERT INTO ORDINE_OGGETTO (ID_ORDINE, ID_LIBRO, QUANTITA) VALUES (?, ?, ?);");
-        $this->stmtUpdateOrderItem = $this->conn->prepare("UPDATE ORDINE_OGGETTO SET QUANTITA = ? WHERE ID = ?;");
+        // ❗ Manca PREZZO_UNITARIO nella tua INSERT → la aggiungo
+        $this->stmtInsertOrderItem = $this->conn->prepare(
+            "INSERT INTO ORDINE_OGGETTO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO)
+             VALUES (?, ?, ?, ?);"
+        );
+
+        $this->stmtUpdateOrderItem = $this->conn->prepare(
+            "UPDATE ORDINE_OGGETTO SET QUANTITA = ?, PREZZO_UNITARIO = ? WHERE ID = ?;"
+        );
+
         $this->stmtDeleteOrderItem = $this->conn->prepare("DELETE FROM ORDINE_OGGETTO WHERE ID = ?;");
     }
 
@@ -44,16 +52,19 @@ class OrderItemDAO extends DAO {
 
     public function storeOrderItem(OrderItem $orderItem): ?OrderItem {
         if ($orderItem->getId() !== null) {
-            $this->stmtUpdateOrderItem->bindValue(1, $orderItem->getOrder()->getId(), PDO::PARAM_INT);
-            $this->stmtUpdateOrderItem->bindValue(2, $orderItem->getBook()->getId(), PDO::PARAM_INT);
-            $this->stmtUpdateOrderItem->bindValue(3, $orderItem->getQuantity(), PDO::PARAM_INT);
-            $this->stmtUpdateOrderItem->bindValue(4, $orderItem->getId(), PDO::PARAM_INT);
+
+            $this->stmtUpdateOrderItem->bindValue(1, $orderItem->getQuantity(), PDO::PARAM_INT);
+            $this->stmtUpdateOrderItem->bindValue(2, $orderItem->getUnitPrice(), PDO::PARAM_STR);
+            $this->stmtUpdateOrderItem->bindValue(3, $orderItem->getId(), PDO::PARAM_INT);
 
             if ($this->stmtUpdateOrderItem->execute()) return $orderItem;
+
         } else {
+
             $this->stmtInsertOrderItem->bindValue(1, $orderItem->getOrder()->getId(), PDO::PARAM_INT);
             $this->stmtInsertOrderItem->bindValue(2, $orderItem->getBook()->getId(), PDO::PARAM_INT);
             $this->stmtInsertOrderItem->bindValue(3, $orderItem->getQuantity(), PDO::PARAM_INT);
+            $this->stmtInsertOrderItem->bindValue(4, $orderItem->getUnitPrice(), PDO::PARAM_STR);
 
             if ($this->stmtInsertOrderItem->execute()) {
                 $orderItem->setId((int)$this->conn->lastInsertId());
@@ -61,7 +72,6 @@ class OrderItemDAO extends DAO {
             }
         }
         return null;
-                  
     }
 
     private function createOrderItem(array $rs): OrderItem {
@@ -72,7 +82,6 @@ class OrderItemDAO extends DAO {
         $orderItem->setQuantity((int)$rs['QUANTITA']);
         $orderItem->setUnitPrice((float)$rs['PREZZO_UNITARIO']);
         
-        
         return $orderItem;
     }
 
@@ -80,4 +89,19 @@ class OrderItemDAO extends DAO {
         $this->stmtDeleteOrderItem->bindValue(1, $id, PDO::PARAM_INT);
         return $this->stmtDeleteOrderItem->execute();
     }
-}   
+
+    // ⭐⭐⭐ ECCO IL METODO CHE MI HAI CHIESTO ⭐⭐⭐
+    public function getOrderItemsByOrderId(int $orderId): array {
+        $sql = "SELECT * FROM ORDINE_OGGETTO WHERE ID_ORDINE = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(1, $orderId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        while ($rs = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $this->createOrderItem($rs);
+        }
+
+        return $result;
+    }
+}

@@ -2,10 +2,14 @@
     <div class="payment-container">
         <h1>Pagina di Pagamento</h1>
 
-    <form id="checkoutPaymentForm" method="post" action="pay.php">
+        <form id="checkoutPaymentForm" method="post">
+            <!-- Identificatori necessari -->
             <input type="hidden" name="checkout_payment" value="1">
             <input type="hidden" name="user_id" value="<[user_id]>">
             <input type="hidden" name="shipping_method_id" value="<[shipping_method_id]>">
+
+            <!-- IMPORTANTE: invio dell'importo reale -->
+            <input type="hidden" name="amount" value="<[amount]>">
 
             <div class="form-group">
                 <label for="cardName">Titolare della Carta</label>
@@ -14,24 +18,28 @@
 
             <div class="form-group">
                 <label for="cardNumber">Numero Carta</label>
-                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                <input type="text" id="cardNumber" name="cardNumber"
+                       placeholder="1234 5678 9012 3456" maxlength="19" required>
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label for="expiry">Data Scadenza</label>
-                    <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
+                    <input type="text" id="expiry" name="expiry"
+                           placeholder="MM/YY" maxlength="5" required>
                 </div>
 
                 <div class="form-group">
                     <label for="cvc">CVC</label>
-                    <input type="text" id="cvc" name="cvc" maxlength="4" required>
+                    <input type="text" id="cvc" name="cvc"
+                           maxlength="4" required>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="amount_display">Importo</label>
-                <input type="text" id="amount_display" value="€ <[amount]>" readonly>
+                <input type="text" id="amount_display"
+                       value="€ <[amount]>" readonly>
             </div>
 
             <button type="submit" class="btn-pay">Paga Ora</button>
@@ -89,6 +97,6 @@
             cursor: pointer;
         }
     </style>
-    <script src="js/my_script.js"></script>
 
+    <script src="js/my_script.js"></script>
 </body>
