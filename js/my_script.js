@@ -389,6 +389,157 @@ if (checkoutPaymentForm) {
             });
         });
     }
+    // ============================
+// POPOLA SELECT (AUTORE, EDITORE, CATEGORIA, FORMATO)
+// ============================
+
+function loadSelect(url, selectId) {
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            const select = document.getElementById(selectId);
+            if (!select) return;
+
+            select.innerHTML = '<option value="">Seleziona...</option>';
+
+            data.forEach(item => {
+                const opt = document.createElement('option');
+                opt.value = item.id;
+                opt.textContent = item.name;
+                select.appendChild(opt);
+            });
+        })
+        .catch(err => console.error("Errore caricamento " + selectId, err));
+}
+
+// Carica i dati
+loadSelect('php/aggiungi_libro/get_authors.php', 'author');
+loadSelect('php/aggiungi_libro/get_publishers.php', 'publisher');
+loadSelect('php/aggiungi_libro/get_categories.php', 'category');
+loadSelect('php/aggiungi_libro/get_formats.php', 'format');
+
+// ============================
+// AGGIUNTA LIBRO (ADMIN)
+// ============================
+const addBookForm = document.getElementById('addBookForm');
+
+if (addBookForm) {
+    addBookForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const submitBtn = addBookForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Salvataggio...';
+        }
+
+        let formData = new FormData(addBookForm);
+
+        fetch('save_book.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message || (data.success ? 'Libro aggiunto!' : 'Errore durante il salvataggio.'));
+
+            if (data.success) {
+                addBookForm.reset();
+            }
+        })
+        .catch(err => {
+            console.error('Errore AJAX aggiunta libro:', err);
+            alert('Errore di connessione.');
+        })
+        .finally(() => {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Salva Libro nel Database';
+            }
+        });
+    });
+}
+
+// ============================
+// MODIFICA LIBRO (ADMIN) - AJAX
+// ============================
+
+const editBookForm = document.getElementById('editBookForm');
+
+if (editBookForm) {
+    editBookForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const submitBtn = editBookForm.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Salvataggio...';
+        }
+
+        // INVIA TUTTI I CAMPI DEL FORM, COMPRESO bookId
+        const formData = new FormData(editBookForm);
+
+        fetch('modifica_libro_process.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message || (data.success ? 'Libro aggiornato!' : 'Errore durante il salvataggio.'));
+
+            if (data.success) {
+                window.location.href = 'visualizza_libri.php';
+            }
+        })
+        .catch(err => {
+            console.error('Errore AJAX modifica libro:', err);
+            alert('Errore di connessione.');
+        })
+        .finally(() => {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Salva Modifiche';
+            }
+        });
+    });
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ELIMINAZIONE LIBRO AJAX
+    document.querySelectorAll(".delete-book").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            if (!confirm("Sei sicura di voler eliminare questo libro?")) return;
+
+            const bookId = this.dataset.id;
+            const row = this.closest("tr");
+
+            fetch("php/delete.php", {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "book_id=" + bookId
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    row.style.backgroundColor = "#ffdddd";
+                    setTimeout(() => row.remove(), 300);
+                } else {
+                    alert("Errore: " + data.message);
+                }
+            })
+            .catch(err => alert("Errore di rete"));
+        });
+    });
+
+});
+
 
     // ============================
     // RECENSIONE

@@ -24,7 +24,9 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
     if ($user != null && (AuthManager::verifyPasswordSHA($_POST["password"], $user->getPassword()))) {
 
         $_SESSION["auth"] = true;
-        $_SESSION["id"] = $user->getId();
+      $_SESSION["id"] = $user->getId();
+$_SESSION["user_id"] = $user->getId();
+
         $_SESSION["name"] = $user->getName();
         $_SESSION["surname"] = $user->getSurname();
         $_SESSION["email"] = $user->getEmail();
@@ -93,5 +95,3 @@ if (isset($_GET["error"])) {
     $body_page->setContent("error", "Invalid username or password.");
 }
 
-// Non dimenticare di stampare o renderizzare il template alla fine del file se necessario!
-// (Ad esempio: echo $body_page->render(); o come gestisci di solito i tuoi template)

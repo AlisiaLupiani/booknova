@@ -78,7 +78,6 @@
         <table class="book-table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Titolo</th>
                     <th>Autore</th>
                     <th>Editore</th>
@@ -93,7 +92,6 @@
                <[foreach]>
                 <tr>
                      
-                    <td><[book_id]></td>
                     <td><strong><[booktitle]></strong></td>
                     <td><[author]></td>
                     <td><[publisher]></td>
@@ -102,7 +100,7 @@
                     <td><[pages]></td>
                     <td>
                         <a href="modifica_libri.php?book_id=<[book_id]>" class="btn-action btn-edit">Modifica</a>
-                        <a href="delete.php?book_id" class="btn-action btn-delete" onclick="return confirm('Sei sicuro?')">Elimina</a>
+                        <a href="delete.php?book_id=<[book_id]>" class="btn-action btn-delete" onclick="return confirm('Sei sicuro?')">Elimina</a>
                         <a href="recensioni_admin.php?book_id=<[book_id]>">Vedi recensioni</a>
                     </td>
                         

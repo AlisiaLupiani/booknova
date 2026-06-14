@@ -33,7 +33,7 @@
     .btn-submit { 
         width: 100%; 
         padding: 14px; 
-        background-color: #007bff; 
+        background-color: #79605f; 
         color: white; 
         border: none; 
         border-radius: 6px; 
@@ -52,9 +52,15 @@
 <div class="book-container">
     <h2>Gestione Catalogo Libri</h2>
     
-    <form action="save_book.php" method="POST" enctype="multipart/form-data">
-        
+    <form id="addBookForm" enctype="multipart/form-data">
+
+         <div class="form-group">
+    <label for="image">Immagine del Libro</label>
+    <input type="file" id="image" name="image" accept="image/*" required>
+</div>
+
         <div class="form-group">
+            
             <label for="title">Titolo del Libro</label>
             <input type="text" id="title" name="title" placeholder="Inserisci il titolo..." required>
         </div>
@@ -65,14 +71,26 @@
                 <input type="number" id="price" name="price" step="0.01" placeholder="0.00" required>
             </div>
             <div class="form-group">
-                <label for="condition">Condizione (Tipo)</label>
+                <label for="condition">Condizione </label>
                 <select id="condition" name="condition_id">
-                    <option value="ebook">Ebook</option>
-                    <option value="rigida">Copertina Rigida</option>
-                    <option value="flessibile">Copertina Flessibile</option>
+                      <[foreach]>
+                    <option value="<[condition_id]>"><[condition_name]></option>
+                   <[/foreach]>
                 </select>
             </div>
         </div>
+<div class="form-row">
+    <div class="form-group">
+        <label for="pages">Numero Pagine</label>
+        <input type="number" id="pages" name="pages" placeholder="Es. 320" required>
+    </div>
+
+    <div class="form-group">
+        <label for="year">Anno Pubblicazione</label>
+        
+        <input type="number" id="year" name="year" placeholder="Es. 2024" required>
+    </div>
+</div>
 
         <div class="form-group">
             <label for="description">Descrizione / Trama</label>
@@ -83,14 +101,20 @@
             <div class="form-group">
                 <label for="author">Autore</label>
                 <select id="author" name="author_id">
-                    <option value="">Seleziona Autore...</option>
-                    </select>
+                    <[foreach]>
+                    <option value="<[author_id]>"><[author_name]></option>
+                   <[/foreach]>
+                   
+                </select>
+                </select>
             </div>
             <div class="form-group">
                 <label for="publisher">Editore</label>
                 <select id="publisher" name="publisher_id">
-                    <option value="">Seleziona Editore...</option>
-                    </select>
+                 <[foreach]>
+                    <option value="<[publisher_id]>"><[publisher_name]></option>
+                   <[/foreach]>
+                </select>
             </div>
         </div>
 
@@ -98,14 +122,18 @@
             <div class="form-group">
                 <label for="category">Categoria</label>
                 <select id="category" name="category_id">
-                    <option value="">Seleziona Categoria...</option>
-                    </select>
+                    <[foreach]>
+                    <option value="<[category_id]>"><[category_name]></option>
+                   <[/foreach]>
+                </select>
             </div>
             <div class="form-group">
-                <label for="format">Formato (Dimensioni)</label>
+                <label for="format">Formato</label>
                 <select id="format" name="format_id">
-                    <option value="">Seleziona Formato...</option>
-                    </select>
+                     <[foreach]>
+                    <option value="<[format_id]>"><[format_name]></option>
+                   <[/foreach]>
+                </select>
             </div>
         </div>
 

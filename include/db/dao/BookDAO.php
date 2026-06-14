@@ -69,10 +69,10 @@ class BookDAO extends DAO {
             $this->stmtUpdateBook->bindValue(6, $book->getCategory() ? $book->getCategory()->getId() : null, PDO::PARAM_INT);
             $this->stmtUpdateBook->bindValue(7, $book->getFormat() ? $book->getFormat()->getId() : null, PDO::PARAM_INT);
             $this->stmtUpdateBook->bindValue(8, $book->getCondition() ? $book->getCondition()->getId() : null, PDO::PARAM_INT);
-            $this->stmtUpdateBook->bindValue(9, $book->getId(), PDO::PARAM_INT);
-            $this->stmtUpdateBook->bindValue(10, $book->getPages(), PDO::PARAM_INT); 
-            $this->stmtUpdateBook->bindValue(11, $book->getPublicationYear(), PDO::PARAM_INT); 
-            $this->stmtUpdateBook->bindValue(12, $book->getImagePath(), PDO::PARAM_STR);
+            $this->stmtUpdateBook->bindValue(9, $book->getPages(), PDO::PARAM_INT); 
+            $this->stmtUpdateBook->bindValue(10, $book->getPublicationYear(), PDO::PARAM_INT); 
+            $this->stmtUpdateBook->bindValue(11, $book->getImagePath(), PDO::PARAM_STR);
+            $this->stmtUpdateBook->bindValue(12, $book->getId(), PDO::PARAM_INT);
           
             if($this->stmtUpdateBook->execute()) return $book;
         } else {
@@ -85,10 +85,9 @@ class BookDAO extends DAO {
             $this->stmtInsertBook->bindValue(6, $book->getCategory() ? $book->getCategory()->getId() : null, PDO::PARAM_INT);
             $this->stmtInsertBook->bindValue(7, $book->getFormat() ? $book->getFormat()->getId() : null, PDO::PARAM_INT);
             $this->stmtInsertBook->bindValue(8, $book->getCondition() ? $book->getCondition()->getId() : null, PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(9, $book->getId(), PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(10, $book->getPages(), PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(11, $book->getPublicationYear(), PDO::PARAM_INT);
-            $this->stmtInsertBook->bindValue(12, $book->getImagePath(), PDO::PARAM_STR);
+            $this->stmtInsertBook->bindValue(9, $book->getPages(), PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(10, $book->getPublicationYear(), PDO::PARAM_INT);
+            $this->stmtInsertBook->bindValue(11, $book->getImagePath(), PDO::PARAM_STR);
 
             if($this->stmtInsertBook->execute()){
                 $book->setId($this->conn->lastInsertId());
