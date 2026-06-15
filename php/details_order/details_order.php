@@ -30,12 +30,13 @@ if ($id_ordine_visualizza > 0) {
         $body_page->setContent("utente_email", $utente ? $utente->getEmail() : "Ospite");
         
         // Eseguiamo la query per estrarre i libri
-        $stmtLibri = $db->prepare("
-            SELECT L.TITOLO, OL.QUANTITA, OL.PREZZO_UNITARIO 
-            FROM ORDINE_LIBRO OL 
-            JOIN LIBRO L ON OL.ID_LIBRO = L.ID 
-            WHERE OL.ID_ORDINE = ?;
-        ");
+$stmtLibri = $db->prepare("
+    SELECT L.TITOLO AS titolo, OO.QUANTITA AS quantita, OO.PREZZO_UNITARIO AS prezzo_unitario
+    FROM ORDINE_OGGETTO OO
+    JOIN LIBRO L ON OO.ID_LIBRO = L.ID
+    WHERE OO.ID_ORDINE = ?;
+");
+
         
         $stmtLibri->execute([$id_ordine_visualizza]);
         $elementi_ordine = $stmtLibri->fetchAll(PDO::FETCH_ASSOC);

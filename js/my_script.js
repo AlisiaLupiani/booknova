@@ -389,34 +389,10 @@ if (checkoutPaymentForm) {
             });
         });
     }
-    // ============================
-// POPOLA SELECT (AUTORE, EDITORE, CATEGORIA, FORMATO)
-// ============================
 
-function loadSelect(url, selectId) {
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            const select = document.getElementById(selectId);
-            if (!select) return;
 
-            select.innerHTML = '<option value="">Seleziona...</option>';
 
-            data.forEach(item => {
-                const opt = document.createElement('option');
-                opt.value = item.id;
-                opt.textContent = item.name;
-                select.appendChild(opt);
-            });
-        })
-        .catch(err => console.error("Errore caricamento " + selectId, err));
-}
 
-// Carica i dati
-loadSelect('php/aggiungi_libro/get_authors.php', 'author');
-loadSelect('php/aggiungi_libro/get_publishers.php', 'publisher');
-loadSelect('php/aggiungi_libro/get_categories.php', 'category');
-loadSelect('php/aggiungi_libro/get_formats.php', 'format');
 
 // ============================
 // AGGIUNTA LIBRO (ADMIN)
@@ -458,7 +434,125 @@ if (addBookForm) {
             }
         });
     });
-}
+} 
+// ============================
+// AGGIUNTA ADMIN (ADMIN)
+// ============================
+
+    const addAdminForm = document.getElementById('addAdminForm');
+
+    if (addAdminForm) {
+        addAdminForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = addAdminForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Salvataggio...';
+
+            let formData = new FormData(addAdminForm);
+
+            fetch('save_admin.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+
+                if (data.success) {
+                    addAdminForm.reset();
+                }
+            })
+            .catch(err => {
+                console.error('Errore AJAX aggiunta admin:', err);
+                alert('Errore di connessione.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Salva';
+            });
+        });
+    }
+
+// ============================
+// AGGIUNTA AUTORE (ADMIN)
+// ============================
+
+    const addAuthorForm = document.getElementById('addAuthorForm');
+
+    if (addAuthorForm) {
+        addAuthorForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = addAuthorForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Salvataggio...';
+
+            let formData = new FormData(addAuthorForm);
+
+            fetch('save_author.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+
+                if (data.success) {
+                    addAuthorForm.reset();
+                }
+            })
+            .catch(err => {
+                console.error('Errore AJAX aggiunta autore:', err);
+                alert('Errore di connessione.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Salva';
+            });
+        });
+    }
+
+// ============================
+// AGGIUNTA CATEGORIA (ADMIN)
+// ============================
+
+    const addCategoryForm = document.getElementById('addCategoryForm');
+
+    if (addCategoryForm) {
+        addCategoryForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = addCategoryForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Salvataggio...';
+
+            let formData = new FormData(addCategoryForm);
+
+            fetch('save_category.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+
+                if (data.success) {
+                    addCategoryForm.reset();
+                }
+            })
+            .catch(err => {
+                console.error('Errore AJAX aggiunta categoria:', err);
+                alert('Errore di connessione.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Salva';
+            });
+        });
+    }
+
+
 
 // ============================
 // MODIFICA LIBRO (ADMIN) - AJAX
@@ -503,7 +597,9 @@ if (editBookForm) {
         });
     });
 }
-
+// ============================
+// ELIMINA LIBRO (ADMIN) 
+// ============================
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -539,7 +635,318 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+ // ============================
+// ELIMINA AURORE CON LIBRI A CASCATA  (ADMIN) 
+// ============================
 
+
+  // Delegation: intercetta click su qualsiasi bottone con classe .btn-delete-author
+  document.body.addEventListener('click', async function (e) {
+    const btn = e.target.closest('.btn-delete-author');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const authorId = btn.dataset.authorId;
+    if (!authorId) {
+      alert('ID autore mancante');
+      return;
+    }
+
+    if (!confirm('Sei sicuro di voler eliminare questo autore e tutti i suoi libri?')) return;
+
+    // Protezione doppio click
+    if (btn.dataset.sending === '1') return;
+    btn.dataset.sending = '1';
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Eliminazione...';
+
+    try {
+      const formData = new FormData();
+      formData.append('author_id', authorId);
+
+      const res = await fetch('elimina_autore.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+      });
+
+      // Se la risposta non è JSON, gestiamo l'errore
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const text = await res.text();
+        console.error('Risposta non JSON:', text);
+        alert('Errore server: risposta non valida.');
+        return;
+      }
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert(data.message || 'Autore eliminato con successo');
+        // Rimuovi la riga dalla tabella
+        const row = btn.closest('tr');
+        if (row) row.remove();
+      } else {
+        alert(data.message || 'Errore durante l\'eliminazione');
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    } catch (err) {
+      console.error('Errore fetch elimina autore:', err);
+      alert('Errore di connessione.');
+      btn.disabled = false;
+      btn.textContent = originalText;
+    } finally {
+      btn.dataset.sending = '0';
+    }
+  });
+  
+   // ============================
+// ELIMINA CATEGORIA  (ADMIN) 
+// ============================
+  
+
+  
+
+  document.body.addEventListener('click', async function (e) {
+    const btn = e.target.closest('.btn-delete-category');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const categoryId = btn.dataset.categoryId;
+    if (!categoryId) {
+      alert('ID categoria mancante');
+      return;
+    }
+
+    if (!confirm('Sei sicuro di voler eliminare questa categoria e tutti i libri associati?')) return;
+
+    // Protezione doppio click
+    if (btn.dataset.sending === '1') return;
+    btn.dataset.sending = '1';
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Eliminazione...';
+
+    try {
+      const formData = new FormData();
+      formData.append('category_id', categoryId);
+
+      const res = await fetch('elimina_categoria.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+      });
+
+      // Se la risposta non è JSON, gestiamo l'errore
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const text = await res.text();
+        console.error('Risposta non JSON:', text);
+        alert('Errore server: risposta non valida.');
+        return;
+      }
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert(data.message || 'Categoria eliminata con successo');
+        // Rimuovi la riga dalla tabella
+        const row = btn.closest('tr');
+        if (row) row.remove();
+      } else {
+        alert(data.message || 'Errore durante l\'eliminazione');
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    } catch (err) {
+      console.error('Errore fetch elimina categorie:', err);
+      alert('Errore di connessione.');
+      btn.disabled = false;
+      btn.textContent = originalText;
+    } finally {
+      btn.dataset.sending = '0';
+    }
+  });
+
+   // ============================
+// ELIMINA ORDINE  (ADMIN) 
+// ============================
+  
+
+  
+
+  document.body.addEventListener('click', async function (e) {
+    const btn = e.target.closest('.btn-delete-order');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const orderId = btn.dataset.orderId;
+    if (!orderId) {
+      alert('ID ordine mancante');
+      return;
+    }
+
+    if (!confirm('Sei sicuro di voler eliminare questo ordine?')) return;
+
+    // Protezione doppio click
+    if (btn.dataset.sending === '1') return;
+    btn.dataset.sending = '1';
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Eliminazione...';
+
+    try {
+      const formData = new FormData();
+      formData.append('order_id', orderId);
+
+      const res = await fetch('elimina_ordine.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+      });
+
+      // Se la risposta non è JSON, gestiamo l'errore
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const text = await res.text();
+        console.error('Risposta non JSON:', text);
+        alert('Errore server: risposta non valida.');
+        return;
+      }
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert(data.message || 'Ordine eliminato con successo');
+        // Rimuovi la riga dalla tabella
+        const row = btn.closest('tr');
+        if (row) row.remove();
+      } else {
+        alert(data.message || 'Errore durante l\'eliminazione');
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    } catch (err) {
+      console.error('Errore fetch elimina ordini:', err);
+      alert('Errore di connessione.');
+      btn.disabled = false;
+      btn.textContent = originalText;
+    } finally {
+      btn.dataset.sending = '0';
+    }
+  });
+
+ // ============================
+// ELIMINA UTENTE (ADMIN) 
+// ============================
+
+
+  document.body.addEventListener('click', async function (e) {
+    const btn = e.target.closest('.btn-delete-user');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const userId = btn.dataset.userId;
+    if (!userId) {
+      alert('ID utente mancante');
+      return;
+    }
+
+    if (!confirm('Sei sicuro di voler eliminare questo utente?')) return;
+
+    // Protezione doppio click
+    if (btn.dataset.sending === '1') return;
+    btn.dataset.sending = '1';
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Eliminazione...';
+
+    try {
+      const formData = new FormData();
+      formData.append('user_id', userId);
+
+      const res = await fetch('elimina_utente.php', {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin'
+      });
+
+      // Se la risposta non è JSON, gestiamo l'errore
+      const contentType = res.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        const text = await res.text();
+        console.error('Risposta non JSON:', text);
+        alert('Errore server: risposta non valida.');
+        return;
+      }
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert(data.message || 'Utente eliminato con successo');
+        // Rimuovi la riga dalla tabella
+        const row = btn.closest('tr');
+        if (row) row.remove();
+      } else {
+        alert(data.message || 'Errore durante l\'eliminazione');
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    } catch (err) {
+      console.error('Errore fetch elimina utentes:', err);
+      alert('Errore di connessione.');
+      btn.disabled = false;
+      btn.textContent = originalText;
+    } finally {
+      btn.dataset.sending = '0';
+    }
+  });
+
+
+// ============================
+// ELIMINA LIBRO (ADMIN) 
+// ============================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // ELIMINAZIONE LIBRO AJAX
+    document.querySelectorAll(".delete-book").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            if (!confirm("Sei sicura di voler eliminare questo libro?")) return;
+
+            const bookId = this.dataset.id;
+            const row = this.closest("tr");
+
+            fetch("php/delete.php", {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "book_id=" + bookId
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    row.style.backgroundColor = "#ffdddd";
+                    setTimeout(() => row.remove(), 300);
+                } else {
+                    alert("Errore: " + data.message);
+                }
+            })
+            .catch(err => alert("Errore di rete"));
+        });
+    });
+
+});
 
     // ============================
     // RECENSIONE

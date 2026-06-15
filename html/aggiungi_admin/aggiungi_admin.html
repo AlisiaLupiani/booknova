@@ -78,18 +78,19 @@
 <div class="book-container">
     <h2>Gestione Admin</h2>
 
-    <form action="save_admin.php" method="POST" enctype="multipart/form-data">
+    <form id="addAdminForm" enctype="multipart/form-data">
 
         <div class="form-group">
-            <label for="Nome">Nome</label>
-            <input type="text" id="Nome" name="Nome" placeholder="Inserisci il nome..." required>
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" placeholder="Inserisci il nome..." required>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label for="Cognome">Cognome</label>
-                <input type="text" id="Cognome" name="Cognome" placeholder="Inserisci il cognome..." required>
+                <label for="surname">Cognome</label>
+                <input type="text" id="surname" name="surname" placeholder="Inserisci il cognome..." required>
             </div>
+
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" placeholder="Inserisci la tua email..." required>
@@ -100,13 +101,16 @@
             <label for="password">Password</label>
             <input type="password" id="password" name="password" placeholder="Inserisci la tua password..." required>
         </div>
-</form>
-<button type="submit" class="btn-submit">Salva</button>
+
+        <div class="form-group">
+            <label for="role">Ruolo</label>
+            <input type="text" id="role" name="role" value="admin" readonly>
+        </div>
+
+        <button type="submit" class="btn-submit">Salva</button>
+
+    </form>
 </div>
+<script src="js/my_script.js"></script>
 
-
-
-
-</form>
-</div>
 </body>

@@ -78,11 +78,11 @@
 <div class="book-container">
     <h2>Aggiungi Autore</h2>
 
-    <form action="save_autore.php" method="POST" enctype="multipart/form-data">
+    <form id="addAuthorForm" enctype="multipart/form-data">
 
         <div class="form-group">
-            <label for="Nome">Nome</label>
-            <input type="text" id="Nome" name="Nome" placeholder="Inserisci il nome..." required>
+            <label for="name">Nome</label>
+            <input type="text" id="name" name="name" placeholder="Inserisci il nome..." required>
         </div>
 
        
@@ -91,10 +91,10 @@
             <label for="biografia">Biografia</label>
             <textarea id="biografia" name="biografia" placeholder="Inserisci la biografia..." required></textarea>
         </div>
-
+<button type="submit" class="btn-submit">Salva</button>
         
 </form>
-<button type="submit" class="btn-submit">Salva</button>
+
 </div>
 
 
