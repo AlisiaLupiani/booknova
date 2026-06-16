@@ -92,19 +92,20 @@
             <tbody>
                 <[foreach]>
                 <tr>
-                    <td><[recensioni_id]></td>
+                    <td><[review_id]></td>
                     <td><strong><[username_recensioni]></strong></td>
                     <td><[usersurnaname_recensioni]></td>
                     <td><[date_recensioni]></td>
                     <td><[content_recensioni]></td>
                     <td>
-                        <a href="elimina_recensione.php" class="btn-action btn-edit">Elimina</a>
+                        <button class="btn-action btn-delete btn-delete-review" data-review-id="<[review_id]>">Elimina</button>
+
                     </td>
                 </tr>
                 <[/foreach]>
                 
                 
-                </tbody>
+            </tbody>
         </table>
     </div>
 

@@ -13,7 +13,7 @@ if ($book_id > 0) {
     $lista_recensioni = $recensioniDAO->getReviewsByBook($book_id);
 
     foreach ($lista_recensioni as $recensione) {
-        $body_page->setContent("recensioni_id", $recensione->getId());
+        $body_page->setContent("review_id", $recensione->getId());
         
         // Assicurati che getUser() non sia null per evitare Fatal Errors
         if ($recensione->getUser()) {

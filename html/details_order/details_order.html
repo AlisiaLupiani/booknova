@@ -4,35 +4,17 @@
         
         <!-- Informazioni generali dell'ordine -->
         <div class="order-info" style="margin-bottom: 25px; background: #f9f9f9; padding: 15px; border-radius: 6px; border: 1px solid #eee;">
-            <p><strong>Utente:</strong> <[utente_email]></p>
+          <p><strong>Id ordine:</strong> <[ordine_id]></p>
             <p><strong>Data Ordine:</strong> <[data_ordine]></p>
             <p><strong>Totale:</strong> <[totale_ordine]> €</p>
         </div>
 
-        <h3>Libri Ordinati</h3>
         
-        <!-- Tabella ciclica basata sugli elementi dell'ordine -->
-        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-            <thead>
-                <tr style="background-color: #f2f2f2; text-align: left;">
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd;">Titolo Libro</th>
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: center;">Quantità</th>
-                    <th style="padding: 10px; border-bottom: 2px solid #ddd; text-align: right;">Prezzo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <[foreach]>
-                <tr>
-                    <td style="padding: 10px; border-bottom: 1px solid #ddd;"><[libro_titolo]></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: center;"><[libro_quantita]></td>
-                    <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;"><[libro_prezzo]> €</td>
-                </tr>
-                <[/foreach]>
-            </tbody>
-        </table>
+ 
 
         <div class="form-actions" style="margin-top: 30px; text-align: center;">
             <a href="ordini_admin.php" class="btn-action btn-edit" style="text-decoration: none; display: inline-block;">Torna alla Lista Ordini</a>
+            
         </div>
         
         <p style="text-align: center; color: red; margin-top: 10px;"><[messaggio]></p>

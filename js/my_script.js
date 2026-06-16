@@ -1008,6 +1008,81 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+        // ============================
+    // RECENSIONE sito
+    // ============================
+   const reviewSitoForm = document.getElementById('reviewSitoForm');
+
+    if (reviewSitoForm) {
+        reviewSitoForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = reviewSitoForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Salvataggio...';
+
+            let formData = new FormData(reviewSitoForm);
+
+            fetch('salva_recensione.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+
+                if (data.success) {
+                    reviewSitoForm.reset();
+                }
+            })
+            .catch(err => {
+                console.error('Errore AJAX aggiunta recensione:', err);
+                alert('Errore di connessione.');
+            })
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Salva';
+            });
+        });
+    }
+// ============================
+// ELIMINA RECENSIONE (ADMIN) 
+// ============================
+
+
+    document.querySelectorAll(".btn-delete-review").forEach(btn => {
+        btn.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            if (!confirm("Sei sicura di voler eliminare questa recensione?")) return;
+
+            const review_id = this.dataset.reviewId; // <-- CORRETTO
+            const row = this.closest("tr");
+
+            fetch("delete_recensione.php", {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: "review_id=" + review_id
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    row.style.backgroundColor = "#ffdddd";
+                    setTimeout(() => row.remove(), 300);
+                } else {
+                    alert("Errore: " + data.message);
+                }
+            })
+            .catch(err => alert("Errore di rete"));
+        });
+    });
+
+
+
+
     // ============================
     // CAMBIO PASSWORD - STEP 1
     // ============================
