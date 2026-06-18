@@ -91,4 +91,7 @@ $body_page->setContent("id_libro_2", $id_salvati[1] ?? 0);
 $body_page->setContent("id_libro_3", $id_salvati[2] ?? 0);
 
 $body_page->setContent("libri_random", $data);
+
+
+
 ?>

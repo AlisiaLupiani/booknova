@@ -1,84 +1,199 @@
 <body>
 
-	<section id="catalougue" class="bookshelf py-5 my-5">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
+<section id="catalougue" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
 
-					<div class="section-header align-center">
-						<div class="title">
-							<span>Our books</span>
-						</div>
-						<h2 class="section-title">Catalougues</h2>
-					</div>
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Our books</span>
+                    </div>
+                    <h2 class="section-title">Catalougues</h2>
+                </div>
 
-					<ul class="tabs">
-						<li data-tab-target="#all-genre" class="active tab">All genres</li>
+                <!-- 🔍 BARRA DI RICERCA -->
+                <form id="search-form" class="search-bar" onsubmit="return false;">
+                    <input type="text" id="search-input" placeholder="Cerca libro o autore...">
+                    <button type="button" id="search-btn">
+                        <i class="icon icon-search"></i>
+                    </button>
+                </form>
 
-						<[foreach]>
-							<li data-tab-target="#<[category]>" class="tab">
-								<[categorylabel]>
-							</li>
-						<[/foreach]>
-					</ul>
+                <!-- ⚠️ MESSAGGIO NESSUN RISULTATO -->
+                <p id="no-results" class="no-results">Questo libro non è disponibile</p>
 
-					<div class="tab-content">
+                <!-- 🔖 TABS -->
+                <ul class="tabs">
+                    <li data-tab-target="#all-genre" class="active tab">All genres</li>
 
-						<div id="all-genre" data-tab-content class="active">
-							<div class="row">
+                    <[foreach]>
+                        <li data-tab-target="#<[category]>" class="tab">
+                            <[categorylabel]>
+                        </li>
+                    <[/foreach]>
+                </ul>
 
-								<[foreach]>
-									<div class="col-md-3">
-										<div class="product-item">
-											<figure class="product-style">
-												<img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" class="product-item">
-												<button type="button" class="add-to-cart" data-book-id="<[bookidallgenre]>">
-    											Add to Cart
-												</button>
-											</figure>
-											<figcaption>
-												<h3><a href="<[bookallgenrehrefid]>"><[booktitleallgenre]></a></h3>
-												<span><[authorallgenre]></span>
-												<div class="item-price">$ <[priceallgenre]></div>
-											</figcaption>
-										</div>
-									</div>
-								<[/foreach]>
+                <!-- 📚 CONTENUTO -->
+                <div class="tab-content">
 
-							</div>
-						</div>
+                    <!-- ⭐ TUTTI I LIBRI -->
+                    <div id="all-genre" data-tab-content class="active">
+                        <div class="row">
 
-						<[foreach]>
-							<div id="<[categorytab]>" data-tab-content>
-								<div class="row">
+                            <[foreach]>
+                                <div class="col-md-3 book-card">
+                                    <div class="product-item">
+                                        <figure class="product-style">
+                                            <img src="<[bookimageallgenre]>" alt="<[booktitleallgenre]>" class="product-item">
+                                            <button type="button" class="add-to-cart" data-book-id="<[bookidallgenre]>">
+                                                Add to Cart
+                                            </button>
+                                        </figure>
+                                        <figcaption>
+                                            <h3><a href="<[bookallgenrehrefid]>"><[booktitleallgenre]></a></h3>
+                                            <span><[authorallgenre]></span>
+                                            <div class="item-price">$ <[priceallgenre]></div>
+                                        </figcaption>
+                                    </div>
+                                </div>
+                            <[/foreach]>
 
-									<[foreach]>
-										<div class="col-md-3">
-											<div class="product-item">
-												<figure class="product-style">
-													<img src="<[bookimagine]>" alt="<[booktitlecategory]>" class="product-item">
-													<button type="button" class="add-to-cart" data-book-id="<[bookidallcategory]>">
-   														Add to Cart
-													</button>
-												</figure>
-												<figcaption>
-													<h3><a href="book_details.php"><[booktitlecategory]></a></h3>
-													<span><[authorcategory]></span>
-													<div class="item-price">$ <[pricecategory]></div>
-												</figcaption>
-											</div>
-										</div>
-									<[/foreach]>
+                        </div>
+                    </div>
 
-								</div>
-							</div>
-						<[/foreach]>
+                    <!-- ⭐ LIBRI PER CATEGORIA -->
+                    <[foreach]>
+                        <div id="<[categorytab]>" data-tab-content>
+                            <div class="row">
 
-					</div>
+                                <[foreach]>
+                                    <div class="col-md-3 book-card">
+                                        <div class="product-item">
+                                            <figure class="product-style">
+                                                <img src="<[bookimagine]>" alt="<[booktitlecategory]>" class="product-item">
+                                                <button type="button" class="add-to-cart" data-book-id="<[bookidallcategory]>">
+                                                    Add to Cart
+                                                </button>
+                                            </figure>
+                                            <figcaption>
+                                                <h3><a href="book_details.php"><[booktitlecategory]></a></h3>
+                                                <span><[authorcategory]></span>
+                                                <div class="item-price">$ <[pricecategory]></div>
+                                            </figcaption>
+                                        </div>
+                                    </div>
+                                <[/foreach]>
 
-				</div>
-			</div>
-		</div>
-	</section>
+                            </div>
+                        </div>
+                    <[/foreach]>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    console.log("Search attivata ✔");
+
+    const searchInput = document.getElementById("search-input");
+    const searchBtn = document.getElementById("search-btn");
+    const noResults = document.getElementById("no-results");
+
+    if (!searchInput || !searchBtn) {
+        console.warn("Search: elementi non trovati, pagina non è il catalogo.");
+        return;
+    }
+
+    // Tutte le card dei libri (All genres + categorie)
+    const allBooks = document.querySelectorAll(".book-card");
+
+    // Tutte le sezioni delle categorie (escludiamo All genres)
+    const categorySections = document.querySelectorAll("[data-tab-content]:not(#all-genre)");
+
+    // Tab All genres
+    const allGenreTab = document.querySelector("li[data-tab-target='#all-genre']");
+
+    noResults.style.display = "none";
+
+    function doSearch() {
+        const query = searchInput.value.toLowerCase();
+        let found = 0;
+
+        // Attiva automaticamente la tab "All genres"
+        if (allGenreTab) allGenreTab.click();
+
+        // Filtra TUTTI i libri
+        allBooks.forEach(card => {
+            const title = card.querySelector("h3").innerText.toLowerCase();
+            const author = card.querySelector("span").innerText.toLowerCase();
+
+            if (title.includes(query) || author.includes(query)) {
+                card.style.display = "block";
+                found++;
+            } else {
+                card.style.display = "none";
+            }
+        });
+
+        // Nascondi categorie vuote
+        categorySections.forEach(section => {
+            const visibleBooks = section.querySelectorAll(".book-card[style='display: block;']");
+            section.style.display = visibleBooks.length > 0 ? "block" : "none";
+        });
+
+        // Mostra o nasconde il messaggio "nessun risultato"
+        noResults.style.display = found === 0 ? "block" : "none";
+    }
+
+    // Ricerca mentre digiti
+    searchInput.addEventListener("input", doSearch);
+
+    // Ricerca quando premi il bottone
+    searchBtn.addEventListener("click", doSearch);
+});
+
+</script>
+
+<style>
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px auto;
+    width: 100%;
+}
+
+.search-bar input {
+    padding: 10px 18px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    width: 400px;
+    max-width: 600px;
+    font-size: 16px;
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    color: #333;
+}
+
+.no-results {
+    display: none;
+    text-align: center;
+    font-size: 20px;
+    color: rgb(14, 11, 11);
+    margin-top: 10px;
+}
+</style>
 
 </body>
