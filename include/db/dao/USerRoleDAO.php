@@ -73,4 +73,20 @@ class UserRoleDAO extends DAO {
     public function createEntity(): UserRole {
         return new UserRole();
     }
+
+    public function getGroupByUserId(int $userId): ?Role {
+    // Prendo il record UTENTE_RUOLO
+    $this->stmtGetRolesByUser->bindValue(1, $userId, PDO::PARAM_INT);
+    $this->stmtGetRolesByUser->execute();
+
+    $rs = $this->stmtGetRolesByUser->fetch(PDO::FETCH_ASSOC);
+    if (!$rs) return null;
+
+    // Estraggo ID_RUOLO
+    $roleId = (int)$rs['ID_RUOLO'];
+
+    // Uso RoleDAO per ottenere l’oggetto Role
+    return $this->dataLayer->getRoleDAO()->getRoleById($roleId);
+}
+
 }

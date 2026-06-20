@@ -19,6 +19,9 @@ require_once("dao/PaymentMethodDAO.php");
 require_once("dao/ShippingMethodDAO.php");
 require_once("dao/OfferDAO.php");
 require_once("dao/OrderItemDAO.php");
+require_once("dao/UserRoleDAO.php");
+require_once("dao/ServiceDAO.php");
+require_once("dao/RoleServiceDAO.php");
 
 
 
@@ -48,6 +51,9 @@ class DataLayer{
     private ShippingMethodDAO $shippingMethodDAO;
     private OfferDAO $offerDAO;
     private OrderItemDAO $orderItemDAO;
+    private UserRoleDAO $userRoleDAO;
+    private ServiceDAO $serviceDAO;
+    private RoleServiceDAO $roleServiceDAO;
 
 
     public function __construct(DB_Connection $DBConnection) {
@@ -84,6 +90,9 @@ class DataLayer{
         $this->shippingMethodDAO = new ShippingMethodDAO($this);
         $this->offerDAO = new OfferDAO($this);
         $this->orderItemDAO = new OrderItemDAO($this);
+        $this->userRoleDAO = new UserRoleDAO($this);
+        $this->serviceDAO = new ServiceDAO($this);
+        $this->roleServiceDAO = new RoleServiceDAO($this);
             
     }
 
@@ -159,7 +168,17 @@ class DataLayer{
         return $this->orderItemDAO;
     }
 
+    public function getUserRoleDAO(): UserRoleDAO{
+        return $this->userRoleDAO;
+    }   
+    
+    public function getServiceDAO(): ServiceDAO{
+        return $this->serviceDAO;
+    }
 
+    public function getRoleServiceDAO(): RoleServiceDAO{
+        return $this->roleServiceDAO;
+    }
 
 }
 ?>

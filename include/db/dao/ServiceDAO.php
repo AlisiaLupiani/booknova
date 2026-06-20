@@ -10,6 +10,8 @@ class ServiceDAO extends DAO {
     private PDOStatement $stmtInsert;
     private PDOStatement $stmtUpdate;
     private PDOStatement $stmtDelete;
+    private PDOStatement $stmtAllService;
+
 
     public function __construct(?DataLayer $dataLayer) {
         parent::__construct($dataLayer);
@@ -78,4 +80,16 @@ class ServiceDAO extends DAO {
     public function createEntity(): Service {
         return new Service();
     }
+    public function getAllServices(): array {
+        $this->stmtGetAll->execute();
+        $result = [];
+
+        while ($rs = $this->stmtGetAll->fetch(PDO::FETCH_ASSOC)) {
+            $result[] = $this->createService($rs);
+        }
+
+        return $result;
+    }
+
+   
 }

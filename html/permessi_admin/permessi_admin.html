@@ -1,0 +1,70 @@
+
+
+<body>
+
+    <h1>Gestione Permessi</h1>
+
+    <!-- SEZIONE 1: UTENTI E GRUPPI -->
+    <section class="box">
+        <h2>Assegna Gruppo agli Utenti</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Utente</th>
+                    <th>Email</th>
+                    <th>Gruppo Attuale</th>
+                    <th>Cambia Gruppo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Verrà riempito dal PHP -->
+                <[users_rows]>
+            </tbody>
+        </table>
+    </section>
+
+
+    <!-- SEZIONE 2: GRUPPI E SERVIZI -->
+    <section class="box">
+        <h2>Servizi Assegnati ai Gruppi</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Gruppo</th>
+                    <th>Servizi Attivi</th>
+                    <th>Modifica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Verrà riempito dal PHP -->
+                <[groups_rows]>
+            </tbody>
+        </table>
+    </section>
+
+
+    <!-- SEZIONE 3: LISTA SERVIZI -->
+    <section class="box">
+        <h2>Lista Servizi</h2>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome Servizio</th>
+                    <th>Descrizione</th>
+                    <th>Modifica</th>
+                    <th>Elimina</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Verrà riempito dal PHP -->
+                <[services_rows]>
+            </tbody>
+        </table>
+
+        <a href="crea_servizio.php" class="btn">Crea Nuovo Servizio</a>
+    </section>
+
+</body>
