@@ -5,6 +5,13 @@ $body_page = new Template("html/ordini_admin/ordini_admin.html");
 require_once("include/utility/QueryStringBuilder.php");
 $dataLayer = new DataLayer(new DB_Connection());
 $orderDAO = $dataLayer->getOrderDAO();
+require_once("include/model/proxy/PermissionProxy.php");
+
+$factory = new DataLayer(new DB_Connection());
+
+$permission = new PermissionProxy($factory);
+
+$permission->checkPermission("orders_view");
 $orders = $orderDAO->getAllOrders();
 
 
