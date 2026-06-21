@@ -1,70 +1,160 @@
+<style>
+.table-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    font-family: sans-serif;
+}
 
+h2 { text-align: center; color: #333; }
+
+.book-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.book-table th, .book-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.book-table th {
+    background-color: #f8f9fa;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.book-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+select {
+    padding: 6px 10px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+    font-size: 13px;
+}
+</style>
 
 <body>
 
-    <h1>Gestione Permessi</h1>
+<!-- ========================= -->
+<!-- SEZIONE 1 — UTENTI + RUOLI -->
+<!-- ========================= -->
+<div class="table-container">
+    <h2>Gestione Ruoli Utenti</h2>
 
-    <!-- SEZIONE 1: UTENTI E GRUPPI -->
-    <section class="box">
-        <h2>Assegna Gruppo agli Utenti</h2>
+    <table class="book-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Utente</th>
+                <th>Email</th>
+                <th>Ruolo Attuale</th>
+                <th>Cambia Ruolo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <[foreach]>
+            <tr>
+                <td><[user_id]></td>
+                <td><strong><[user_name]></strong></td>
+                <td><[user_email]></td>
+                <td><[current_role]></td>
+                <td><[role_select]></td>
+            </tr>
+            <[/foreach]>
+        </tbody>
+    </table>
+</div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Utente</th>
-                    <th>Email</th>
-                    <th>Gruppo Attuale</th>
-                    <th>Cambia Gruppo</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Verrà riempito dal PHP -->
-                <[users_rows]>
-            </tbody>
-        </table>
-    </section>
+<!-- ========================= -->
+<!-- SEZIONE 2 — GRUPPI + SERVIZI -->
+<!-- ========================= -->
+<div class="table-container">
+    <h2>Servizi assegnati ai gruppi</h2>
 
+    <table class="book-table">
+        <thead>
+            <tr>
+                <th>Gruppo</th>
+                <th>Servizi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <[foreach]>
+            <tr>
+                <td><strong><[group_name]></strong></td>
+                <td><[group_services]></td>
+            </tr>
+            <[/foreach]>
+        </tbody>
+    </table>
+</div>
 
-    <!-- SEZIONE 2: GRUPPI E SERVIZI -->
-    <section class="box">
-        <h2>Servizi Assegnati ai Gruppi</h2>
+<!-- ========================= -->
+<!-- SEZIONE 3 — LISTA SERVIZI -->
+<!-- ========================= -->
+<div class="table-container">
+    <h2>Lista Servizi</h2>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Gruppo</th>
-                    <th>Servizi Attivi</th>
-                    <th>Modifica</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Verrà riempito dal PHP -->
-                <[groups_rows]>
-            </tbody>
-        </table>
-    </section>
+    <table class="book-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome Servizio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <[foreach]>
+            <tr>
+                <td><[service_id]></td>
+                <td><strong><[service_name]></strong></td>
+            </tr>
+            <[/foreach]>
+        </tbody>
+    </table>
+</div>
+<script>
+document.addEventListener("change", function(e) {
 
+    if (!e.target.classList.contains("role-select")) return;
 
-    <!-- SEZIONE 3: LISTA SERVIZI -->
-    <section class="box">
-        <h2>Lista Servizi</h2>
+    const userId = e.target.dataset.user;
+    const roleId = e.target.value;
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nome Servizio</th>
-                    <th>Descrizione</th>
-                    <th>Modifica</th>
-                    <th>Elimina</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Verrà riempito dal PHP -->
-                <[services_rows]>
-            </tbody>
-        </table>
+    fetch("update_user_role.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "user=" + userId + "&role=" + roleId
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            showBanner("Ruolo aggiornato correttamente");
+        } else {
+            showBanner("Errore: " + data.error, true);
+        }
+    })
+    .catch(() => showBanner("Errore di rete", true));
+});
 
-        <a href="crea_servizio.php" class="btn">Crea Nuovo Servizio</a>
-    </section>
+function showBanner(msg, error = false) {
+    const banner = document.createElement("div");
+    banner.className = "banner " + (error ? "error" : "success");
+    banner.textContent = msg;
+    document.body.appendChild(banner);
+    setTimeout(() => banner.remove(), 3000);
+}
+</script>
+
 
 </body>

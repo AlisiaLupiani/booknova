@@ -12,7 +12,6 @@
                     <h2 class="section-title">Catalougues</h2>
                 </div>
 
-                <!-- 🔍 BARRA DI RICERCA -->
                 <form id="search-form" class="search-bar" onsubmit="return false;">
                     <input type="text" id="search-input" placeholder="Cerca libro o autore...">
                     <button type="button" id="search-btn">
@@ -20,10 +19,8 @@
                     </button>
                 </form>
 
-                <!-- ⚠️ MESSAGGIO NESSUN RISULTATO -->
                 <p id="no-results" class="no-results">Questo libro non è disponibile</p>
 
-                <!-- 🔖 TABS -->
                 <ul class="tabs">
                     <li data-tab-target="#all-genre" class="active tab">All genres</li>
 
@@ -34,7 +31,6 @@
                     <[/foreach]>
                 </ul>
 
-                <!-- 📚 CONTENUTO -->
                 <div class="tab-content">
 
                     <!-- ⭐ TUTTI I LIBRI -->
@@ -62,7 +58,6 @@
                         </div>
                     </div>
 
-                    <!-- ⭐ LIBRI PER CATEGORIA -->
                     <[foreach]>
                         <div id="<[categorytab]>" data-tab-content>
                             <div class="row">
