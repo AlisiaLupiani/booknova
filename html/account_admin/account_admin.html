@@ -1,63 +1,137 @@
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Il Mio Account</h1>
+    <div class="container account-wrapper padding-medium">
+
+        <div class="account-header text-center margin-small">
+            <h1 class="page-title">Il Mio Account</h1>
+            <p class="subtitle">Gestisci il tuo profilo, le impostazioni e gli ordini</p>
         </div>
-        
+
         <div class="account-layout">
-            <aside class="sidebar">
+
+            <aside class="sidebar account-sidebar">
                 <nav class="account-menu">
                     <ul>
                         <li><a href="#profile" class="active">Profilo</a></li>
-                       
+                        <li><a href="#settings">Impostazioni</a></li>
                         <li><a href="#security">Sicurezza</a></li>
-                   
-                        <li><a href="login.php">Esci</a></li>
                     </ul>
                 </nav>
             </aside>
-            
-            <main class="content">
-                <section id="profile" class="section active">
+
+            <main class="content account-content">
+
+                <section id="profile" class="section active account-section">
                     <h2>Profilo Personale</h2>
-                    <form>
-                        <div class="form-group">
-                            <label for="name">Nome:</label>
-                            <input type="text" id="name" placeholder="Nome completo">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Telefono:</label>
-                            <input type="tel" id="phone" placeholder="Numero di telefono">
-                        </div>
-                        <button type="submit" class="btn-primary">Salva Modifiche</button>
-                    </form>
+                    <div class="card">
+                        <form>
+                            <div class="form-group">
+                                <label for="name">Nome:</label>
+                                <input type="text" id="name" placeholder="Nome completo">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" placeholder="Email">
+                            </div>
+                        
+                            <button type="submit" class="btn btn-accent">Salva Modifiche</button>
+                        </form>
+                    </div>
                 </section>
-                
-             
-                
-                <section id="security" class="section">
+
+          
+
+                <section id="security" class="section account-section">
                     <h2>Sicurezza</h2>
-                    <form>
-                        <div class="form-group">
-                            <label for="old-password">Password Attuale:</label>
-                            <input type="password" id="old-password">
-                        </div>
-                        <div class="form-group">
-                            <label for="new-password">Nuova Password:</label>
-                            <input type="password" id="new-password">
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm-password">Conferma Password:</label>
-                            <input type="password" id="confirm-password">
-                        </div>
-                        <button type="submit" class="btn-primary">Aggiorna Password</button>
-                    </form>
+                    <div class="card">
+                        <div class="card">
+                        <a href="password.php" class="btn btn-outline-accent">Modifica password</a>
+                    </div>
+                    </div>
                 </section>
+
             </main>
         </div>
     </div>
+    <style>
+        /* CENTRA TUTTO IL CONTENUTO DELLA PAGINA ACCOUNT */
+.account-layout {
+    display: flex;
+    justify-content: center; /* centra sidebar + contenuto */
+    gap: 3rem;
+}
+
+/* CENTRA IL BLOCCO PRINCIPALE (form, sezioni, ecc.) */
+.account-content {
+    max-width: 600px;   /* larghezza elegante */
+    width: 100%;
+    margin: 0 auto;     /* centra il contenuto */
+}
+
+/* CENTRA I TITOLI DELLE SEZIONI */
+.account-section h2 {
+    text-align: center;
+}
+
+/* Rende i blocchi più armoniosi */
+.account-section {
+    margin-bottom: 2rem;
+}
+.account-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.account-header {
+    text-align: center;
+}
+
+.centered-layout {
+    display: flex;
+    justify-content: center; /* CENTRA TUTTO */
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.account-sidebar {
+    width: 250px;
+}
+
+.account-content {
+    width: 100%;
+    max-width: 600px; /* CENTRA IL BLOCCO PRINCIPALE */
+}
+
+.account-menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.account-menu li {
+    margin-bottom: 1rem;
+}
+
+.account-menu a {
+    display: block;
+    padding: 12px 18px;
+    background: #fff;
+    border: 1px solid #ddd;
+    color: var(--dark-color);
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.account-menu a:hover,
+.account-menu a.active {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+.card {
+    background: #fff;
+    padding: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+    </style>
 </body>
