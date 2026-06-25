@@ -4,10 +4,8 @@
 require_once("include/db/DB_Connection.php");
 require_once("include/db/DataLayer.php");
 
-// 🔥 Devi creare il DataLayer PRIMA del PermissionProxy
 $factory = new DataLayer(new DB_Connection());
 
-// 🔥 Permission system
 require_once("include/model/proxy/PermissionProxy.php");
 $permission = new PermissionProxy($factory);
 $permission->checkPermission("book_add");

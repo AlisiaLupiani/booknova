@@ -151,28 +151,28 @@ INSERT INTO LIBRO_OFFERTA (ID_LIBRO, ID_OFFERTA) VALUES
 (17, 3); -- Al libro 17 diamo l'offerta 3 (50%)
 
 -- Collegamento Libri all'Ordine #1 (Totale Ordine: 45.50)
-INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+INSERT INTO ORDINE_OGGETTO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
 (1, 1, 1, 12.90), -- Balaclava
 (1, 2, 1, 14.90), -- Ti ritroverò Adeline
 (1, 15, 1, 11.50); -- Lilium
 -- Nota: 12.90 + 14.90 + 11.50 + 5.90 (Spedizione Corriere Espresso) = 45.20 (approssimato a 45.50)
 
 -- Collegamento Libri all'Ordine #2 (Totale Ordine: 120.00)
-INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+INSERT INTO ORDINE_OGGETTO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
 (2, 4, 3, 15.50), -- Corrupt (3 copie = 46.50)
 (2, 9, 2, 12.90), -- Scandalo a Hollywood (2 copie = 25.80)
 (2, 14, 3, 14.90); -- Matrimonio a Beverly Hills (3 copie = 44.70)
 -- Nota: 46.50 + 25.80 + 44.70 + 1.28 (Spedizione Pieghi di Libri) = ~118.28 (approssimato a 120.00)
 
 -- Collegamento Libri all'Ordine #3 (Totale Ordine: 89.99)
-INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+INSERT INTO ORDINE_OGGETTO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
 (3, 3, 2, 13.90), -- All the devils (2 copie = 27.80)
 (3, 6, 2, 14.20), -- Apocalypse (2 copie = 28.40)
 (3, 13, 3, 10.90); -- Opposite (3 copie = 32.70)
 -- Nota: 27.80 + 28.40 + 32.70 + 1.28 (Spedizione Pieghi di Libri) = ~90.18 (approssimato a 89.99)
 
 -- Collegamento Libri all'Ordine #4 (Totale Ordine: 540.00 - Valore Elevato)
-INSERT INTO ORDINE_LIBRO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
+INSERT INTO ORDINE_OGGETTO (ID_ORDINE, ID_LIBRO, QUANTITA, PREZZO_UNITARIO) VALUES 
 (4, 5, 15, 11.90), -- Violent Life (15 copie = 178.50)
 (4, 11, 15, 12.00), -- Cercami dove finisce il rumore (15 copie = 180.00)
 (4, 17, 12, 13.90); -- Due cuori, un’anima (12 copie = 166.80)
@@ -284,37 +284,49 @@ INSERT INTO VOTO (ID_UTENTE, ID_LIBRO, VALORE, DATA) VALUES
 (2, 16, 5, '2026-05-16'), (2, 16, 5, '2026-05-17'), (3, 16, 4, '2026-05-17'), (3, 16, 5, '2026-05-18'),
 -- Libro 17
 (2, 17, 4, '2026-05-17'), (2, 17, 5, '2026-05-18'), (3, 17, 5, '2026-05-18'), (3, 17, 4, '2026-05-19');
--- Wishlist per l'Utente 1 (Ha inserito 4 libri)
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-10', 1, 3);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-12', 1, 7);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-15', 1, 12);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-18', 1, 15);
 
--- Wishlist per l'Utente 2 (Ha inserito 5 libri)
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-04-20', 2, 1);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-04-22', 2, 5);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-01', 2, 9);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-04', 2, 14);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-19', 2, 17);
+INSERT INTO SERVIZIO (NOME) VALUES
+('access_backend'),
+('book_view'),
+('book_edit'),
+('book_delete'),
+('book_add'),
+('reviews_view'),
+('reviews_delete'),
+('users_view'),
+('users_delete'),
+('orders_view'),
+('orders_delete'),
+('author_view'),
+('author_delete'),
+('author_add'),
+('category_view'),
+('category_delete'),
+('category_add'),
+('permessi_view');
 
--- Wishlist per l'Utente 3 (Ha inserito 3 libri)
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-02', 3, 2);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-03', 3, 6);
-INSERT INTO WISHLIST (DATA_INSERIMENTO, ID_UTENTE, ID_LIBRO) VALUES ('2026-05-14', 3, 11);
 
--- Carrello dell'Utente 1
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (1, 4, 1);
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (1, 8, 2); -- Testa la quantità multipla (2 copie)
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (1, 15, 1);
+INSERT INTO RUOLO_SERVIZIO (ID_RUOLO, ID_SERVIZIO) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),   
+(1, 6),
+(1, 7),
+(1, 8),
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14),
+(1, 15),
+(1, 16);
 
--- Carrello dell'Utente 2
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 3, 1);
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 7, 3); -- Testa la quantità multipla (3 copie)
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 12, 1);
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (2, 16, 1);
 
--- Carrello dell'Utente 3
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (3, 2, 2); -- Testa la quantità multipla (2 copie)
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO, QUANTITA) VALUES (3, 10, 1);
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,1);
-INSERT INTO CARRELLO (ID_UTENTE, ID_LIBRO) VALUES (1,2);
+-- Mappatura utenti → ruoli (sistema a gruppi)
+INSERT INTO UTENTE_RUOLO (ID_UTENTE, ID_RUOLO) VALUES
+(2, 1), -- Luca = Admin
+(1, 2), -- Mario = Cliente
+(3, 2); -- Giada = Cliente

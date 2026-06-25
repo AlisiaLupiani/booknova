@@ -13,7 +13,7 @@ $factory = new DataLayer(new DB_Connection());
 $permission = new PermissionProxy($factory);
 
 // 🔥 CONTROLLA IL PERMESSO
-$permission->checkPermission("books_view");
+$permission->checkPermission("book_view");
 
 // DAO
 $bookDAO = $factory->getBookDAO();

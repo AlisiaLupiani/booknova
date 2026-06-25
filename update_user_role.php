@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require_once("include/db/DB_Connection.php");
 require_once("include/db/DataLayer.php");
 
@@ -17,11 +16,10 @@ $roleId = intval($_POST['role']);
 $factory = new DataLayer(new DB_Connection());
 $userRoleDAO = $factory->getUserRoleDAO();
 
+// 🔥 Rimuove il vecchio ruolo
 $userRoleDAO->removeAllRolesFromUser($userId);
 
+// 🔥 Aggiunge SOLO UNA VOLTA il nuovo ruolo
 $ok = $userRoleDAO->addRoleToUser($userId, $roleId);
-$ok = $userRoleDAO->addRoleToUser($userId, $roleId);
-
-
 
 echo json_encode(["success" => $ok]);
